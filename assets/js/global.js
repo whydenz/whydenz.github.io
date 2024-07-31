@@ -3,12 +3,12 @@ function welcomeMsg() {
     let array = 0;
 
     
-    const wAgw = `<a href="https://api.whatsapp.com/send?phone=6282177344150" target="_blank">WhatsApp</a>`;
+    const wAgw = `<a href="https://api.whatsapp.com/send?phone=6285150872460" target="_blank">WhatsApp</a>`;
     
     
-    const msg1 = `<p class="animation mb-0 text-truncate">Ready JOKI WR</p>`;
-    const msg4 = `<p class="animation mb-0 text-truncate">Hide history pertandingan`;
-    const msg5 = `<p class="animation mb-0 text-truncate">Create akun advance server</p>`;
+    const msg1 = `<p class="animation mb-0 text-truncate">Ready kebutuhan hidup</p>`;
+    const msg4 = `<p class="animation mb-0 text-truncate">Order AM Premium`;
+    const msg5 = `<p class="animation mb-0 text-truncate">JOKI LOSESTREAK</p>`;
     const msg2 = `<p class="animation mb-0 text-truncate">Minat Chat ${wAgw}</p>`;
     const msg3 = `<p class="animation mb-0 text-truncate">Selamat menggunakan tools ini ;)</p>`;
 
