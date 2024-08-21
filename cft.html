@@ -35,8 +35,8 @@
                     var { isConfirmed: sayang } = await swals.fire({
                         title: `${nama} sayang ga sama ${author}`,
                         confirmButtonText: 'Sayang',
-                        cancelButtonText: 'Gak',
-                        showCancelButton: false,
+                        confirmButtonText: 'Gak',
+                        showCancelButton: true,
                     });
                     if(sayang){
                         await swals.fire('Aku juga sayang banget sama kamu');
@@ -52,11 +52,11 @@
                             inputValue: 99
                         });
                         if(persen){
-                            await swals.fire(`Makasih ya udah sayang sama ${author} ${persen}%`);
+                            await swals.fire(`Makasih ya ${nama} udah sayang sama ${author} ${persen}%`);
                             var { isConfirmed: kangen } = await swals.fire({
-                                title: 'Sekarang kamu kangen ga sama aku?',
+                                title: 'Sekarang kamu kangen ga sama ${author}?',
                                 confirmButtonText: 'Kangen',
-                                cancelButtonText: 'Gak',
+                                confirmButtonText: 'Gak',
                                 showCancelButton: true,
                             });
                             if(kangen){
