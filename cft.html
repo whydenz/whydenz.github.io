@@ -12,7 +12,7 @@
             <div id='iloveyou' style='display: none;'>
                 <h2 class='text-center'>AKU SAYANG KAMU<br>&#10084;&#65039;</h2>
                 "jika matamu adalah cahayaku maka hatimu adalah mutiara dan jika senyuman mu adalah ibadah maka bertemu denganmu adalah sebuah anugrah"
-          <br> meledaggghhhh 💗💗💗💗💗 </div>
+          <br><b></b> meledaggghhhh 💗💗💗💗💗</b> </div>
         </div>
         <span id='hati' class='fixed-bottom text-center my-3' onclick='hati()'></span>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.all.min.js"></script>
@@ -36,7 +36,7 @@
                     var { isConfirmed: sayang } = await swals.fire({
                         title: `${nama},sayang ga sama ${author}`,
                         confirmButtonText: 'Sayang',
-                        confirmButtonText: 'Gak',
+                        cancelButtonText: 'Gak',
                         showCancelButton: true,
                     });
                     if(sayang){
@@ -57,7 +57,7 @@
                             var { isConfirmed: kangen } = await swals.fire({
                                 title: 'Sekarang kamu kangen ga sama aku?',
                                 confirmButtonText: 'Kangen',
-                                confirmButtonText: 'Gak',
+                                cancelButtonText: 'Gak',
                                 showCancelButton: true,
                             });
                             if(kangen){
