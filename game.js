@@ -26,7 +26,7 @@ document.getElementById("submitGuess").addEventListener("click", function () {
             // Reset the game
             randomNumber = Math.floor(Math.random() * 100) + 1;
             attempts = 0;
-            document.getElementById("guess").value = '49';
+            document.getElementById("guess").value = '48';
         });
     } else if (userGuess < randomNumber) {
         Swal.fire({
