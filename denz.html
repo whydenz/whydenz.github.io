@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Permainan Tebak Angka</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 400px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        input {
+            margin-bottom: 15px;
+        }
+
+        .btn-primary {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container text-center">
+        <h1>Tebak Angka</h1>
+        <p>Tebak angka antara 1 hingga 100</p>
+        <input type="number" id="guessInput" class="form-control" placeholder="Masukkan tebakan" min="1" max="100">
+        <button id="submitGuess" class="btn btn-primary mt-3">Submit Tebakan</button>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Game Script -->
+    <script>
+        // Generate a random number between 1 and 100
+        const randomNumber = Math.floor(Math.random() * 100) + 1;
+        let attempts = 0;
+
+        document.getElementById("submitGuess").addEventListener("click", function() {
+            const guess = parseInt(document.getElementById("guessInput").value);
+            attempts++;
+
+            if (isNaN(guess) || guess < 1 || guess > 100) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Input tidak valid',
+                    text: 'Masukkan angka antara 1 dan 100!'
+                });
+                return;
+            }
+
+            if (guess === randomNumber) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Selamat!',
+                    text: `Tebakanmu benar! Angka yang benar adalah ${randomNumber}. Kamu menebak dalam ${attempts} percobaan.`,
+                    confirmButtonText: 'Main Lagi'
+                }).then(() => {
+                    location.reload();  // Reload page to reset game
+                });
+            } else if (guess < randomNumber) {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Terlalu Rendah',
+                    text: 'Coba tebak angka yang lebih besar!'
+                });
+            } else {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Terlalu Tinggi',
+                    text: 'Coba tebak angka yang lebih kecil!'
+                });
+            }
+        });
+    </script>
+</body>
+</html>
