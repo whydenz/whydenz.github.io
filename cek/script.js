@@ -4,11 +4,12 @@ document.getElementById('topUpForm').addEventListener('submit', function(e) {
 
   // Ambil nilai dari form
   const userID = document.getElementById('userID').value;
+  const name = document.getElemenyaById('name').value;
   const game = document.getElementById('game').value;
   const nominal = document.getElementById('nominal').value;
 
   // Validasi sederhana
-  if (!userID || !game || !nominal) {
+  if (!userID || !name || !game || !nominal) {
     Swal.fire({
       icon: 'error',
       title: 'Oops...',
