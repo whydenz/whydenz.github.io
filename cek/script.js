@@ -18,7 +18,7 @@ document.getElementById('topUpForm').addEventListener('submit', function(e) {
     // SweetAlert untuk konfirmasi top up
     Swal.fire({
       title: 'Konfirmasi Top Up',
-      html: `User ID: <b>${userID}</b><br><b>Nama: ${name}</b><br>ID: <b>${game}</b><br>Nominal: <b>${nominal}</b>`,
+      html: `User ID: <b>${userID}</b><br><b>Nama: ${name}</b><br>Game: <b>${game}</b><br>Nominal: <b>${nominal}</b>`,
       icon: 'info',
       showCancelButton: true,
       confirmButtonText: 'Top Up Sekarang',
@@ -28,7 +28,7 @@ document.getElementById('topUpForm').addEventListener('submit', function(e) {
         Swal.fire({
           icon: 'success',
           title: 'Berhasil!',
-          text: `Top Up 4830 diamond<br> Rp${nominal}<br> ID: ${game} <br>Nama: ${name}<br>telah berhasil!<br>`
+          text: `Top Up 4830 diamond Rp${nominal} Game: ${game} Nama: ${name} telah berhasil!`
         });
         // Reset form setelah berhasil top up
         document.getElementById('topUpForm').reset();
