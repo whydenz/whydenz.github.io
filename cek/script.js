@@ -19,7 +19,7 @@ document.getElementById('topUpForm').addEventListener('submit', function(e) {
     // SweetAlert untuk konfirmasi top up
     Swal.fire({
       title: 'Konfirmasi Top Up',
-      html: `User ID: <b>${userID}</b><br><b>Nama: ${name}</b><br>Game: <b>${game}</b><br>Nominal: <b>${nominal}</b>`,
+      html: `User ID: <b>${userID}</b><br>Nama: <b>${name}</b><br>Game: <b>${game}</b><br>Nominal: <b>${nominal}</b>`,
       icon: 'info',
       showCancelButton: true,
       confirmButtonText: 'Top Up Sekarang',
