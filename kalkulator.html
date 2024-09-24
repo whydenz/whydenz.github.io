@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Elegan</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- SweetAlert2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .calculator {
+            margin: 100px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            width: 350px;
+        }
+
+        .calculator-screen {
+            width: 100%;
+            height: 80px;
+            border-radius: 5px;
+            border: none;
+            background-color: #252525;
+            color: #fff;
+            text-align: right;
+            font-size: 2.5rem;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            font-size: 1.5rem;
+            border-radius: 5px;
+            margin: 5px;
+            width: 70px;
+            height: 70px;
+        }
+
+        .btn-operation {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-number {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-clear, .btn-equal {
+            background-color: #28a745;
+            color: white;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="calculator">
+            <input type="text" class="calculator-screen" id="screen" disabled>
+            <div class="row">
+                <div class="col-3">
+                    <button class="btn btn-clear" id="clear">C</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-number" id="7">7</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-number" id="8">8</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-number" id="9">9</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <button class="btn btn-operation" id="+">+</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-number" id="4">4</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-number" id="5">5</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-number" id="6">6</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <button class="btn btn-operation" id="-">-</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-number" id="1">1</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-number" id="2">2</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-number" id="3">3</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <button class="btn btn-operation" id="*">*</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-number" id="0">0</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-operation" id="/">/</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-equal" id="equal">=</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+    <!-- Custom JS -->
+    <script>
+        let screen = document.getElementById('screen');
+        let buttons = document.querySelectorAll('.btn');
+        let screenValue = '';
+        let isOperationPressed = false;
+
+        buttons.forEach(button => {
+            button.addEventListener('click', function() {
+                let buttonText = this.innerText;
+                
+                if(buttonText === 'C') {
+                    screenValue = '';
+                    screen.value = screenValue;
+                } else if(buttonText === '=') {
+                    try {
+                        screenValue = eval(screenValue);
+                        screen.value = screenValue;
+                    } catch (error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Input tidak valid!',
+                        });
+                        screenValue = '';
+                    }
+                } else {
+                    screenValue += buttonText;
+                    screen.value = screenValue;
+                }
+            });
+        });
+    </script>
+</body>
+  </html>
