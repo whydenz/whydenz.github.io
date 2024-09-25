@@ -1,0 +1,21 @@
+body {
+    background-color: #f7f7f7;
+    font-family: 'Arial', sans-serif;
+}
+
+.card {
+    width: 300px;
+    margin: auto;
+}
+
+.clock-display {
+    font-size: 48px;
+    font-weight: bold;
+    color: #333;
+}
+
+button {
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 25px;
+}
