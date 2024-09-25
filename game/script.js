@@ -1,6 +1,6 @@
 let score = 0;
 let currentQuestion = {};
-let timeLeft = 10;
+let timeLeft = 100;
 let timer;
 
 // Fungsi untuk membuat soal matematika acak
