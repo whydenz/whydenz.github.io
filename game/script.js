@@ -1,96 +1,93 @@
-let score = 0;
-let currentQuestionIndex = 0;
-
-// Daftar pertanyaan dan jawaban
+// Data pertanyaan dan jawaban
 const questions = [
     {
-        question: "Apa nama generik dari obat yang digunakan untuk mengatasi demam?",
-        choices: ["Ibuprofen", "Paracetamol", "Amoxicillin", "Simvastatin"],
-        answer: "Paracetamol"
+        question: "Senyawa dengan ikatan tunggal antara atom karbon disebut?",
+        answers: ["Alkana", "Alkena", "Alkuna"],
+        correct: "Alkana"
     },
     {
-        question: "Obat apa yang biasa digunakan untuk infeksi bakteri?",
-        choices: ["Aspirin", "Amoxicillin", "Loratadine", "Metformin"],
-        answer: "Amoxicillin"
+        question: "Senyawa hidrokarbon dengan satu ikatan rangkap dua disebut?",
+        answers: ["Alkana", "Alkena", "Alkuna"],
+        correct: "Alkena"
     },
     {
-        question: "Simvastatin digunakan untuk?",
-        choices: ["Mengontrol gula darah", "Mengurangi tekanan darah", "Mengontrol kolesterol", "Mengobati infeksi"],
-        answer: "Mengontrol kolesterol"
+        question: "Senyawa dengan satu ikatan rangkap tiga disebut?",
+        answers: ["Alkana", "Alkena", "Alkuna"],
+        correct: "Alkuna"
     },
     {
-        question: "Apa fungsi utama dari Metformin?",
-        choices: ["Mengobati diabetes", "Mengurangi demam", "Menyembuhkan infeksi", "Menghilangkan rasa nyeri"],
-        answer: "Mengobati diabetes"
+        question: "Apa nama senyawa CH₄?",
+        answers: ["Metana", "Etena", "Etuna"],
+        correct: "Metana"
+    },
+    {
+        question: "Senyawa C₂H₄ adalah jenis?",
+        answers: ["Alkana", "Alkena", "Alkuna"],
+        correct: "Alkena"
+    },
+    {
+        question: "Apa nama senyawa C₂H₂?",
+        answers: ["Etuna", "Etana", "Etena"],
+        correct: "Etuna"
     }
 ];
 
-// Fungsi untuk memuat pertanyaan berikutnya
+// Variabel untuk melacak skor dan pertanyaan saat ini
+let currentQuestionIndex = 0;
+let score = 0;
+
+// Tampilkan skor awal
+document.getElementById("score").innerHTML = `Skor: ${score}`;
+
+// Fungsi untuk memuat pertanyaan
 function loadQuestion() {
-    if (currentQuestionIndex < questions.length) {
-        const currentQuestion = questions[currentQuestionIndex];
-        document.getElementById('question').textContent = currentQuestion.question;
-
-        const choicesDiv = document.getElementById('choices');
-        choicesDiv.innerHTML = ''; // Hapus pilihan sebelumnya
-
-        currentQuestion.choices.forEach(choice => {
-            const button = document.createElement('button');
-            button.className = 'btn btn-outline-primary';
-            button.textContent = choice;
-            button.onclick = () => checkAnswer(choice);
-            choicesDiv.appendChild(button);
-        });
-    } else {
-        // Jika semua pertanyaan telah dijawab
-        Swal.fire({
-            title: 'Game Selesai!',
-            text: `Skor Akhir Anda: ${score}/${questions.length}`,
-            icon: 'success',
-            confirmButtonText: 'Main Lagi'
-        }).then(() => {
-            resetGame();
-        });
-    }
+    const currentQuestion = questions[currentQuestionIndex];
+    
+    // Tampilkan pertanyaan
+    document.getElementById("question").innerHTML = currentQuestion.question;
+    
+    // Tampilkan jawaban
+    const answersContainer = document.getElementById("answers");
+    answersContainer.innerHTML = '';
+    currentQuestion.answers.forEach(answer => {
+        const button = document.createElement('div');
+        button.classList.add('answer');
+        button.innerHTML = answer;
+        button.onclick = () => checkAnswer(answer);
+        answersContainer.appendChild(button);
+    });
 }
 
 // Fungsi untuk memeriksa jawaban
-function checkAnswer(selectedChoice) {
+function checkAnswer(selectedAnswer) {
     const currentQuestion = questions[currentQuestionIndex];
-
-    if (selectedChoice === currentQuestion.answer) {
+    let resultText = '';
+    
+    if (selectedAnswer === currentQuestion.correct) {
+        resultText = "Benar!";
         score++;
-        Swal.fire({
-            title: 'Benar!',
-            text: 'Jawaban Anda benar!',
-            icon: 'success',
-            confirmButtonText: 'Lanjut'
-        });
     } else {
-        Swal.fire({
-            title: 'Salah!',
-            text: `Jawaban yang benar adalah ${currentQuestion.answer}.`,
-            icon: 'error',
-            confirmButtonText: 'Lanjut'
-        });
+        resultText = `Salah! Jawaban yang benar adalah ${currentQuestion.correct}.`;
     }
 
-    document.getElementById('score').textContent = `Skor: ${score}`;
-    currentQuestionIndex++;
+    // Tampilkan hasil dan perbarui skor
+    document.getElementById("result").innerHTML = resultText;
+    document.getElementById("score").innerHTML = `Skor: ${score}`;
+    
+    // Lanjutkan ke pertanyaan berikutnya setelah beberapa detik
+    setTimeout(() => {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < questions.length) {
+            document.getElementById("result").innerHTML = '';
+            loadQuestion();
+        } else {
+            // Jika tidak ada pertanyaan lagi, tampilkan pesan akhir
+            document.getElementById("question").innerHTML = "Game selesai!";
+            document.getElementById("answers").innerHTML = '';
+            document.getElementById("result").innerHTML = `Skor akhir Anda: ${score}`;
+        }
+    }, 2000);
 }
 
-// Fungsi untuk melanjutkan ke soal berikutnya
-function nextQuestion() {
-    loadQuestion();
-}
-
-// Fungsi untuk mereset permainan
-function resetGame() {
-    score = 0;
-    currentQuestionIndex = 0;
-    document.getElementById('score').textContent = `Skor: ${score}`;
-    loadQuestion();
-}
-
-// Memulai game dengan pertanyaan pertama
+// Muat pertanyaan pertama
 loadQuestion();
