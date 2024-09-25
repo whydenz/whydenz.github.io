@@ -1,86 +1,96 @@
 let score = 0;
-let currentQuestion = {};
-let timeLeft = 100;
-let timer;
+let currentQuestionIndex = 0;
 
-// Fungsi untuk membuat soal matematika acak
-function generateQuestion() {
-    const num1 = Math.floor(Math.random() * 10) + 1;
-    const num2 = Math.floor(Math.random() * 10) + 1;
-    const operators = ['+', '-', '*', '/'];
-    const operator = operators[Math.floor(Math.random() * operators.length)];
-
-    let question;
-    let answer;
-
-    if (operator === '+') {
-        question = `${num1} + ${num2}`;
-        answer = num1 + num2;
-    } else if (operator === '-') {
-        question = `${num1} - ${num2}`;
-        answer = num1 - num2;
-    } else if (operator === '*') {
-        question = `${num1} * ${num2}`;
-        answer = num1 * num2;
-    } else if (operator === '/') {
-        question = `${num1} / ${num2}`;
-        answer = (num1 / num2).toFixed(2); // Pembagian 2 angka desimal
+// Daftar pertanyaan dan jawaban
+const questions = [
+    {
+        question: "Apa nama generik dari obat yang digunakan untuk mengatasi demam?",
+        choices: ["Ibuprofen", "Paracetamol", "Amoxicillin", "Simvastatin"],
+        answer: "Paracetamol"
+    },
+    {
+        question: "Obat apa yang biasa digunakan untuk infeksi bakteri?",
+        choices: ["Aspirin", "Amoxicillin", "Loratadine", "Metformin"],
+        answer: "Amoxicillin"
+    },
+    {
+        question: "Simvastatin digunakan untuk?",
+        choices: ["Mengontrol gula darah", "Mengurangi tekanan darah", "Mengontrol kolesterol", "Mengobati infeksi"],
+        answer: "Mengontrol kolesterol"
+    },
+    {
+        question: "Apa fungsi utama dari Metformin?",
+        choices: ["Mengobati diabetes", "Mengurangi demam", "Menyembuhkan infeksi", "Menghilangkan rasa nyeri"],
+        answer: "Mengobati diabetes"
     }
+];
 
-    currentQuestion = {
-        question: question,
-        answer: answer
-    };
+// Fungsi untuk memuat pertanyaan berikutnya
+function loadQuestion() {
+    if (currentQuestionIndex < questions.length) {
+        const currentQuestion = questions[currentQuestionIndex];
+        document.getElementById('question').textContent = currentQuestion.question;
 
-    document.getElementById('question').textContent = `Soal: ${currentQuestion.question}`;
-}
+        const choicesDiv = document.getElementById('choices');
+        choicesDiv.innerHTML = ''; // Hapus pilihan sebelumnya
 
-// Fungsi untuk mengecek jawaban
-function checkAnswer(event) {
-    if (event.key === 'Enter') {
-        submitAnswer();
-    }
-}
-
-// Fungsi untuk mengirim jawaban
-function submitAnswer() {
-    const userAnswer = parseFloat(document.getElementById('answer').value);
-    const feedback = document.getElementById('feedback');
-
-    if (userAnswer === parseFloat(currentQuestion.answer)) {
-        feedback.textContent = 'Benar!';
-        feedback.style.color = 'green';
-        score++;
+        currentQuestion.choices.forEach(choice => {
+            const button = document.createElement('button');
+            button.className = 'btn btn-outline-primary';
+            button.textContent = choice;
+            button.onclick = () => checkAnswer(choice);
+            choicesDiv.appendChild(button);
+        });
     } else {
-        feedback.textContent = `Salah! Jawaban yang benar adalah ${currentQuestion.answer}`;
-        feedback.style.color = 'red';
+        // Jika semua pertanyaan telah dijawab
+        Swal.fire({
+            title: 'Game Selesai!',
+            text: `Skor Akhir Anda: ${score}/${questions.length}`,
+            icon: 'success',
+            confirmButtonText: 'Main Lagi'
+        }).then(() => {
+            resetGame();
+        });
+    }
+}
+
+// Fungsi untuk memeriksa jawaban
+function checkAnswer(selectedChoice) {
+    const currentQuestion = questions[currentQuestionIndex];
+
+    if (selectedChoice === currentQuestion.answer) {
+        score++;
+        Swal.fire({
+            title: 'Benar!',
+            text: 'Jawaban Anda benar!',
+            icon: 'success',
+            confirmButtonText: 'Lanjut'
+        });
+    } else {
+        Swal.fire({
+            title: 'Salah!',
+            text: `Jawaban yang benar adalah ${currentQuestion.answer}.`,
+            icon: 'error',
+            confirmButtonText: 'Lanjut'
+        });
     }
 
     document.getElementById('score').textContent = `Skor: ${score}`;
-    document.getElementById('answer').value = '';
-    resetTimer();
-    generateQuestion();
+    currentQuestionIndex++;
 }
 
-// Fungsi untuk memulai atau mereset timer
-function resetTimer() {
-    clearInterval(timer);
-    timeLeft = 10;
-    document.getElementById('timer').textContent = `Waktu: ${timeLeft} detik`;
-
-    timer = setInterval(() => {
-        timeLeft--;
-        document.getElementById('timer').textContent = `Waktu: ${timeLeft} detik`;
-
-        if (timeLeft <= 0) {
-            clearInterval(timer);
-            alert('Waktu habis! Soal baru akan diberikan.');
-            generateQuestion();
-            resetTimer();
-        }
-    }, 1000);
+// Fungsi untuk melanjutkan ke soal berikutnya
+function nextQuestion() {
+    loadQuestion();
 }
 
-// Memulai game dengan soal pertama
-generateQuestion();
-resetTimer();
+// Fungsi untuk mereset permainan
+function resetGame() {
+    score = 0;
+    currentQuestionIndex = 0;
+    document.getElementById('score').textContent = `Skor: ${score}`;
+    loadQuestion();
+}
+
+// Memulai game dengan pertanyaan pertama
+loadQuestion();
