@@ -1,0 +1,27 @@
+body {
+    background-color: #f0f8ff;
+    font-family: 'Arial', sans-serif;
+}
+
+h1 {
+    color: #333;
+}
+
+.card {
+    max-width: 400px;
+}
+
+#question {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+#feedback {
+    font-size: 18px;
+    color: green;
+}
+
+#score, #timer {
+    font-size: 18px;
+    font-weight: bold;
+}
