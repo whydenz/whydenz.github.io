@@ -1,72 +1,117 @@
 // script.js
 
-let balance = 0;
+document.addEventListener('DOMContentLoaded', () => {
+    const topUpButtons = document.querySelectorAll('.top-up-btn');
 
-// Format angka ke format rupiah
-function formatRupiah(angka) {
-    return 'Rp ' + angka.toLocaleString('id-ID', {minimumFractionDigits: 0});
-}
+    topUpButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const gameName = button.getAttribute('data-game');
+            openTopUpModal(gameName);
+        });
+    });
 
-// Update tampilan saldo
-function updateBalance() {
-    document.getElementById('balance').innerText = formatRupiah(balance);
-}
-
-// Event Listener untuk Tambah Dana
-document.getElementById('addFundsBtn').addEventListener('click', () => {
-    Swal.fire({
-        title: 'Tambah Dana',
-        input: 'number',
-        inputLabel: 'Jumlah yang ingin ditambahkan',
-        inputPlaceholder: 'Masukkan jumlah (Rp)',
-        showCancelButton: true,
-        confirmButtonText: 'Tambah',
-        cancelButtonText: 'Batal',
-        inputAttributes: {
-            min: 1
-        }
-    }).then((result) => {
-        if (result.isConfirmed) {
-            const amount = parseInt(result.value);
-            if (isNaN(amount) || amount <= 0) {
-                Swal.fire('Error', 'Masukkan jumlah yang valid!', 'error');
-            } else {
-                balance += amount;
-                updateBalance();
-                Swal.fire('Sukses', `Anda telah menambahkan ${formatRupiah(amount)} ke saldo Anda.`, 'success');
+    // Tombol Mulai Top Up di Hero Section
+    const startTopUpBtn = document.getElementById('startTopUpBtn');
+    startTopUpBtn.addEventListener('click', () => {
+        Swal.fire({
+            title: 'Pilih Game',
+            input: 'select',
+            inputOptions: {
+                'Mobile Legends': 'Mobile Legends',
+                'PUBG Mobile': 'PUBG Mobile',
+                'Free Fire': 'Free Fire',
+                'Valorant': 'Valorant',
+                // Tambahkan lebih banyak game sesuai kebutuhan
+            },
+            inputPlaceholder: 'Pilih game Anda',
+            showCancelButton: true,
+            confirmButtonText: 'Lanjutkan',
+            cancelButtonText: 'Batal',
+            inputValidator: (value) => {
+                return new Promise((resolve) => {
+                    if (value) {
+                        resolve();
+                    } else {
+                        resolve('Anda perlu memilih sebuah game!');
+                    }
+                });
             }
-        }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const selectedGame = result.value;
+                openTopUpModal(selectedGame);
+            }
+        });
     });
 });
 
-// Event Listener untuk Tarik Dana
-document.getElementById('withdrawFundsBtn').addEventListener('click', () => {
+/**
+ * Fungsi untuk membuka modal top-up
+ * @param {string} gameName - Nama game yang dipilih
+ */
+function openTopUpModal(gameName) {
     Swal.fire({
-        title: 'Tarik Dana',
-        input: 'number',
-        inputLabel: 'Jumlah yang ingin ditarik',
-        inputPlaceholder: 'Masukkan jumlah (Rp)',
+        title: `Top Up ${gameName}`,
+        html:
+            `<input type="text" id="username" class="swal2-input" placeholder="Username ${gameName}">` +
+            `<input type="number" id="amount" class="swal2-input" placeholder="Jumlah Top Up (Rp)">`,
+        focusConfirm: false,
         showCancelButton: true,
-        confirmButtonText: 'Tarik',
+        confirmButtonText: 'Top Up',
         cancelButtonText: 'Batal',
-        inputAttributes: {
-            min: 1
+        preConfirm: () => {
+            const username = document.getElementById('username').value.trim();
+            const amount = parseInt(document.getElementById('amount').value);
+
+            if (!username) {
+                Swal.showValidationMessage('Username tidak boleh kosong!');
+                return false;
+            }
+
+            if (isNaN(amount) || amount <= 0) {
+                Swal.showValidationMessage('Masukkan jumlah top up yang valid!');
+                return false;
+            }
+
+            return { username, amount };
         }
     }).then((result) => {
-        if (result.isConfirmed) {
-            const amount = parseInt(result.value);
-            if (isNaN(amount) || amount <= 0) {
-                Swal.fire('Error', 'Masukkan jumlah yang valid!', 'error');
-            } else if (amount > balance) {
-                Swal.fire('Error', 'Saldo tidak mencukupi!', 'error');
-            } else {
-                balance -= amount;
-                updateBalance();
-                Swal.fire('Sukses', `Anda telah menarik ${formatRupiah(amount)} dari saldo Anda.`, 'success');
-            }
+        if (result.isConfirmed && result.value) {
+            const { username, amount } = result.value;
+
+            // Konfirmasi Detail Top Up
+            Swal.fire({
+                title: 'Konfirmasi Top Up',
+                html: `
+                    <p><strong>Game:</strong> ${gameName}</p>
+                    <p><strong>Username:</strong> ${username}</p>
+                    <p><strong>Jumlah:</strong> Rp ${amount.toLocaleString('id-ID')}</p>
+                `,
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonText: 'Konfirmasi',
+                cancelButtonText: 'Batal'
+            }).then((confirmResult) => {
+                if (confirmResult.isConfirmed) {
+                    // Simulasi Proses Top Up
+                    Swal.fire({
+                        title: 'Memproses Top Up...',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+
+                    // Simulasi delay proses top up
+                    setTimeout(() => {
+                        Swal.fire(
+                            'Sukses!',
+                            `Top up ${amount.toLocaleString('id-ID')} untuk ${username} di ${gameName} berhasil dilakukan.`,
+                            'success'
+                        );
+                    }, 2000);
+                }
+            });
         }
     });
-});
-
-// Inisialisasi tampilan saldo saat halaman dimuat
-document.addEventListener('DOMContentLoaded', updateBalance);
+}
