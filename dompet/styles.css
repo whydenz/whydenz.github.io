@@ -1,0 +1,36 @@
+/* styles.css */
+
+/* Tema Dark Orange */
+.bg-dark-orange {
+    background-color: #FF8C00 !important; /* Dark Orange */
+}
+
+.text-dark-orange {
+    color: #FF8C00 !important;
+}
+
+/* Kustomisasi Card */
+.card {
+    border: none;
+    border-radius: 15px;
+}
+
+/* Tombol Kustom */
+.btn-success {
+    background-color: #FFA500;
+    border: none;
+}
+
+.btn-danger {
+    background-color: #FF4500;
+    border: none;
+}
+
+/* Hover Effects */
+.btn-success:hover {
+    background-color: #FFB732;
+}
+
+.btn-danger:hover {
+    background-color: #FF6347;
+}
