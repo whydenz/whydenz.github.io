@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Widget Grafik Trading Indodax</title>
+    <title>Widget Grafik Trading Profesional - Indodax</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -14,45 +15,79 @@
         }
         h1 {
             text-align: center;
-            padding: 10px;
+            margin: 20px;
+            color: #333;
         }
         #chart-container {
             width: 90%;
-            max-width: 800px;
+            max-width: 1000px;
             margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
         }
     </style>
 </head>
 <body>
-    <h1>Grafik Trading XRP/IDR - Indodax</h1>
+    <h1>Grafik Trading Profesional XRP/IDR - Indodax</h1>
     <div id="chart-container">
-        <canvas id="indodaxChart"></canvas>
+        <canvas id="candlestickChart"></canvas>
     </div>
 
     <script>
-        // Inisialisasi Chart.js
-        const ctx = document.getElementById('indodaxChart').getContext('2d');
-        const indodaxChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: [], // Waktu trading
-                datasets: [{
-                    label: 'Harga XRP/IDR',
-                    data: [], // Harga real-time
+        // Inisialisasi data kosong
+        let chartData = {
+            labels: [], // Timestamps
+            datasets: [
+                {
+                    label: 'Harga (Candlestick)',
+                    data: [], // OHLC data
+                    type: 'candlestick',
                     borderColor: 'rgba(75, 192, 192, 1)',
                     backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    tension: 0.1
-                }]
-            },
+                },
+                {
+                    label: 'Volume',
+                    data: [], // Volume data
+                    type: 'bar',
+                    yAxisID: 'volume',
+                    backgroundColor: 'rgba(75, 75, 192, 0.5)',
+                }
+            ]
+        };
+
+        // Konfigurasi grafik
+        const config = {
+            type: 'scatter', // Gunakan scatter sebagai dasar
+            data: chartData,
             options: {
                 responsive: true,
                 plugins: {
                     legend: {
-                        display: true
+                        display: true,
+                        position: 'top'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: (tooltipItem) => {
+                                const dataset = tooltipItem.dataset;
+                                if (dataset.type === 'candlestick') {
+                                    const value = dataset.data[tooltipItem.dataIndex];
+                                    return `O: ${value.o}, H: ${value.h}, L: ${value.l}, C: ${value.c}`;
+                                } else {
+                                    return `Volume: ${tooltipItem.raw}`;
+                                }
+                            }
+                        }
                     }
                 },
                 scales: {
                     x: {
+                        type: 'time',
+                        time: {
+                            unit: 'minute'
+                        },
                         title: {
                             display: true,
                             text: 'Waktu'
@@ -62,37 +97,59 @@
                         title: {
                             display: true,
                             text: 'Harga (IDR)'
-                        },
-                        beginAtZero: false
+                        }
+                    },
+                    volume: {
+                        type: 'linear',
+                        position: 'right',
+                        title: {
+                            display: true,
+                            text: 'Volume'
+                        }
                     }
                 }
             }
-        });
+        };
+
+        const ctx = document.getElementById('candlestickChart').getContext('2d');
+        const candlestickChart = new Chart(ctx, config);
 
         // Fungsi untuk mengambil data dari API Indodax
         async function fetchIndodaxData() {
             try {
                 const response = await fetch('https://indodax.com/api/ticker/xrpidr');
                 const data = await response.json();
-                const price = parseFloat(data.ticker.last); // Harga terakhir
-                const time = new Date().toLocaleTimeString(); // Waktu sekarang
+                const lastPrice = parseFloat(data.ticker.last);
+                const highPrice = parseFloat(data.ticker.high);
+                const lowPrice = parseFloat(data.ticker.low);
+                const volume = parseFloat(data.ticker.vol_xrp);
+                const openPrice = parseFloat(data.ticker.open);
+                const time = new Date(); // Waktu sekarang
 
-                // Tambahkan data ke chart
-                if (indodaxChart.data.labels.length > 20) { // Simpan max 20 data
-                    indodaxChart.data.labels.shift();
-                    indodaxChart.data.datasets[0].data.shift();
+                // Tambahkan data candlestick
+                if (chartData.labels.length > 20) {
+                    chartData.labels.shift(); // Hapus data lama
+                    chartData.datasets[0].data.shift();
+                    chartData.datasets[1].data.shift();
                 }
-                indodaxChart.data.labels.push(time);
-                indodaxChart.data.datasets[0].data.push(price);
 
-                indodaxChart.update();
+                chartData.labels.push(time);
+                chartData.datasets[0].data.push({
+                    o: openPrice,
+                    h: highPrice,
+                    l: lowPrice,
+                    c: lastPrice
+                });
+                chartData.datasets[1].data.push(volume);
+
+                candlestickChart.update();
             } catch (error) {
                 console.error("Gagal mendapatkan data:", error);
             }
         }
 
         // Update data setiap 5 detik
-        setInterval(fetchIndodaxData, 5000);
+        setInterval(fetchIndodaxData, 10000);
     </script>
 </body>
 </html>
