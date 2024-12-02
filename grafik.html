@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grafik Trading XRP/IDR</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Grafik Trading XRP/IDR</h1>
+    <canvas id="xrpidrChart" width="800" height="400"></canvas>
+    <script>
+        // Data contoh: ubah sesuai kebutuhan Anda
+        const labels = ["10:00", "11:00", "12:00", "13:00", "14:00"];
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: 'Harga XRP/IDR',
+                data: [7800, 7900, 7600, 7700, 7800],
+                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                tension: 0.1
+            }]
+        };
+
+        const config = {
+            type: 'line',
+            data: data,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Waktu'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Harga (IDR)'
+                        },
+                        beginAtZero: false
+                    }
+                }
+            }
+        };
+
+        const ctx = document.getElementById('xrpidrChart').getContext('2d');
+        const xrpidrChart = new Chart(ctx, config);
+    </script>
+</body>
+</html>
