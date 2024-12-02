@@ -3,27 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Real-Time XRP/IDR Chart</title>
+    <title>Trading Chart Widget</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            text-align: center;
+            padding: 10px;
+        }
+        #tradingview-widget {
+            width: 100%;
+            height: 600px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Grafik Trading XRP/IDR</h1>
-    <!-- TradingView Widget -->
-    <div id="tradingview-chart"></div>
+    <h1>Widget Grafik Trading XRP/IDR</h1>
+    <div id="tradingview-widget"></div>
+    
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
     <script>
         new TradingView.widget({
             "width": "100%",
-            "height": 500,
-            "symbol": "BINANCE:XRPIDR", // Ganti dengan IDR jika ada
-            "interval": "1",
+            "height": 600,
+            "symbol": "INDODAX:XRPIDR", // Ubah dengan pasangan IDR jika tersedia
+            "interval": "1", // Interval waktu: 1 menit
             "timezone": "Etc/UTC",
-            "theme": "light",
-            "style": "1",
-            "locale": "en",
-            "toolbar_bg": "#f1f3f6",
+            "theme": "dark", // Tema: "light" atau "dark"
+            "style": "1", // Gaya grafik: candlestick
+            "locale": "id", // Bahasa
+            "toolbar_bg": "#f1f3f6", // Warna toolbar
             "enable_publishing": false,
             "allow_symbol_change": true,
-            "container_id": "tradingview-chart"
+            "save_image": false,
+            "studies": [
+                "RSI@tv-basicstudies", // Relative Strength Index
+                "MACD@tv-basicstudies" // Moving Average Convergence Divergence
+            ],
+            "container_id": "tradingview-widget"
         });
     </script>
 </body>
