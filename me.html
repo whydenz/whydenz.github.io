@@ -3,22 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Denz still anu</title>
+    <title>Pertanyaan Ya atau Tidak</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(120deg, #f6d365, #fda085);
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 2rem;
+            color: #ffffff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        p {
+            font-size: 1.2rem;
+            color: #ffffff;
+            margin-bottom: 20px;
+        }
         form {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+            display: inline-block;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        label {
+            display: block;
+            font-size: 1rem;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: transform 0.3s, color 0.3s;
+        }
+        label:hover {
+            color: #fda085;
+            transform: scale(1.1);
+        }
+        input[type="radio"] {
+            margin-right: 10px;
         }
         .movable {
             position: relative;
-            display: inline-block;
+        }
+        .movable:hover {
+            color: #f64f59;
+        }
+        button {
+            background: linear-gradient(45deg, #16a085, #4CAF50);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: linear-gradient(45deg, #4CAF50, #16a085);
         }
     </style>
 </head>
 <body>
     <h1>Pertanyaan</h1>
-    <p>Apakah kamu menyukai pekerjaamu saat ini?</p>
+    <p>Apakah Anda menyukai teknologi?</p>
     <form>
         <label>
             <input type="radio" name="jawaban" value="ya">
