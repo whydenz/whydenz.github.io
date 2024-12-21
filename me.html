@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Denz still anu</title>
+    <style>
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .movable {
+            position: relative;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pertanyaan</h1>
+    <p>Apakah kamu menyukai pekerjaamu saat ini?</p>
+    <form>
+        <label>
+            <input type="radio" name="jawaban" value="ya">
+            Ya
+        </label>
+        <label class="movable" id="tidakLabel">
+            <input type="radio" name="jawaban" value="tidak">
+            Tidak
+        </label>
+        <button type="submit">Kirim</button>
+    </form>
+    <script>
+        const tidakLabel = document.getElementById("tidakLabel");
+        tidakLabel.addEventListener("click", () => {
+            const randomX = Math.random() * 200 - 100; // Posisi horizontal acak (-100px hingga 100px)
+            const randomY = Math.random() * 50 - 25;  // Posisi vertikal acak (-25px hingga 25px)
+            tidakLabel.style.transform = `translate(${randomX}px, ${randomY}px)`;
+        });
+    </script>
+</body>
+</html>
