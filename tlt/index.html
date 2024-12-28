@@ -7,11 +7,26 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <div class="header">
+    <button id="toggleHeader" class="toggle-button">☰</button>
+    <h1 class="header-title">Morse Code Translator</h1>
+    <nav id="menu" class="menu hidden">
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="container" id="home">
   <div class="container">
     <h1>Morse Code</h1>
     <textarea id="inputText" placeholder="Masukkan teks/Kode Morse"></textarea>
     <button id="translateButton">Translate</button>
     <textarea id="outputText" placeholder="Hasilnya" readonly></textarea>
+    </div>
+  <div id="about" class="about-section">
+    <h2>About Morse Code Translator</h2>
+    <p>This application allows you to translate text to Morse code and vice versa.</p>
   </div>
   <script src="script.js"></script>
 </body>
