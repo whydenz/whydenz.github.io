@@ -1,0 +1,57 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #1a1a1a;
+  color: #fff;
+}
+
+.container {
+  text-align: center;
+  background: #2a2a2a;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+h1 {
+  color: #ffa500;
+}
+
+.wallet {
+  margin-top: 20px;
+}
+
+.wallet p {
+  font-size: 1.2em;
+}
+
+input {
+  padding: 10px;
+  margin: 10px;
+  border-radius: 5px;
+  border: 1px solid #555;
+  width: calc(100% - 30px);
+}
+
+button {
+  padding: 10px 20px;
+  margin: 5px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#depositBtn {
+  background-color: #28a745;
+  color: white;
+}
+
+#withdrawBtn {
+  background-color: #dc3545;
+  color: white;
+}
