@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content=
+  "width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href=
+  "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&amp;family=Bangers&amp;family=Luckiest+Guy&amp;family=Anton&amp;family=Fredoka+One&amp;display=swap">
+  <link href=
+  "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+  rel="stylesheet" integrity=
+  "sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+  crossorigin="anonymous">
+  <link href=
+  "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+  rel="stylesheet">
+  <link href=
+  "https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+  rel="stylesheet">
+  <link rel="stylesheet" href=
+  "https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <link rel="shortcut icon" href="https://nekoonbase.com/assets/logobscswap-DRtGp2oj.png"
+  type="image/x-icon">
+  <script src=
+  "https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src=
+  "https://cdnjs.cloudflare.com/ajax/libs/css-doodle/0.39.1/css-doodle.min.js"></script>
+  <link rel="apple-touch-icon" sizes="180x180" href=
+  "https://nekoonbase.com/images/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href=
+  "https://nekoonbase.com/images/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href=
+  "https://nekoonbase.com/images/favicon/favicon-16x16.png">
+  <link rel="manifest" href="https://nekoonbase.com/site.webmanifest">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com"
+  crossorigin="">
+  <link href=
+  "https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&amp;family=Signika+Negative:wght@300..700&amp;display=swap"
+  rel="stylesheet">
+  <title>NEKO</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      overflow-x: hidden;
+      font-family: "Raleway", sans-serif;
+      background-color: #121212;
+      margin: 0;
+      padding: 0;
+    }
+    .arcade {
+      font-family: arcade !important;
+    }
+    @font-face {
+      font-family: nullshoch;
+      src: url(https://nekoonbase.com/assets/nulshockbd-CC5Td8El.otf);
+    }
+    .headfont {
+      font-family: nullshoch !important;
+    }
+    @font-face {
+      font-family: astro;
+      src: url(https://nekoonbase.com/assets/AstroSpace-eZ2Bg-CTbeF6wf.ttf);
+    }
+    .parafont {
+      font-family: astro !important;
+    }
+    .raleway-500 {
+      font-family: "Raleway", sans-serif;
+      font-optical-sizing: auto;
+      font-weight: 800;
+      font-style: normal;
+    }
+    .meme-font {
+      font-family: 'Bangers', cursive;
+    }
+    .luckiest-guy-font {
+      font-family: 'Luckiest Guy', cursive;
+    }
+    .anton-font {
+      font-family: 'Anton', sans-serif;
+    }
+    .fredoka-one-font {
+      font-family: 'Fredoka One', cursive;
+    }
+    .swap-cat-image {
+      max-width: 100%;
+      height: auto;
+      margin: 40px auto;
+      display: block;
+      border-radius: 4% 5%;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    .video-container {
+      position: relative;
+      width: 100%;
+      max-width: 500px;
+      margin: 20px auto;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    .responsive-video {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    @media (max-width: 768px) {
+      .video-container {
+        max-width: 90%;
+        margin: 10px auto;
+      }
+    }
+    .uniform-h1 {
+      font-family: 'Luckiest Guy', cursive;
+      color: #fff4ed;
+      font-weight: 900;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      margin: 0.5em 0;
+      font-size: 3rem;
+      text-align: center;
+    }
+    @media (max-width: 768px) {
+      .uniform-h1 {
+        font-size: 2rem;
+        margin: 0.3em 0;
+      }
+    }
+    .grey-image {
+        filter: drop-shadow(2px 4px 6px black);
+    }
+    .conbtn {
+      background-color: #ff5a35;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .conbtn:hover {
+      background-color: #a020f0;
+    }
+    .ml-auto {
+      margin-left: auto;
+    }
+    .claimbtn {
+      background-color: #a020f0;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .claimbtn:hover {
+      background-color: #ff69b4;
+    }
+    @keyframes upDown {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+    .Linksection h1,
+    .section6 h1,
+    .section13 h1,
+    .section8 h1 {
+      color: #ffffff;
+      text-align: center;
+    }
+    .btn-primary:hover {
+      background-color: #a020f0;
+    }
+    .accordion-container summary.subFont {
+      color: #FFFFE0;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .catmoney-image {
+      max-width: 100%;
+      height: auto;
+      margin: 0 auto;
+      display: block;
+      border-radius: 10%;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      cursor: default;
+    }
+    @media (max-width: 768px) {
+      .catmoney-image {
+        width: auto;
+        margin-top: 15px;
+      }
+    }
+    .token-info-section {
+      padding: 70px 0;
+      background-color: #1e1e1e;
+    }
+    .token-info-card {
+      background-color: #ff7878;
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgb(255, 37, 37);
+      transition: transform 0.3s, box-shadow 0.3s;
+      color: #ffffff;
+      padding: 30px 20px;
+      text-align: center;
+      height: 100%;
+    }
+    .token-info-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.35);
+    }
+    .token-info-card .card-icon {
+      font-size: 3rem;
+      margin-bottom: 15px;
+      color: #ffffff;
+    }
+    .token-info-card h3 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+      font-family: 'Fredoka One', cursive;
+    }
+    .token-info-card p {
+      font-size: 1.2rem;
+      margin-bottom: 0;
+    }
+    @media (max-width: 768px) {
+      .token-info-card {
+        padding: 20px 15px;
+      }
+      .token-info-card .card-icon {
+        font-size: 2.5rem;
+      }
+      .token-info-card h3 {
+        font-size: 1.5rem;
+      }
+      .token-info-card p {
+        font-size: 1rem;
+      }
+    }
+    .token-address-input {
+      background-color: #ff6c6c;
+      border: none;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5px;
+    }
+    .token-address-input input {
+      background-color: transparent;
+      border: none;
+      color: #ffffff;
+      font-size: 1rem;
+      padding: 10px;
+      font-family: 'Bangers', cursive;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    }
+    .token-address-input input:focus {
+      box-shadow: none;
+      outline: none;
+    }
+    .token-address-input .btn {
+      background-color: #ff796a;
+      border: none;
+      color: white;
+      border-radius: 0 10px 10px 0;
+      padding: 10px 15px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .token-address-input .btn:hover {
+      background-color: #ff4444;
+    }
+    .footer-logo {
+      font-family: 'Bangers', cursive;
+      letter-spacing: 2px;
+      color: #FFFFE0;
+      text-shadow:
+        -1px -1px 0 #000,
+        1px -1px 0 #000,
+        -1px 1px 0 #000,
+        1px 1px 0 #000,
+        0px -2px 0 #000,
+        0px 2px 0 #000,
+        -2px 0px 0 #000,
+        2px 0px 0 #000;
+      font-size: 1.5rem;
+      text-align: center;
+      margin-top: 20px;
+    }
+    @media (min-width: 769px) {
+      section {
+        padding-top: 50px;
+        padding-bottom: 50px;
+      }
+      .uniform-h1 {
+        margin: 0.3em 0;
+      }
+      .section1,
+      .section3,
+      .section6,
+      .section8,
+      .section13,
+      .Linksection {
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+      .section1 .col-md-6,
+      .section3 .col-lg-6,
+      .section6 .col-lg-6,
+      .section8 .col-lg-6,
+      .section13 .col-lg-6,
+      .Linksection .col-md-8 {
+        text-align: center;
+      }
+    }
+    .main-paragraph {
+      text-align: center;
+    }
+    .main-video {
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+    nav {
+      background-color: #ff5a35;
+    }
+    .navbar-brand img {
+      height: 60px;
+      width: auto;
+    }
+    .navbar-nav .nav-link {
+      color: #fff !important;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+    .navbar-toggler .material-symbols-outlined {
+      color: #fff;
+    }
+    .wave {
+      position: absolute;
+      width: 100%;
+      height: 100px;
+      background: #ff5a35;
+      border-radius: 100%;
+      animation: wave 4s ease-in-out infinite;
+    }
+    .wave.-one {
+      top: -50px;
+      left: -50%;
+    }
+    .wave.-two {
+      top: -80px;
+      left: 0%;
+    }
+    @keyframes wave {
+      0% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(10px);
+      }
+      100% {
+        transform: translateY(0);
+      }
+    }
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.03);
+      z-index: -1;
+    }
+    .boxer {
+      padding: 20px;
+    }
+    .box2 {
+      background: #222;
+      border-radius: 20px;
+      padding: 20px;
+      margin-top: 20px;
+      width: 100%;
+    }
+    .box3 {
+      background: #222;
+      border-radius: 20px;
+      padding: 20px;
+      margin-top: 20px;
+      width: 100%;
+    }
+    @media (min-width: 992px) {
+      .box2 {
+        margin-top: 0px;
+      }
+    }
+    @media (max-width: 768px) {
+      .fs-3 {
+        font-size: 1.2rem !important;
+      }
+      .fs-4 {
+        font-size: 1rem !important;
+      }
+      .fs-1 {
+        font-size: 1.8rem !important;
+      }
+    }
+  </style>
+  <script type="module" crossorigin="" src=
+  "https://nekoonbase.com/assets/index-d_hSB3aC.js"></script>
+  <link rel="stylesheet" crossorigin="" href=
+  "https://nekoonbase.com/assets/index-Bvmul3kg.css">
+</head>
+<body class="raleway-500">
+  <section class="section1" style="position: relative;">
+    <div class="overlay"></div>
+    <nav class="navbar navbar-expand-lg fixed-top px-md-5 raj"
+    style="z-index: 900;">
+      <div class="container-fluid">
+        <a class="navbar-brand d-flex align-items-center mb-1"
+        href="#"><img src="/logo.png" alt=
+        "Logo"></a>
+        <h1 class="fs-1 mx-2 uniform-h1">RAYDEN</h1><button class=
+        "navbar-toggler" type="button" data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent" aria-controls=
+        "navbarSupportedContent" aria-expanded="false" aria-label=
+        "Toggle navigation"><span class=
+        "material-symbols-outlined aka">menu</span></button>
+        <div class="collapse navbar-collapse" id=
+        "navbarSupportedContent">
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link item" href="#token">Token
+              Details</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link item" href="#about">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link item" href="#faqs">FAQs</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <section style="padding-top: 120px; padding-bottom: 70px;">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class=
+          "col-12 animate-on-scroll animate__animated text-center"
+          data-animation="animate__fadeInLeft">
+            <h1 class="uniform-h1">NEKO ON BASE</h1>
+            <p class=
+            "mt-3 text-black fs-3 luckiest-guy-font main-paragraph"
+            style="max-width: 800px; margin: 0 auto;">Neko is the
+            ultimate community-driven meme coin built on the fast
+            and secure Base blockchain. Neko is now officially live
+            on the Base blockchain! Be part of the future with fast
+            transactions, low fees, and endless fun.<br>
+            <br>
+            The purr-fect opportunity is here! Earn free NEKO
+            tokens instantly and start your journey with the
+            hottest meme coin on Base!</p>
+            <div class="video-container center main-video">
+              <video autoplay="" muted loop="" playsinline class=
+              "responsive-video"><source src=
+              "/assets/animation-DOA32mK_.mp4" type="video/mp4">
+              Your browser does not support the video tag.</video>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </section>
+  <section class="token-info-section" id="token">
+    <div class="container">
+      <h1 class="uniform-h1 text-center mb-5">Token
+      Information</h1>
+      <div class="row g-4">
+        <div class="col-12 col-md-6 col-lg-3">
+          <div class="card token-info-card">
+            <div class="card-icon"></div>
+            <h3>Contract Address</h3>
+            <div class="input-group token-address-input">
+              <input type="text" class=
+              "form-control bg-transparent" value=
+              "0x614c047398B68836E743504321dE406F4F3e5E4A" id=
+              "tokenAddress" readonly>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3">
+          <div class="card token-info-card">
+            <div class="card-icon"></div>
+            <h3>Total Supply</h3>
+            <p>300,000,000 NEKO</p>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3">
+          <div class="card token-info-card">
+            <div class="card-icon"></div>
+            <h3>Max Supply</h3>
+            <p>500,000,000 NEKO</p>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3">
+          <div class="card token-info-card">
+            <div class="card-icon"></div>
+            <h3>Circulating Supply</h3>
+            <p>300,000,000 NEKO</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="Linksection">
+    <div class="container">
+      <img src="https://nekoonbase.com/assets/cat-Dfhokx76.png" alt=
+      "Cute Cat Illustration" class="swap-cat-image">
+      <h1 class="uniform-h1 py-5">Important Links</h1>
+      <div class="row justify-content-center">
+        <div class=
+        "col-md-8 d-flex justify-content-around flex-wrap">
+          <a href="https://twitter.com/NekoBase_News" class=
+          "text-decoration-none mb-3" target="_blank" rel=
+          "noopener noreferrer"><img src=
+          "https://nekoonbase.com/assets/Twitter%20X%20logo-DBLVI3jS.png" class=
+          "img-fluid grey-image" style="height: 70px;" alt=
+          "Twitter Logo"></a> <a href="https://t.me/NekoBaseNews"
+          class="text-decoration-none mb-3" target="_blank" rel=
+          "noopener noreferrer"><img src=
+          "https://nekoonbase.com/assets/Telegram-PnPE04VK.png" class="img-fluid" style=
+          "height: 70px; filter: contrast(5.5);" alt=
+          "Telegram Logo"></a> <a href="https://t.me/NekoBaseChat"
+          class="text-decoration-none mb-3" target="_blank" rel=
+          "noopener noreferrer"><img src=
+          "https://nekoonbase.com/assets/Telegram%20Group-C_Q3Wpj5.png" class="img-fluid"
+          style="height: 70px; filter: contrast(5.5);" alt=
+          "Telegram Group"></a>
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-md-6 d-flex justify-content-center mt-4">
+        <img src="https://nekoonbase.com/assets/catmoney-Dlj_fasG.png" alt=
+        "Money Cat Illustration" class=
+        "img-fluid catmoney-image"></div>
+      </div>
+    </div>
+  </section>
+  <section class="section3" style="padding-bottom: 0;" id="about">
+    <div class="container" style=
+    "padding-top: 60px; padding-bottom: 50px;">
+      <div class="row">
+        <div class=
+        "col-12 col-lg-6 d-flex flex-column animate-on-scroll animate__animated"
+        data-animation="animate__fadeInDown">
+          <div class="boxer">
+            <h1 class="uniform-h1">OUR MISSION</h1>
+            <p class="text-white fs-4">At NEKO on Base, our mission
+            is to create a transparent, secure, and user-friendly
+            ecosystem that empowers individuals to take control of
+            their financial future. We strive to make decentralized
+            finance accessible to everyone, ensuring that all
+            community members can benefit from the power of
+            blockchain technology.</p>
+          </div>
+        </div>
+        <div class=
+        "col-12 mt-lg-0 col-lg-6 d-flex flex-column justify-content-center align-items-center animate-on-scroll animate__animated"
+        data-animation="animate__fadeInUp">
+          <div class=
+          "box2 d-flex justify-content-center align-items-center">
+            <h1 class="uniform-h1">Empowering Ecosystem Growth</h1>
+          </div>
+          <div class="box3">
+            <p class="text-white fs-6">With NEKO on Base, we
+            prioritize community-driven initiatives that fuel
+            innovation and collaboration. Our goal is to harness
+            the potential of the Base blockchain to deliver a truly
+            scalable, low-fee environment where builders, creators,
+            and investors can come together to shape the future of
+            decentralized finance.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="section8 animate-on-scroll animate__animated"
+  data-animation="animate__fadeInUp" id="faqs" style=
+  "padding-top:0; padding-bottom: 50px;">
+    <h1 class="uniform-h1" style="padding-top: 20px;">FAQs</h1>
+    <div class="container">
+      <div class="accordion-container" style="padding-top: 20px;">
+        <details open>
+          <summary class="subFont">
+            What is NEKO Token?
+          </summary>
+          <p style=
+          "font-size: 13px; text-align: center; color: #000000;">
+          NEKO is the ultimate community-driven meme coin built on
+          the fast and secure Base blockchain. It offers a fun,
+          engaging, and rewarding ecosystem for all holders, with
+          low transaction fees and rapid confirmations.</p>
+        </details>
+        <details>
+          <summary class="subFont">
+            When will Neko Swap be available?
+          </summary>
+          <p style=
+          "font-size: 13px; text-align: center; color: #000000;">
+          Neko Swap will officially launch on February 10th! Get
+          ready to experience instant, seamless, and secure trading
+          on the Base blockchain.</p>
+        </details>
+        <details>
+          <summary class="subFont">
+            What can I expect from the Neko Swap launch?
+          </summary>
+          <p style=
+          "font-size: 13px; text-align: center; color: #000000;">
+          Expect fast transactions, low fees, and high-speed
+          trading powered by Base. The platform offers an intuitive
+          interface and a secure environment for effortless NEKO
+          trading.</p>
+        </details>
+        <details>
+          <summary class="subFont">
+            Is there a NEKO token airdrop?
+          </summary>
+          <p style=
+          "font-size: 13px; text-align: center; color: #000000;">
+          Yes! Our NEKO Airdrop is LIVE. Claim 1,00
