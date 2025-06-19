@@ -164,45 +164,11 @@
         .about-btn:hover {
             background-color: #3b82f6; /* Lighter blue on hover */
         }
-
-        /* Copy button styling */
-        .copy-btn {
-            background-color: #6b7280; /* Gray color */
-            color: white;
-            padding: 0.3rem 0.75rem;
-            border-radius: 0.375rem;
-            font-size: 0.875rem;
-            font-weight: 500;
-            transition: background-color 0.2s ease;
-        }
-        .copy-btn:hover {
-            background-color: #4b5563;
-        }
-
-        /* Refine button styling */
-        .refine-btn {
-            background: linear-gradient(to right, #8a2be2, #4b0082); /* Violet gradient */
-            color: white;
-            padding: 0.75rem 1.5rem;
-            font-weight: 600;
-            border-radius: 0.5rem;
-            border: none;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-top: 1.5rem;
-        }
-        .refine-btn:hover {
-            opacity: 0.9;
-        }
     </style>
 </head>
 <body class="bg-gray-100 p-4 md:p-8">
     <!-- Header Section -->
     <header class="flex justify-between items-center max-w-7xl mx-auto mb-8">
-        <h1 class="text-3xl md:text-4xl font-bold text-black dark:text-gray-200">🎬 Prompt Generator Pro untuk Veo 3</h1>
         <div class="flex items-center">
             <button id="about-app-btn" class="about-btn">
                 <i class="fas fa-info-circle"></i>
@@ -399,23 +365,12 @@
             <div class="form-section">
                 <h2 class="form-section-title">✅ Prompt Sinematik yang Dihasilkan AI</h2>
                 <div class="mb-6">
-                    <div class="flex justify-between items-center mb-2">
-                        <h3 class="text-xl font-semibold">🇮🇩 Versi Bahasa Indonesia</h3>
-                        <button class="btn copy-btn" onclick="copyPrompt('output_id')">Salin <i class="fas fa-copy"></i></button>
-                    </div>
-                    <textarea id="output_id" class="textarea-field font-mono bg-gray-50 dark:bg-gray-700" rows="10" readonly></textarea>
+                    <h3 class="text-xl font-semibold mb-2">🇮🇩 Versi Bahasa Indonesia</h3>
+                    <textarea id="output_id" class="textarea-field font-mono bg-gray-50" rows="10" readonly></textarea>
                 </div>
                 <div>
-                    <div class="flex justify-between items-center mb-2">
-                        <h3 class="text-xl font-semibold">🇬🇧 Versi Bahasa Inggris</h3>
-                        <button class="btn copy-btn" onclick="copyPrompt('output_en')">Salin <i class="fas fa-copy"></i></button>
-                    </div>
-                    <textarea id="output_en" class="textarea-field font-mono bg-gray-50 dark:bg-gray-700" rows="10" readonly></textarea>
-                </div>
-                <div class="mt-6 text-center">
-                    <button id="refine-prompt-btn" class="refine-btn">
-                        <span class="spinner" id="refine-spinner"></span><span>Sempurnakan Prompt ✨</span>
-                    </button>
+                    <h3 class="text-xl font-semibold mb-2">🇬🇧 Versi Bahasa Inggris</h3>
+                    <textarea id="output_en" class="textarea-field font-mono bg-gray-50" rows="10" readonly></textarea>
                 </div>
             </div>
         </div>
@@ -570,7 +525,7 @@ function showAboutApp() {
             <p style="text-align: left; margin-bottom: 1rem;">Aplikasi ini dirancang untuk membantu Anda membuat prompt video sinematik yang detail untuk Veo 3.</p>
             <p style="text-align: left; margin-bottom: 1rem;">Anda dapat mengisi berbagai parameter seperti subjek (karakter), latar (lokasi, waktu, cuaca, musim), pengaturan kamera (gaya, pergerakan, sudut, fokus, pencahayaan, gradasi warna), dan detail audio (dialog, mood, suara lingkungan, musik latar).</p>
             <p style="text-align: left; margin-bottom: 1rem;">Setelah Anda mengisi semua detail yang relevan, klik tombol "Hasilkan Prompt Sinematik" dan aplikasi ini akan menggunakan AI untuk menghasilkan dua versi prompt yang kaya dan deskriptif: satu dalam Bahasa Indonesia dan satu dalam Bahasa Inggris.</p>
-            <p style="text-align: left;">Fitur tambahan termasuk kemampuan untuk menambahkan beberapa karakter, tombol toggle untuk beralih antara mode terang dan gelap, dan fitur "Sempurnakan Prompt" yang didukung AI untuk revisi yang lebih baik.</p>
+            <p style="text-align: left;">Fitur tambahan termasuk kemampuan untuk menambahkan beberapa karakter, dan tombol toggle untuk beralih antara mode terang dan gelap untuk kenyamanan visual Anda.</p>
         `,
         icon: 'info',
         confirmButtonText: 'Oke, Mengerti!',
@@ -581,137 +536,12 @@ function showAboutApp() {
     });
 }
 
-/**
- * Copies text from a given textarea to the clipboard.
- * @param {string} elementId - The ID of the textarea element to copy from.
- */
-function copyPrompt(elementId) {
-    const textarea = document.getElementById(elementId);
-    if (textarea) {
-        textarea.select();
-        document.execCommand('copy');
-        Swal.fire({
-            title: 'Disalin!',
-            text: 'Prompt telah disalin ke clipboard Anda.',
-            icon: 'success',
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 1500,
-            timerProgressBar: true
-        });
-    }
-}
-
-/**
- * Refines the generated prompt using Gemini API based on user input.
- */
-async function refinePrompt() {
-    const refineBtn = document.getElementById('refine-prompt-btn');
-    const refineSpinner = document.getElementById('refine-spinner');
-    const outputId = document.getElementById('output_id');
-    const outputEn = document.getElementById('output_en');
-
-    if (!outputId.value || !outputEn.value) {
-        Swal.fire('Gagal!', 'Harap hasilkan prompt terlebih dahulu sebelum menyempurnakannya.', 'warning');
-        return;
-    }
-
-    const { value: instructions } = await Swal.fire({
-        input: 'textarea',
-        inputLabel: 'Masukkan instruksi penyempurnaan (contoh: "buat lebih dramatis", "tambahkan sentuhan kejutan")',
-        inputPlaceholder: 'Tuliskan instruksi Anda di sini...',
-        inputAttributes: {
-            'aria-label': 'Tuliskan instruksi Anda di sini'
-        },
-        showCancelButton: true,
-        confirmButtonText: 'Sempurnakan',
-        cancelButtonText: 'Batal',
-        reverseButtons: true,
-        preConfirm: (text) => {
-            if (!text) {
-                Swal.showValidationMessage('Instruksi tidak boleh kosong!');
-                return false;
-            }
-            return text;
-        }
-    });
-
-    if (instructions) {
-        refineSpinner.style.display = 'inline-block';
-        refineBtn.disabled = true;
-
-        const masterPrompt = `
-            Saya memiliki prompt video berikut dalam Bahasa Indonesia:
-            "${outputId.value}"
-
-            Dan prompt ini dalam Bahasa Inggris:
-            "${outputEn.value}"
-
-            Mohon sempurnakan prompt ini dengan menambahkan detail yang lebih kaya atau mengubah nada sesuai instruksi berikut:
-            "${instructions}"
-
-            Pisahkan versi Bahasa Indonesia dan Bahasa Inggris dengan '|||---|||'.
-            Pastikan outputnya adalah prompt yang sudah disempurnakan dalam Bahasa Indonesia dan Bahasa Inggris, dipisahkan oleh '|||---|||'.
-        `;
-
-        try {
-            // API key will be provided by the environment. Setting to a placeholder for robust local testing.
-            const apiKey = "AIzaSyDt_L5F31TXkkk2WwIZEXzDfBe1Sk2I35w"; // GANTI DENGAN KUNCI API ANDA JIKA MENGGUNAKAN LINGKUNGAN DI LUAR CANVAS
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-            
-            const payload = { contents: [{ role: "user", parts: [{ text: masterPrompt }] }] };
-
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(`API Error: ${response.status} ${response.statusText} - ${errorData.error ? errorData.error.message : 'Unknown error'}`);
-            }
-
-            const result = await response.json();
-            const fullText = result.candidates[0].content.parts[0].text;
-            
-            const [newPromptID, newPromptEN] = fullText.split('|||---|||');
-
-            outputId.value = newPromptID.trim();
-            outputEn.value = newPromptEN.trim();
-
-            Swal.fire('Berhasil!', 'Prompt telah berhasil disempurnakan!', 'success');
-
-        } catch (error) {
-            console.error("Gagal memanggil Gemini API untuk penyempurnaan:", error);
-            const messageBox = document.createElement('div');
-            messageBox.style.cssText = `
-                position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-                background-color: #fef2f2; border: 1px solid #ef4444; border-radius: 0.5rem;
-                padding: 1.5rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-                z-index: 1000; text-align: center;
-            `;
-            messageBox.innerHTML = `
-                <p class="text-red-700 font-semibold mb-4">Terjadi kesalahan saat menyempurnakan prompt:</p>
-                <p class="text-red-600">${error.message}</p>
-                <button class="mt-4 btn btn-primary" onclick="this.parentNode.remove()">Tutup</button>
-            `;
-            document.body.appendChild(messageBox);
-        } finally {
-            refineSpinner.style.display = 'none';
-            refineBtn.disabled = false;
-        }
-    }
-}
-
 
 // Event Listeners
 document.getElementById('add-character-btn').addEventListener('click', addCharacter);
 document.getElementById('tipe_dialog').addEventListener('change', updateDialogUI);
 document.getElementById('theme-toggle').addEventListener('click', toggleTheme); // Theme toggle listener
 document.getElementById('about-app-btn').addEventListener('click', showAboutApp); // About app button listener
-document.getElementById('refine-prompt-btn').addEventListener('click', refinePrompt); // Refine prompt button listener
 
 // Initialize with one character card on page load and apply theme
 document.addEventListener('DOMContentLoaded', () => {
@@ -800,8 +630,10 @@ form.addEventListener('submit', async function(event) {
 
     // 3. Call Gemini API
     try {
-        // API key will be provided by the environment. Setting to a placeholder for robust local testing.
-        const apiKey = "YOUR_API_KEY_HERE"; // GANTI DENGAN KUNCI API ANDA JIKA MENGGUNAKAN LINGKUNGAN DI LUAR CANVAS
+        // API key will be provided by the environment, leaving it blank is correct.
+        // Jika Anda menjalankan di lingkungan lokal atau lingkungan lain yang memerlukan kunci API eksplisit,
+        // Anda harus mengganti "" dengan kunci API Gemini Anda yang sebenarnya.
+        const apiKey = "AIzaSyDt_L5F31TXkkk2WwIZEXzDfBe1Sk2I35w"; 
         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
         
         const payload = { contents: [{ role: "user", parts: [{ text: masterPrompt }] }] };
@@ -833,20 +665,13 @@ form.addEventListener('submit', async function(event) {
 
     } catch (error) {
         console.error("Gagal memanggil Gemini API:", error);
-        // Use a custom message box instead of alert()
-        const messageBox = document.createElement('div');
-        messageBox.style.cssText = `
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            background-color: #fef2f2; border: 1px solid #ef4444; border-radius: 0.5rem;
-            padding: 1.5rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            z-index: 1000; text-align: center;
-        `;
-        messageBox.innerHTML = `
-            <p class="text-red-700 font-semibold mb-4">Terjadi kesalahan saat membuat prompt:</p>
-            <p class="text-red-600">${error.message}</p>
-            <button class="mt-4 btn btn-primary" onclick="this.parentNode.remove()">Tutup</button>
-        `;
-        document.body.appendChild(messageBox);
+        // Use SweetAlert for error messages
+        Swal.fire({
+            title: 'Terjadi Kesalahan!',
+            html: `<p class="text-red-600">${error.message}</p>`,
+            icon: 'error',
+            confirmButtonText: 'Tutup'
+        });
     } finally {
         // Hide spinner and re-enable button
         spinner.style.display = 'none';
