@@ -202,10 +202,11 @@
 <body class="bg-gray-100 p-4 md:p-8">
     <!-- Header Section -->
     <header class="flex justify-between items-center max-w-7xl mx-auto mb-8">
+        <h1 class="text-3xl md:text-4xl font-bold text-black dark:text-gray-200">🎬 Prompt Generator Pro untuk Veo 3</h1>
         <div class="flex items-center">
             <button id="about-app-btn" class="about-btn">
                 <i class="fas fa-info-circle"></i>
-                <span>Tentang Aplikasi!</span>
+                <span>Tentang Aplikasi</span>
             </button>
             <button id="theme-toggle" class="theme-toggle-btn">
                 <i class="fas fa-sun" id="theme-icon"></i>
@@ -655,8 +656,8 @@ async function refinePrompt() {
         `;
 
         try {
-            // API key will be provided by the environment, leaving it blank is correct.
-            const apiKey = "AIzaSyDt_L5F31TXkkk2WwIZEXzDfBe1Sk2I35w"; 
+            // API key will be provided by the environment. Setting to a placeholder for robust local testing.
+            const apiKey = "AIzaSyDt_L5F31TXkkk2WwIZEXzDfBe1Sk2I35w"; // GANTI DENGAN KUNCI API ANDA JIKA MENGGUNAKAN LINGKUNGAN DI LUAR CANVAS
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
             
             const payload = { contents: [{ role: "user", parts: [{ text: masterPrompt }] }] };
@@ -799,8 +800,8 @@ form.addEventListener('submit', async function(event) {
 
     // 3. Call Gemini API
     try {
-        // API key will be provided by the environment, leaving it blank is correct.
-        const apiKey = ""; 
+        // API key will be provided by the environment. Setting to a placeholder for robust local testing.
+        const apiKey = "YOUR_API_KEY_HERE"; // GANTI DENGAN KUNCI API ANDA JIKA MENGGUNAKAN LINGKUNGAN DI LUAR CANVAS
         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
         
         const payload = { contents: [{ role: "user", parts: [{ text: masterPrompt }] }] };
