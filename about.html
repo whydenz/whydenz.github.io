@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="ms" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rayden - Profil</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- SweetAlert2 CSS and JS CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.1/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.1/dist/sweetalert2.all.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* CSS Variables for Light and Dark Theme */
+        :root {
+            --bg-primary: #fafafa; /* Main background */
+            --bg-secondary: #ffffff; /* Card and container background */
+            --text-primary: #262626; /* Main text color */
+            --text-secondary: #8e8e8e; /* Secondary text color */
+            --border-color: #dbdbdb; /* General border color */
+            --card-shadow: rgba(0, 0, 0, 0.05);
+            --skill-badge-bg: #efefef;
+            --skill-badge-hover-bg: #dbdbdb;
+            --experience-border: #888888;
+            --button-bg: #262626;
+            --button-hover-bg: #000000;
+            --verified-badge-color: #3897f0;
+            --theme-toggle-color: #8e8e8e;
+            --theme-toggle-hover-color: #262626;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #262626;
+            --text-primary: #f0f0f0;
+            --text-secondary: #b0b0b0;
+            --border-color: #444444;
+            --card-shadow: rgba(255, 255, 255, 0.05);
+            --skill-badge-bg: #333333;
+            --skill-badge-hover-bg: #555555;
+            --experience-border: #666666;
+            --button-bg: #f0f0f0; /* Light button for dark mode */
+            --button-hover-bg: #cccccc;
+            --verified-badge-color: #66b3ff;
+            --theme-toggle-color: #b0b0b0;
+            --theme-toggle-hover-color: #f0f0f0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for theme change */
+        }
+        .instagram-container {
+            max-width: 960px;
+            margin: 0 auto;
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: 0 0 8px var(--card-shadow);
+            margin-top: 2rem;
+            padding-bottom: 2rem;
+            transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .banner-background {
+            width: 100%;
+            height: 200px;
+            background-image: url('/banner.png');
+            background-size: cover;
+            background-position: center;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            overflow: hidden;
+        }
+        .profile-header {
+            display: flex;
+            align-items: center;
+            padding: 2rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-top: -75px;
+            position: relative;
+            z-index: 1;
+            background-color: transparent;
+        }
+        .profile-avatar {
+            flex-shrink: 0;
+            margin-right: 2rem;
+            transform: translateY(75px);
+            margin-left: 2rem;
+            z-index: 2;
+            border-color: var(--bg-secondary); /* Avatar border matches container background */
+            transition: border-color 0.3s ease;
+        }
+        .profile-avatar img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--border-color);
+        }
+        .profile-info {
+            flex-grow: 1;
+            padding-top: 75px;
+        }
+        .profile-name-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        .profile-name {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-right: 0.5rem;
+            transition: color 0.3s ease;
+        }
+        .verified-badge {
+            color: var(--verified-badge-color);
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+        #theme-toggle {
+            color: var(--theme-toggle-color);
+            transition: color 0.3s ease;
+        }
+        #theme-toggle:hover {
+            color: var(--theme-toggle-hover-color);
+        }
+        .profile-tagline {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
+        }
+        .profile-bio {
+            font-size: 1rem;
+            color: var(--text-primary);
+            line-height: 1.5;
+            transition: color 0.3s ease;
+        }
+        .profile-stats {
+            display: flex;
+            margin-top: 1rem;
+            gap: 2rem;
+            font-size: 1rem;
+        }
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-weight: 600;
+        }
+        .stat-number {
+            color: var(--text-primary);
+            font-size: 1.125rem;
+            transition: color 0.3s ease;
+        }
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            transition: color 0.3s ease;
+        }
+
+        .section-title {
+            color: var(--text-primary);
+            transition: color 0.3s ease;
+        }
+        .card {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+        .skill-badge {
+            background-color: var(--skill-badge-bg);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out, color 0.3s ease;
+        }
+        .skill-badge:hover {
+            background-color: var(--skill-badge-hover-bg);
+        }
+        .experience-item {
+            border-left: 2px solid var(--experience-border);
+            transition: border-color 0.3s ease;
+        }
+        .experience-item .absolute {
+            background-color: var(--experience-border); /* Circle dot color */
+            transition: background-color 0.3s ease;
+        }
+        .contact-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--button-bg);
+            color: var(--text-primary); /* Button text color adapts to theme */
+            border-radius: 4px;
+            font-weight: 600;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        .contact-button:hover {
+            background-color: var(--button-hover-bg);
+        }
+
+        /* Instagram-like navigation for content sections */
+        .instagram-nav {
+            display: flex;
+            justify-content: center;
+            border-top: 1px solid var(--border-color);
+            margin-top: 2rem;
+            background-color: var(--bg-secondary);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            transition: background-color 0.3s ease, border-top-color 0.3s ease;
+        }
+        .instagram-nav-item {
+            padding: 1rem 2rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-secondary);
+            border-bottom: 2px solid transparent;
+            transition: color 0.2s ease, border-bottom-color 0.2s ease;
+        }
+        .instagram-nav-item.active {
+            color: var(--text-primary);
+            border-bottom-color: var(--text-primary);
+        }
+        .instagram-nav-item:hover {
+            color: var(--text-primary);
+        }
+
+        /* Content sections that will be toggled */
+        .content-section {
+            display: none;
+            padding: 2rem;
+            margin-top: 1rem;
+        }
+        .content-section.active {
+            display: block;
+        }
+
+        /* Portfolio Grid */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        .portfolio-item {
+            width: 100%;
+            padding-bottom: 100%;
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+            border-radius: 4px;
+            border: 1px solid var(--skill-badge-bg); /* Use a subtle border for images */
+            transition: border-color 0.3s ease;
+        }
+        .portfolio-item img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease-in-out;
+        }
+        .portfolio-item:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Footer color */
+        footer {
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+                margin-top: -50px;
+                padding-top: 0;
+            }
+            .profile-avatar {
+                margin-right: 0;
+                margin-bottom: 1rem;
+                transform: translateY(0);
+                margin-left: 0;
+            }
+            .profile-info {
+                padding-top: 0;
+            }
+            .profile-name-group {
+                justify-content: center;
+            }
+            .profile-name {
+                font-size: 2rem;
+            }
+            .verified-badge {
+                font-size: 1.25rem;
+            }
+            .profile-tagline {
+                font-size: 1rem;
+            }
+            .profile-stats {
+                justify-content: center;
+                gap: 1.5rem;
+            }
+            .instagram-nav-item {
+                padding: 1rem 1rem;
+            }
+            .portfolio-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div class="instagram-container">
+
+        <!-- Banner Background -->
+        <div class="banner-background"></div>
+
+        <!-- Header Section (Instagram Profile Header) -->
+        <header class="profile-header">
+            <div class="profile-avatar">
+                <img src="/profile.png" alt="Foto Profil Rayden">
+            </div>
+            <div class="profile-info">
+                <div class="profile-name-group">
+                    <h1 class="profile-name">Rayden</h1>
+                    <i class="fas fa-check-circle verified-badge" title="Profil Terverifikasi"></i>
+                    <!-- Theme Toggle Button -->
+                    <button id="theme-toggle" class="ml-auto focus:outline-none transition-colors duration-300">
+                        <i class="fas fa-moon text-xl"></i>
+                    </button>
+                </div>
+                <p class="profile-tagline">Pengembang Perangkat Lunak | Desainer UI/UX | Penulis Konten</p>
+                <p class="profile-bio">Bersemangat tentang teknologi, inovasi, dan pembelajaran berkelanjutan. Membangun pengalaman digital yang intuitif dan menarik.</p>
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">12</span>
+                        <span class="stat-label">Proyek</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">5</span>
+                        <span class="stat-label">Tahun Exp.</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">8</span>
+                        <span class="stat-label">Sertifikasi</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Instagram-like Navigation/Tabs -->
+        <nav class="instagram-nav">
+            <div class="instagram-nav-item active" data-target="portfolio-content">
+                <i class="fas fa-th mr-2"></i>Portofolio
+            </div>
+            <div class="instagram-nav-item" data-target="about-content">
+                <i class="fas fa-user mr-2"></i>Tentang
+            </div>
+            <div class="instagram-nav-item" data-target="experience-education-content">
+                <i class="fas fa-briefcase mr-2"></i>Karir
+            </div>
+            <div class="instagram-nav-item" data-target="contact-content">
+                <i class="fas fa-envelope mr-2"></i>Kontak
+            </div>
+        </nav>
+
+        <!-- Main Content Area - mimicking Instagram's feed with sections -->
+        <main class="profile-main-content">
+            <!-- Portfolio Grid Section -->
+            <section id="portfolio-content" class="content-section active">
+                <h2 class="text-xl font-bold mb-4 section-title px-4">Proyek Terbaru</h2>
+                <div class="portfolio-grid">
+                    <!-- Placeholder Project Items (Click to show details) -->
+                    <div class="portfolio-item" onclick="showProjectDetails('Project Web Interaktif', 'Sebuah aplikasi web interaktif yang dibangun dengan React.js dan Node.js, menampilkan visualisasi data real-time dan fitur kolaborasi. Merupakan proyek inti yang menunjukkan keahlian full-stack.')">
+                        <img src="https://placehold.co/300x300/e0e0e0/555555?text=R-N+Web" alt="Project Web App 1 Logo">
+                    </div>
+                    <div class="portfolio-item" onclick="showProjectDetails('Desain Aplikasi Mobile', 'Desain UI/UX lengkap untuk aplikasi seluler E-commerce, dibuat di Figma. Fokus pada alur pengguna yang intuitif dan estetika minimalis. Termasuk wireframe, mockup, dan prototipe interaktif.')">
+                        <img src="https://placehold.co/300x300/d0d0d0/444444?text=UI/UX+App" alt="Mobile App Design Logo">
+                    </div>
+                    <div class="portfolio-item" onclick="showProjectDetails('Kampanye Konten Digital', 'Pengembangan strategi konten dan penulisan untuk kampanye pemasaran digital, menghasilkan peningkatan engagement sebesar 25% di media sosial. Fokus pada SEO dan penceritaan merek.')">
+                        <img src="https://placehold.co/300x300/c0c0c0/333333?text=Content+Mkt" alt="Content Campaign Logo">
+                    </div>
+                    <div class="portfolio-item" onclick="showProjectDetails('Sistem Manajemen Data Python', 'Pengembangan sistem backend berbasis Python untuk manajemen data, mengotomatiskan proses impor dan analisis data besar. Menggunakan Flask sebagai kerangka kerja web.')">
+                        <img src="https://placehold.co/300x300/e0e0e0/555555?text=Py+Data" alt="Python System Logo">
+                    </div>
+                    <div class="portfolio-item" onclick="showProjectDetails('Aplikasi Flutter Lintas Platform', 'Membangun aplikasi seluler lintas platform menggunakan Dart dan Flutter, menyediakan antarmuka pengguna yang cepat dan responsif. Menampilkan integrasi API eksternal.')">
+                        <img src="https://placehold.co/300x300/d0d0d0/444444?text=Flutter+Dev" alt="Flutter App Logo">
+                    </div>
+                    <div class="portfolio-item" onclick="showProjectDetails('Pengembangan Game C++', 'Kontribusi pada pengembangan mesin game menggunakan C++, berfokus pada optimasi kinerja dan logika fisika dasar. Bagian dari proyek tim universitas.')">
+                        <img src="https://placehold.co/300x300/c0c0c0/333333?text=Game+Dev" alt="C++ Game Development Logo">
+                    </div>
+                    <div class="portfolio-item" onclick="showProjectDetails('Situs Web Dinamis PHP', 'Merancang dan mengembangkan situs web dinamis menggunakan PHP dan MySQL, termasuk sistem manajemen pengguna dan fitur forum. Proyek ini menampilkan keahlian dalam pengembangan web backend.')">
+                        <img src="https://placehold.co/300x300/e0e0e0/555555?text=PHP+Web" alt="PHP Website Logo">
+                    </div>
+                    <div class="portfolio-item" onclick="showProjectDetails('Desain Antarmuka Smart Home', 'Konsep desain UI/UX untuk sistem smart home, dengan fokus pada kesederhanaan dan aksesibilitas. Termasuk prototipe yang dapat diklik di Figma.')">
+                        <img src="https://placehold.co/300x300/d0d0d0/444444?text=Smart+UI" alt="Smart Home UI Logo">
+                    </div>
+                    <div class="portfolio-item" onclick="showProjectDetails('Penulisan Teknis API', 'Penulisan dokumentasi API yang komprehensif dan mudah dipahami untuk platform pengembang, meningkatkan adopsi API sebesar 10%.')">
+                        <img src="https://placehold.co/300x300/c0c0c0/333333?text=API+Docs" alt="API Documentation Logo">
+                    </div>
+                </div>
+            </section>
+
+            <!-- About Me Section -->
+            <section id="about-content" class="content-section">
+                <div class="card p-6 sm:p-8">
+                    <h2 class="text-2xl sm:text-3xl font-bold mb-6 section-title border-b-2 pb-2 border-gray-400">Tentang Saya</h2>
+                    <div class="text-gray-700 leading-relaxed text-base sm:text-lg">
+                        <p class="mb-4">
+                            Halo! Nama saya Rayden. Saya adalah seorang profesional multifaset yang menggabungkan keahlian dalam pengembangan perangkat lunak, desain UI/UX, dan penulisan konten. Saya sangat bersemangat tentang bagaimana teknologi dapat menciptakan pengalaman pengguna yang intuitif dan memecahkan masalah dunia nyata.
+                        </p>
+                        <p class="mb-4">
+                            Dengan latar belakang di Ilmu Komputer dan gairah yang kuat untuk estetika visual, saya telah mengembangkan kemampuan untuk membangun solusi digital yang fungsional dan menarik secara visual. Saya percaya bahwa komunikasi yang efektif adalah kunci dalam setiap proyek, baik itu melalui kode yang bersih, desain yang jelas, atau narasi yang menarik.
+                        </p>
+                        <p>
+                            Saya adalah pembelajar seumur hidup yang selalu mencari cara baru untuk meningkatkan keterampilan dan beradaptasi dengan tren teknologi yang terus berkembang. Di luar pekerjaan, saya senang menjelajahi teknologi baru, membaca buku tentang inovasi, dan berkontribusi pada komunitas open-source. Saya selalu terbuka untuk kolaborasi yang inovatif dan terhubung dengan sesama profesional.
+                        </p>
+                    </div>
+                </div>
+                <div class="card p-6 sm:p-8 mt-6">
+                    <h2 class="text-2xl sm:text-3xl font-bold mb-6 section-title border-b-2 pb-2 border-gray-400">Keahlian</h2>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="skill-badge px-4 py-2 rounded-full text-sm font-semibold" onclick="showSkillDetails('HTML5')">HTML5</span>
+                        <span class="skill-badge px-4 py-2 rounded-full text-sm font-semibold" onclick="showSkillDetails('CSS3 (Tailwind CSS)')">CSS3 (Tailwind CSS)</span>
+                        <span class="skill-badge px-4 py-2 rounded-full text-sm font-semibold" onclick="showSkillDetails('JavaScript (React.js)')">JavaScript (React.js)</span>
+                        <span class="skill-badge px-4 py-2 rounded-full text-sm font-semibold" onclick="showSkillDetails('Node.js')">Node.js</span>
+                        <span class="skill-badge px-4 py-2 rounded-full text-sm font-semibold" onclick="showSkillDetails('Figma')">Figma</span>
+                        <span class="skill-badge px-4 py-2 rounded-full text-sm font-semibold" onclick="showSkillDetails('Adobe Photoshop')">Adobe Photoshop</span>
+                        <span class="skill-badge px-4 py-2 rounded-full text-sm font-semibold" onclick="showSkillDetails('Manajemen Proyek')">Manajemen Proyek</span>
+                        <span class="skill-badge px-4 py-2 rounded-full text-sm font-semibold" onclick="showSkillDetails('Komunikasi')">Komunikasi</span>
+                        <span class="skill-badge px-4 py-2 rounded-full text-sm font-semibold" onclick="showSkillDetails('Penulisan Konten')">Penulisan Konten</span>
+                        <span class="skill-badge px-4 py-2 rounded-full text-sm font-semibold" onclick="showSkillDetails('PHP')">PHP</span>
+                        <span class="skill-badge px-4 py-2 rounded-full text-sm font-semibold" onclick="showSkillDetails('Python')">Python</span>
+                        <span class="skill-badge px-4 py-2 rounded-full text-sm font-semibold" onclick="showSkillDetails('Dart')">Dart</span>
+                        <span class="skill-badge px-4 py-2 rounded-full text-sm font-semibold" onclick="showSkillDetails('C++')">C++</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Experience and Education Section -->
+            <section id="experience-education-content" class="content-section">
+                <div class="card p-6 sm:p-8 mb-6">
+                    <h2 class="text-2xl sm:text-3xl font-bold mb-6 section-title border-b-2 pb-2 border-gray-400">Pengalaman</h2>
+                    <div class="space-y-6">
+                        <!-- Experience Item 1: Software Developer -->
+                        <div class="experience-item pl-6 py-2 relative">
+                            <div class="absolute w-3 h-3 bg-gray-600 rounded-full -left-1.5 top-3"></div>
+                            <h3 class="text-xl font-semibold text-gray-800">Pengembang Perangkat Lunak Senior</h3>
+                            <p class="text-md text-gray-600">Tech Solutions Inc. | Januari 2022 - Sekarang</p>
+                            <ul class="list-disc list-inside text-gray-700 mt-2 space-y-1">
+                                <li>Memimpin pengembangan full-stack untuk aplikasi SaaS skala besar menggunakan React.js dan Node.js, meningkatkan skalabilitas sistem sebesar 30%.</li>
+                                <li>Mengimplementasikan praktik pengkodean bersih dan pengujian unit, mengurangi bug pasca-peluncuran sebesar 25%.</li>
+                                <li>Berkoordinasi dengan tim desain untuk mengintegrasikan antarmuka pengguna yang responsif dan berkinerja tinggi.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Experience Item 2: UI/UX Designer -->
+                        <div class="experience-item pl-6 py-2 relative">
+                            <div class="absolute w-3 h-3 bg-gray-600 rounded-full -left-1.5 top-3"></div>
+                            <h3 class="text-xl font-semibold text-gray-800">Desainer UI/UX</h3>
+                            <p class="text-md text-gray-600">Creative Digital Agency | Mei 2019 - Desember 2021</p>
+                            <ul class="list-disc list-inside text-gray-700 mt-2 space-y-1">
+                                <li>Merancang wireframe, mockup, dan prototipe interaktif menggunakan Figma untuk berbagai aplikasi web dan seluler, meningkatkan kepuasan pengguna sebesar 15%.</li>
+                                <li>Melakukan riset pengguna, pengujian kegunaan, dan analisis kompetitor untuk menginformasikan keputusan desain.</li>
+                                <li>Berhasil menerjemahkan persyaratan bisnis menjadi pengalaman pengguna yang intuitif dan menarik secara visual.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Experience Item 3: Content Writer -->
+                        <div class="experience-item pl-6 py-2 relative">
+                            <div class="absolute w-3 h-3 bg-gray-600 rounded-full -left-1.5 top-3"></div>
+                            <h3 class="text-xl font-semibold text-gray-800">Penulis Konten Teknis & Pemasaran</h3>
+                            <p class="text-md text-gray-600">Global Tech Media | Juli 2017 - April 2019</p>
+                            <ul class="list-disc list-inside text-gray-700 mt-2 space-y-1">
+                                <li>Menulis artikel teknis, postingan blog, dan salinan pemasaran yang menarik untuk platform dan produk teknologi, meningkatkan lalu lintas organik sebesar 20%.</li>
+                                <li>Mengembangkan strategi konten SEO-friendly untuk meningkatkan visibilitas online dan engagement audiens.</li>
+                                <li>Berkoordinasi dengan tim produk dan pemasaran untuk memastikan akurasi dan konsistensi pesan.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card p-6 sm:p-8">
+                    <h2 class="text-2xl sm:text-3xl font-bold mb-6 section-title border-b-2 pb-2 border-gray-400">Pendidikan</h2>
+                    <div class="space-y-4">
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-800">Sarjana Ilmu Komputer</h3>
+                            <p class="text-md text-gray-600">Universitas Teknologi Terkemuka | 2013 - 2017</p>
+                            <p class="text-gray-700 text-sm mt-1">Fokus pada Pengembangan Perangkat Lunak, Algoritma, dan Struktur Data. Proyek akhir: Aplikasi Web Kolaborasi Real-time.</p>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-800">Sertifikasi Profesional Desain UX</h3>
+                            <p class="text-md text-gray-600">Coursera (Google UX Design Professional Certificate) | 2019</p>
+                            <p class="text-700 text-sm mt-1">Mempelajari metodologi riset pengguna, wireframing, prototyping, dan pengujian kegunaan.</p>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-800">Kursus Lanjutan Penulisan Konten SEO</h3>
+                            <p class="text-md text-gray-600">Udemy | 2018</p>
+                            <p class="text-gray-700 text-sm mt-1">Memperdalam strategi SEO, penulisan persuasif, dan analitik konten.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contact Section -->
+            <section id="contact-content" class="content-section">
+                <div class="card p-6 sm:p-8">
+                    <h2 class="text-2xl sm:text-3xl font-bold mb-6 section-title border-b-2 pb-2 border-gray-400">Kontak</h2>
+                    <div class="text-gray-700 text-base sm:text-lg">
+                        <p class="mb-4">
+                            Jangan ragu untuk menghubungi saya untuk kesempatan kolaborasi, pertanyaan, atau sekadar menyapa!
+                        </p>
+                        <ul class="space-y-2 mb-6">
+                            <li><strong>Email:</strong> <a href="mailto:emailanda@example.com" class="text-gray-600 hover:underline">emailanda@example.com</a></li>
+                            <li><strong>LinkedIn:</strong> <a href="https://linkedin.com/in/namaanda" target="_blank" class="text-gray-600 hover:underline">linkedin.com/in/namaanda</a></li>
+                            <li><strong>GitHub:</strong> <a href="https://github.com/namaanda" target="_blank" class="text-gray-600 hover:underline">github.com/namaanda</a></li>
+                            <li><strong>Portofolio:</strong> <a href="https://portofolioanda.com" target="_blank" class="text-gray-600 hover:underline">portofolioanda.com</a></li>
+                        </ul>
+                        <!-- SweetAlert2 Call Example -->
+                        <button onclick="showContactConfirmation()" class="contact-button">
+                            Kirim Pesan
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="text-center text-gray-500 text-sm mt-12 pb-4">
+            &copy; 2025 Rayden. Hak Cipta Dilindungi.
+        </footer>
+
+    </div>
+
+    <script>
+        // Data proyek untuk SweetAlert
+        const projectsData = {
+            'Project Web Interaktif': 'Sebuah aplikasi web interaktif yang dibangun dengan React.js dan Node.js, menampilkan visualisasi data real-time dan fitur kolaborasi. Merupakan proyek inti yang menunjukkan keahlian full-stack.',
+            'Desain Aplikasi Mobile': 'Desain UI/UX lengkap untuk aplikasi seluler E-commerce, dibuat di Figma. Fokus pada alur pengguna yang intuitif dan estetika minimalis. Termasuk wireframe, mockup, dan prototipe interaktif.',
+            'Kampanye Konten Digital': 'Pengembangan strategi konten dan penulisan untuk kampanye pemasaran digital, menghasilkan peningkatan engagement sebesar 25% di media sosial. Fokus pada SEO dan penceritaan merek.',
+            'Sistem Manajemen Data Python': 'Pengembangan sistem backend berbasis Python untuk manajemen data, mengotomatiskan proses impor dan analisis data besar. Menggunakan Flask sebagai kerangka kerja web.',
+            'Aplikasi Flutter Lintas Platform': 'Membangun aplikasi seluler lintas platform menggunakan Dart dan Flutter, menyediakan antarmuka pengguna yang cepat dan responsif. Menampilkan integrasi API eksternal.',
+            'Pengembangan Game C++': 'Kontribusi pada pengembangan mesin game menggunakan C++, berfokus pada optimasi kinerja dan logika fisika dasar. Bagian dari proyek tim universitas.',
+            'Situs Web Dinamis PHP': 'Merancang dan mengembangkan situs web dinamis menggunakan PHP dan MySQL, termasuk sistem manajemen pengguna dan fitur forum. Proyek ini menampilkan keahlian dalam pengembangan web backend.',
+            'Desain Antarmuka Smart Home': 'Konsep desain UI/UX untuk sistem smart home, dengan fokus pada kesederhanaan dan aksesibilitas. Termasuk prototipe yang dapat diklik di Figma.',
+            'Penulisan Teknis API': 'Penulisan dokumentasi API yang komprehensif dan mudah dipahami untuk platform pengembang, meningkatkan adopsi API sebesar 10%.'
+        };
+
+        // Function to show SweetAlert for project details
+        function showProjectDetails(title, description) {
+            const rootStyles = getComputedStyle(document.documentElement);
+            const confirmBtnColor = rootStyles.getPropertyValue('--button-bg').trim();
+
+            Swal.fire({
+                title: title,
+                text: description,
+                icon: 'info',
+                confirmButtonText: 'Tutup',
+                confirmButtonColor: confirmBtnColor
+            });
+        }
+
+        // Function to show SweetAlert2 confirmation when 'Kirim Pesan' button is clicked
+        function showContactConfirmation() {
+            const rootStyles = getComputedStyle(document.documentElement);
+            const confirmBtnColor = rootStyles.getPropertyValue('--button-bg').trim();
+            const cancelBtnColor = rootStyles.getPropertyValue('--text-secondary').trim();
+
+            Swal.fire({
+                title: 'Tertarik untuk Terhubung?',
+                text: 'Apakah Anda ingin mengirim email ke saya sekarang?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: confirmBtnColor,
+                cancelButtonColor: cancelBtnColor,
+                confirmButtonText: 'Ya, Kirim Email!',
+                cancelButtonText: 'Tidak, Terima Kasih'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = 'mailto:emailanda@example.com';
+                }
+            });
+        }
+
+        // Function to show SweetAlert2 with details for each skill
+        function showSkillDetails(skillName) {
+            let title = skillName;
+            let description = '';
+
+            const rootStyles = getComputedStyle(document.documentElement);
+            const confirmBtnColor = rootStyles.getPropertyValue('--button-bg').trim();
+
+            switch (skillName) {
+                case 'HTML5':
+                    description = 'Bahasa markup standar untuk membuat halaman web dan aplikasi web, memberikan struktur konten.';
+                    break;
+                case 'CSS3 (Tailwind CSS)':
+                    description = 'Bahasa stylesheet untuk mendeskripsikan presentasi dokumen HTML. Tailwind CSS adalah kerangka kerja CSS yang berpusat pada utilitas untuk membangun desain kustom dengan cepat.';
+                    break;
+                case 'JavaScript (React.js)':
+                    description = 'Bahasa pemrograman yang memungkinkan Anda mengimplementasikan fitur-fitur kompleks pada halaman web. React.js adalah library JavaScript untuk membangun antarmuka pengguna yang interaktif.';
+                    break;
+                case 'Node.js':
+                    description = 'Lingkungan runtime JavaScript yang memungkinkan Anda menjalankan JavaScript di sisi server. Ideal untuk membangun API, aplikasi web, dan layanan backend yang skalabel.';
+                    break;
+                case 'Figma':
+                    description = 'Aplikasi desain antarmuka berbasis web dan desktop yang digunakan untuk merancang prototipe, UI, dan UX. Memungkinkan kolaborasi real-time antar desainer.';
+                    break;
+                case 'Adobe Photoshop':
+                    description = 'Software pengeditan gambar standar industri untuk manipulasi foto, desain grafis, dan seni digital.';
+                    break;
+                case 'Manajemen Proyek':
+                    description = 'Kemampuan untuk merencanakan, melaksanakan, dan mengontrol pekerjaan tim untuk mencapai tujuan dan memenuhi kriteria keberhasilan yang ditentukan dalam jangka waktu tertentu.';
+                    break;
+                case 'Komunikasi':
+                    description = 'Kemampuan untuk menyampaikan informasi, ide, dan emosi secara efektif kepada orang lain, baik secara lisan maupun tulisan. Kunci untuk kolaborasi tim yang sukses.';
+                    break;
+                case 'Penulisan Konten':
+                    description = 'Proses perencanaan, penulisan, dan pengeditan konten web, biasanya untuk tujuan pemasaran digital, blog, atau informasi situs web.';
+                    break;
+                case 'PHP':
+                    description = 'Bahasa scripting sisi server yang banyak digunakan untuk pengembangan web, sering digunakan bersama database seperti MySQL.';
+                    break;
+                case 'Python':
+                    description = 'Bahasa pemrograman tingkat tinggi yang serbaguna, digunakan untuk pengembangan web, analisis data, kecerdasan buatan, dan otomatisasi.';
+                    break;
+                case 'Dart':
+                    description = 'Bahasa pemrograman yang dioptimalkan untuk klien, terutama digunakan untuk membangun aplikasi seluler, web, dan desktop dengan kerangka kerja Flutter.';
+                    break;
+                case 'C++':
+                    description = 'Bahasa pemrograman berkinerja tinggi yang digunakan untuk pengembangan sistem, game, perangkat lunak desktop, dan aplikasi yang membutuhkan efisiensi tinggi.';
+                    break;
+                default:
+                    description = 'Tidak ada deskripsi yang tersedia untuk keahlian ini.';
+            }
+
+            Swal.fire({
+                title: title,
+                text: description,
+                icon: 'info',
+                confirmButtonText: 'Tutup',
+                confirmButtonColor: confirmBtnColor
+            });
+        }
+
+        // Script to handle tab switching
+        document.addEventListener('DOMContentLoaded', () => {
+            const navItems = document.querySelectorAll('.instagram-nav-item');
+            const contentSections = document.querySelectorAll('.content-section');
+
+            navItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    // Remove active class from all nav items and hide all content sections
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    contentSections.forEach(section => section.classList.remove('active'));
+
+                    // Add active class to clicked nav item
+                    item.classList.add('active');
+
+                    // Show the corresponding content section
+                    const targetId = item.getAttribute('data-target');
+                    document.getElementById(targetId).classList.add('active');
+                });
+            });
+
+            // Theme toggle logic
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const htmlElement = document.documentElement; // Get the html element
+
+            // Function to set the theme
+            function setTheme(theme) {
+                htmlElement.setAttribute('data-theme', theme);
+                localStorage.setItem('theme', theme);
+                // Update button icon based on current theme
+                if (theme === 'dark') {
+                    themeToggleBtn.innerHTML = '<i class="fas fa-sun text-xl"></i>'; // Sun icon for dark mode
+                } else {
+                    themeToggleBtn.innerHTML = '<i class="fas fa-moon text-xl"></i>'; // Moon icon for light mode
+                }
+            }
+
+            // Check for saved theme preference or system preference
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+            if (savedTheme) {
+                setTheme(savedTheme);
+            } else if (prefersDark) {
+                setTheme('dark');
+            } else {
+                setTheme('light'); // Default to light if no preference and not dark system preference
+            }
+
+            // Toggle theme on button click
+            themeToggleBtn.addEventListener('click', () => {
+                const currentTheme = htmlElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                setTheme(newTheme);
+            });
+
+            // Initial welcome message (optional)
+            Swal.fire({
+                title: 'Selamat Datang, Rayden!',
+                text: 'Jelajahi profil saya yang terinspirasi Instagram. Klik gambar di portofolio atau badge keahlian untuk detailnya. Coba juga fitur mode gelap/terang!',
+                icon: 'info',
+                confirmButtonText: 'Oke',
+                confirmButtonColor: getComputedStyle(document.documentElement).getPropertyValue('--button-bg').trim()
+            });
+        });
+    </script>
+</body>
+</html>
