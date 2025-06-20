@@ -602,10 +602,10 @@
                             Jangan ragu untuk menghubungi saya untuk kesempatan kolaborasi, pertanyaan, atau sekadar menyapa!
                         </p>
                         <ul class="space-y-2 mb-6">
-                            <li><strong>Email:</strong> <a href="mailto:emailanda@example.com" class="text-gray-600 hover:underline">emailanda@example.com</a></li>
-                            <li><strong>LinkedIn:</strong> <a href="https://linkedin.com/in/namaanda" target="_blank" class="text-gray-600 hover:underline">linkedin.com/in/namaanda</a></li>
-                            <li><strong>GitHub:</strong> <a href="https://github.com/namaanda" target="_blank" class="text-gray-600 hover:underline">github.com/namaanda</a></li>
-                            <li><strong>Portofolio:</strong> <a href="https://portofolioanda.com" target="_blank" class="text-gray-600 hover:underline">portofolioanda.com</a></li>
+                            <li><strong>Email:</strong> <a href="mailto:raydencyberart@gmail.com" class="text-gray-600 hover:underline">raydencyberart@gmail.com</a></li>
+                            <li><strong>LinkedIn:</strong> <a href="/about.html" target="_blank" class="text-gray-600 hover:underline">Secret</a></li>
+                            <li><strong>GitHub:</strong> <a href="https://github.com" target="_blank" class="text-gray-600 hover:underline">github.com</a></li>
+                            <li><strong>Portofolio:</strong> <a href="/about.html" target="_blank" class="text-gray-600 hover:underline">Secret</a></li>
                         </ul>
                         <!-- SweetAlert2 Call Example -->
                         <button onclick="showContactConfirmation()" class="contact-button">
@@ -761,19 +761,16 @@
             // Function to set the theme
             function setTheme(theme) {
                 htmlElement.setAttribute('data-theme', theme);
-                localStorage.setItem('theme', theme); // Still save preference for consistent experience
+                // No longer storing in localStorage as per user request for auto-adjust
+                // localStorage.setItem('theme', theme);
             }
 
-            // Check for saved theme preference or system preference
-            const savedTheme = localStorage.getItem('theme');
+            // Check system preference on load
             const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-            if (savedTheme) {
-                setTheme(savedTheme);
-            } else if (prefersDark) {
+            if (prefersDark) {
                 setTheme('dark');
             } else {
-                setTheme('light'); // Default to light if no preference and not dark system preference
+                setTheme('light');
             }
 
             // Listen for changes in system color scheme
@@ -785,14 +782,14 @@
                 }
             });
 
-            // Initial welcome message
-            Swal.fire({
-                title: 'Hai, Gue Rayden!',
-                text: 'Jelajahi profil saya yang terinspirasi Facebook. Klik gambar di postingan atau badge keahlian untuk detailnya.',
-                icon: 'info',
-                confirmButtonText: 'Oke',
-                confirmButtonColor: getComputedStyle(document.documentElement).getPropertyValue('--button-bg').trim()
-            });
+            // Removed initial welcome message
+            // Swal.fire({
+            //     title: 'Selamat Datang, Rayden!',
+            //     text: 'Jelajahi profil saya yang terinspirasi Facebook. Klik gambar di postingan atau badge keahlian untuk detailnya.',
+            //     icon: 'info',
+            //     confirmButtonText: 'Oke',
+            //     confirmButtonColor: getComputedStyle(document.documentElement).getPropertyValue('--button-bg').trim()
+            // });
         });
     </script>
 </body>
