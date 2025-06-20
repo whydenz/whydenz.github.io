@@ -178,12 +178,33 @@
         .copy-btn:hover {
             background-color: #4b5563;
         }
+
+        /* Reset button styling */
+        .reset-btn {
+            background: linear-gradient(to right, #f59e0b, #d97706); /* Amber gradient */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            border-radius: 0.5rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            width: fit-content; /* Adjust width to content */
+            justify-content: center;
+        }
+        .reset-btn:hover {
+            opacity: 0.9;
+        }
     </style>
 </head>
 <body class="bg-gray-100 p-4 md:p-8">
     <!-- Header Section -->
     <header class="flex justify-between items-center max-w-7xl mx-auto mb-8">
-        <div class="flex items-center">
+         <div class="flex items-center">
             <button id="about-app-btn" class="about-btn">
                 <i class="fas fa-info-circle"></i>
                 <span>Tentang Aplikasi</span>
@@ -197,8 +218,7 @@
 
     <main class="max-w-7xl mx-auto">
         <div class="text-center mb-8">
-            <p class="mt-2 text-lg text-gray-600 dark:text-gray-400">Buat prompt sinematik berdasarkan struktur detail yang Anda inginkan.
-                <br><font color ="dark-orange">NOTE: Form input bersifat optional, Bisa kamu isi atau abaikan.</font></p>
+            <p class="mt-2 text-lg text-gray-600 dark:text-gray-400">Buat prompt sinematik berdasarkan struktur detail yang Anda inginkan.</p>
         </div>
 
         <form id="prompt-form">
@@ -293,7 +313,7 @@
                                 <label for="pencahayaan">Pencahayaan</label>
                                 <select name="pencahayaan" class="select-field">
                                     <option selected>Cahaya Alami (Natural Light)</option>
-                                    <option>Low-key</option>
+                                    <option>Low-key</mption>
                                     <option>High-key</option>
                                 </select>
                             </div>
@@ -408,6 +428,12 @@
                         <button class="btn copy-btn" onclick="copyPrompt('output_en')">Salin <i class="fas fa-copy"></i></button>
                     </div>
                     <textarea id="output_en" class="textarea-field font-mono bg-gray-50 dark:bg-gray-700" rows="10" readonly></textarea>
+                </div>
+                <!-- Tombol RESET PROMPT -->
+                <div class="mt-6 text-center">
+                    <button id="reset-prompt-btn" class="btn reset-btn">
+                        <i class="fas fa-redo"></i><span>RESET PROMPT</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -595,12 +621,22 @@ function copyPrompt(elementId) {
     }
 }
 
+/**
+ * Handles the click event for the "RESET PROMPT" button.
+ * Redirects the user to the specified URL.
+ */
+function resetPrompt() {
+    window.location.href = '/veo3.html';
+}
+
 
 // Event Listeners
 document.getElementById('add-character-btn').addEventListener('click', addCharacter);
 document.getElementById('tipe_dialog').addEventListener('change', updateDialogUI);
 document.getElementById('theme-toggle').addEventListener('click', toggleTheme); // Theme toggle listener
 document.getElementById('about-app-btn').addEventListener('click', showAboutApp); // About app button listener
+// Add event listener for the new reset button
+document.getElementById('reset-prompt-btn').addEventListener('click', resetPrompt);
 
 // Initialize with one character card on page load and apply theme
 document.addEventListener('DOMContentLoaded', () => {
