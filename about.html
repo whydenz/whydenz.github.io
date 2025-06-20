@@ -57,6 +57,9 @@
             background-color: var(--bg-primary);
             color: var(--text-primary);
             transition: background-color 0.3s ease, color 0.3s ease;
+            margin: 0; /* Ensure no default body margin */
+            padding: 0; /* Ensure no default body padding */
+            overflow-x: hidden; /* Prevent horizontal scroll on small screens */
         }
         .facebook-container {
             max-width: 960px;
@@ -68,6 +71,7 @@
             margin-top: 2rem;
             padding-bottom: 2rem;
             transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            box-sizing: border-box; /* Include padding and border in element's total width and height */
         }
         .cover-photo {
             width: 100%;
@@ -128,7 +132,6 @@
             font-size: 1.5rem;
             transition: color 0.3s ease;
         }
-        /* Removed #theme-toggle styling as button is removed */
         .profile-tagline {
             font-size: 1.125rem;
             color: var(--text-secondary);
@@ -145,6 +148,7 @@
             display: flex;
             gap: 0.5rem;
             margin-top: 1rem; /* Space below bio */
+            flex-wrap: wrap; /* Allow buttons to wrap */
         }
         .action-button {
             display: inline-flex;
@@ -157,6 +161,8 @@
             transition: background-color 0.3s ease;
             text-decoration: none;
             font-size: 0.9rem;
+            flex-grow: 1; /* Allow buttons to grow and fill space */
+            justify-content: center; /* Center text and icon */
         }
         .action-button i {
             margin-right: 0.4rem;
@@ -183,6 +189,7 @@
             top: 0;
             z-index: 10;
             transition: background-color 0.3s ease, border-top-color 0.3s ease;
+            flex-wrap: wrap; /* Allow tabs to wrap on smaller screens */
         }
         .facebook-nav-item {
             padding: 0.8rem 1rem;
@@ -191,6 +198,7 @@
             color: var(--text-secondary);
             border-bottom: 3px solid transparent; /* Thicker active border */
             transition: color 0.2s ease, border-bottom-color 0.2s ease;
+            white-space: nowrap; /* Prevent text wrapping */
         }
         .facebook-nav-item.active {
             color: var(--link-color); /* Active tab is blue */
@@ -324,6 +332,12 @@
 
         /* Responsive adjustments */
         @media (max-width: 768px) {
+            .facebook-container {
+                margin-top: 0; /* No margin on top for mobile */
+                border-radius: 0; /* No border-radius on mobile */
+                border-left: none;
+                border-right: none;
+            }
             .cover-photo {
                 height: 180px; /* Shorter cover for mobile */
             }
@@ -332,7 +346,7 @@
                 align-items: center;
                 text-align: center;
                 margin-top: -60px; /* Adjust overlap */
-                padding: 0 1rem;
+                padding: 0 1rem; /* Smaller horizontal padding */
             }
             .profile-avatar {
                 margin-right: 0;
@@ -346,6 +360,7 @@
             .profile-info {
                 padding-bottom: 0.5rem;
                 min-height: auto;
+                width: 100%; /* Ensure info takes full width in column layout */
             }
             .profile-name-group {
                 justify-content: center;
@@ -368,6 +383,15 @@
                 gap: 1rem;
                 margin-top: 0.5rem;
             }
+            .profile-action-buttons {
+                flex-direction: column; /* Stack buttons vertically on mobile */
+                width: 100%;
+                gap: 0.5rem;
+            }
+            .action-button {
+                width: 100%; /* Full width buttons */
+            }
+
             .facebook-nav {
                 flex-wrap: wrap; /* Allow tabs to wrap on smaller screens */
                 padding: 0 0.5rem;
@@ -376,6 +400,9 @@
             .facebook-nav-item {
                 padding: 0.6rem 0.5rem;
                 font-size: 0.8rem;
+                flex-basis: auto; /* Allow items to size naturally */
+                flex-grow: 1; /* Allow items to grow evenly */
+                text-align: center;
             }
             .facebook-nav-item i {
                 margin-right: 0.2rem;
@@ -388,8 +415,17 @@
                 margin-bottom: 1rem;
             }
             .portfolio-grid {
-                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Smaller grid items for mobile */
                 gap: 0.5rem;
+            }
+            footer {
+                margin-top: 1.5rem; /* Reduce footer margin on mobile */
+            }
+        }
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .facebook-container {
+                margin-left: 1rem;
+                margin-right: 1rem;
             }
         }
     </style>
@@ -597,7 +633,7 @@
             <section id="contact-content" class="content-section">
                 <div class="card">
                     <h2 class="section-title">Kontak</h2>
-                    <div class="text-gray-700 text-base sm:text-lg">
+                    <div class="text-gray-700 leading-relaxed text-base sm:text-lg">
                         <p class="mb-4">
                             Jangan ragu untuk menghubungi saya untuk kesempatan kolaborasi, pertanyaan, atau sekadar menyapa!
                         </p>
@@ -669,7 +705,7 @@
                 cancelButtonText: 'Tidak, Terima Kasih'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location.href = 'mailto:emailanda@example.com';
+                    window.location.href = 'mailto:raydencyberart@gmail.com';
                 }
             });
         }
@@ -781,15 +817,6 @@
                     setTheme('light');
                 }
             });
-
-            // Removed initial welcome message
-            // Swal.fire({
-            //     title: 'Selamat Datang, Rayden!',
-            //     text: 'Jelajahi profil saya yang terinspirasi Facebook. Klik gambar di postingan atau badge keahlian untuk detailnya.',
-            //     icon: 'info',
-            //     confirmButtonText: 'Oke',
-            //     confirmButtonColor: getComputedStyle(document.documentElement).getPropertyValue('--button-bg').trim()
-            // });
         });
     </script>
 </body>
