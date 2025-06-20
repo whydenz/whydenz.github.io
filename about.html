@@ -13,105 +13,111 @@
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* CSS Variables for Light and Dark Theme */
+        /* CSS Variables for Light and Dark Theme (Facebook-inspired light mode) */
         :root {
-            --bg-primary: #fafafa; /* Main background */
+            --bg-primary: #f0f2f5; /* Facebook light grey background */
             --bg-secondary: #ffffff; /* Card and container background */
-            --text-primary: #262626; /* Main text color */
-            --text-secondary: #8e8e8e; /* Secondary text color */
-            --border-color: #dbdbdb; /* General border color */
-            --card-shadow: rgba(0, 0, 0, 0.05);
-            --skill-badge-bg: #efefef;
-            --skill-badge-hover-bg: #dbdbdb;
-            --experience-border: #888888;
-            --button-bg: #262626;
-            --button-hover-bg: #000000;
-            --verified-badge-color: #3897f0;
-            --theme-toggle-color: #8e8e8e;
-            --theme-toggle-hover-color: #262626;
+            --text-primary: #050505; /* Main text color */
+            --text-secondary: #65676b; /* Secondary text color */
+            --border-color: #dadde1; /* Subtle border color */
+            --card-shadow: rgba(0, 0, 0, 0.1); /* Slightly more prominent shadow for Facebook cards */
+            --skill-badge-bg: #e4e6eb;
+            --skill-badge-hover-bg: #d8dade;
+            --experience-border: #bcc0c4;
+            --button-bg: #1877f2; /* Facebook blue */
+            --button-hover-bg: #166fe5; /* Darker Facebook blue */
+            --verified-badge-color: #1877f2; /* Facebook blue for verified badge */
+            --theme-toggle-color: #65676b; /* Keep for general text adapting to theme */
+            --theme-toggle-hover-color: #050505; /* Keep for general text adapting to theme */
+            --link-color: #1877f2;
+            --link-hover-color: #166fe5;
         }
 
         [data-theme="dark"] {
-            --bg-primary: #1a1a1a;
-            --bg-secondary: #262626;
-            --text-primary: #f0f0f0;
-            --text-secondary: #b0b0b0;
-            --border-color: #444444;
+            --bg-primary: #18191a; /* Dark Facebook background */
+            --bg-secondary: #242526; /* Dark card background */
+            --text-primary: #e4e6eb; /* Light text for dark mode (white-ish) */
+            --text-secondary: #b0b3b8; /* Lighter secondary text for dark mode */
+            --border-color: #3e4042;
             --card-shadow: rgba(255, 255, 255, 0.05);
-            --skill-badge-bg: #333333;
-            --skill-badge-hover-bg: #555555;
-            --experience-border: #666666;
-            --button-bg: #f0f0f0; /* Light button for dark mode */
-            --button-hover-bg: #cccccc;
-            --verified-badge-color: #66b3ff;
-            --theme-toggle-color: #b0b0b0;
-            --theme-toggle-hover-color: #f0f0f0;
+            --skill-badge-bg: #3a3b3c;
+            --skill-badge-hover-bg: #5a5b5c;
+            --experience-border: #888888;
+            --button-bg: #2d88ff; /* Slightly lighter blue for dark mode button */
+            --button-hover-bg: #4299e1;
+            --verified-badge-color: #2d88ff;
+            --theme-toggle-color: #b0b3b8;
+            --theme-toggle-hover-color: #e4e6eb;
+            --link-color: #2d88ff;
+            --link-hover-color: #4299e1;
         }
 
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--bg-primary);
             color: var(--text-primary);
-            transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for theme change */
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
-        .instagram-container {
+        .facebook-container {
             max-width: 960px;
             margin: 0 auto;
             background-color: var(--bg-secondary);
             border: 1px solid var(--border-color);
-            border-radius: 8px;
-            box-shadow: 0 0 8px var(--card-shadow);
+            border-radius: 8px; /* Slightly less rounded than Instagram */
+            box-shadow: 0 2px 4px var(--card-shadow); /* Facebook-like shadow */
             margin-top: 2rem;
             padding-bottom: 2rem;
             transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
         }
-        .banner-background {
+        .cover-photo {
             width: 100%;
-            height: 200px;
-            background-image: url('/banner.png');
+            height: 300px; /* Taller cover photo */
+            background-image: url('/banner.png'); /* Please ensure this path is correct */
             background-size: cover;
             background-position: center;
             border-top-left-radius: 8px;
             border-top-right-radius: 8px;
             overflow: hidden;
+            position: relative; /* For z-index stacking */
         }
-        .profile-header {
-            display: flex;
-            align-items: center;
-            padding: 2rem;
-            border-bottom: 1px solid var(--border-color);
-            margin-top: -75px;
+        .profile-header-content {
             position: relative;
-            z-index: 1;
-            background-color: transparent;
+            margin-top: -100px; /* Overlap avatar on cover photo */
+            padding: 0 2rem;
+            display: flex;
+            align-items: flex-end; /* Align items to the bottom */
+            z-index: 2; /* Ensure header content is above cover */
         }
         .profile-avatar {
             flex-shrink: 0;
-            margin-right: 2rem;
-            transform: translateY(75px);
-            margin-left: 2rem;
-            z-index: 2;
-            border-color: var(--bg-secondary); /* Avatar border matches container background */
+            margin-right: 1.5rem;
+            z-index: 3; /* Avatar on top */
+            border: 4px solid var(--bg-secondary); /* White border around avatar */
+            border-radius: 50%;
             transition: border-color 0.3s ease;
         }
         .profile-avatar img {
-            width: 150px;
-            height: 150px;
+            width: 160px; /* Slightly larger avatar */
+            height: 160px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid var(--border-color);
+            display: block; /* Remove extra space below image */
         }
         .profile-info {
             flex-grow: 1;
-            padding-top: 75px;
+            padding-bottom: 1rem; /* Space below info before tabs */
+            min-height: 160px; /* Ensure info section has height even if bio is short */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end; /* Push content to bottom for alignment */
         }
         .profile-name-group {
             display: flex;
             align-items: center;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.25rem; /* Reduced margin */
         }
         .profile-name {
-            font-size: 2.25rem;
+            font-size: 2.5rem; /* Larger name */
             font-weight: 700;
             color: var(--text-primary);
             margin-right: 0.5rem;
@@ -122,13 +128,7 @@
             font-size: 1.5rem;
             transition: color 0.3s ease;
         }
-        #theme-toggle {
-            color: var(--theme-toggle-color);
-            transition: color 0.3s ease;
-        }
-        #theme-toggle:hover {
-            color: var(--theme-toggle-hover-color);
-        }
+        /* Removed #theme-toggle styling as button is removed */
         .profile-tagline {
             font-size: 1.125rem;
             color: var(--text-secondary);
@@ -141,43 +141,93 @@
             line-height: 1.5;
             transition: color 0.3s ease;
         }
-        .profile-stats {
+        .profile-action-buttons {
             display: flex;
-            margin-top: 1rem;
-            gap: 2rem;
-            font-size: 1rem;
+            gap: 0.5rem;
+            margin-top: 1rem; /* Space below bio */
         }
-        .stat-item {
-            display: flex;
-            flex-direction: column;
+        .action-button {
+            display: inline-flex;
             align-items: center;
+            padding: 0.6rem 1rem;
+            background-color: var(--button-bg);
+            color: white; /* Always white text on primary buttons */
+            border-radius: 6px;
             font-weight: 600;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+            font-size: 0.9rem;
         }
-        .stat-number {
+        .action-button i {
+            margin-right: 0.4rem;
+        }
+        .action-button:hover {
+            background-color: var(--button-hover-bg);
+        }
+        .secondary-action-button {
+            background-color: var(--skill-badge-bg);
             color: var(--text-primary);
-            font-size: 1.125rem;
-            transition: color 0.3s ease;
         }
-        .stat-label {
+        .secondary-action-button:hover {
+            background-color: var(--skill-badge-hover-bg);
+        }
+
+        /* Facebook-like navigation tabs */
+        .facebook-nav {
+            display: flex;
+            justify-content: flex-start; /* Align tabs to the left */
+            border-top: 1px solid var(--border-color);
+            background-color: var(--bg-secondary);
+            padding: 0 2rem; /* Align with header padding */
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            transition: background-color 0.3s ease, border-top-color 0.3s ease;
+        }
+        .facebook-nav-item {
+            padding: 0.8rem 1rem;
+            cursor: pointer;
+            font-weight: 600;
             color: var(--text-secondary);
-            font-size: 0.875rem;
-            transition: color 0.3s ease;
+            border-bottom: 3px solid transparent; /* Thicker active border */
+            transition: color 0.2s ease, border-bottom-color 0.2s ease;
         }
+        .facebook-nav-item.active {
+            color: var(--link-color); /* Active tab is blue */
+            border-bottom-color: var(--link-color);
+        }
+        .facebook-nav-item:hover {
+            background-color: var(--skill-badge-bg); /* Light hover background */
+            border-radius: 4px;
+            color: var(--text-primary);
+        }
+        .facebook-nav-item i {
+            margin-right: 0.4rem;
+        }
+
 
         .section-title {
             color: var(--text-primary);
             transition: color 0.3s ease;
+            font-size: 1.5rem; /* Smaller section titles for content area */
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
         }
         .card {
             background-color: var(--bg-secondary);
             border-radius: 8px;
-            transition: background-color 0.3s ease;
+            box-shadow: 0 1px 2px var(--card-shadow); /* Lighter shadow for inner cards */
+            padding: 1.5rem; /* Adjusted padding for inner cards */
+            margin-bottom: 1.5rem; /* Spacing between cards */
+            transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
         }
         .skill-badge {
             background-color: var(--skill-badge-bg);
             color: var(--text-primary);
             cursor: pointer;
             transition: background-color 0.2s ease-in-out, color 0.3s ease;
+            border-radius: 4px; /* More square-ish badges */
         }
         .skill-badge:hover {
             background-color: var(--skill-badge-hover-bg);
@@ -187,15 +237,15 @@
             transition: border-color 0.3s ease;
         }
         .experience-item .absolute {
-            background-color: var(--experience-border); /* Circle dot color */
+            background-color: var(--experience-border);
             transition: background-color 0.3s ease;
         }
         .contact-button {
             display: inline-block;
             padding: 10px 20px;
             background-color: var(--button-bg);
-            color: var(--text-primary); /* Button text color adapts to theme */
-            border-radius: 4px;
+            color: white; /* Keep white for primary contact button */
+            border-radius: 6px; /* Match other buttons */
             font-weight: 600;
             transition: background-color 0.3s ease, color 0.3s ease;
             text-decoration: none;
@@ -205,39 +255,11 @@
             background-color: var(--button-hover-bg);
         }
 
-        /* Instagram-like navigation for content sections */
-        .instagram-nav {
-            display: flex;
-            justify-content: center;
-            border-top: 1px solid var(--border-color);
-            margin-top: 2rem;
-            background-color: var(--bg-secondary);
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            transition: background-color 0.3s ease, border-top-color 0.3s ease;
-        }
-        .instagram-nav-item {
-            padding: 1rem 2rem;
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--text-secondary);
-            border-bottom: 2px solid transparent;
-            transition: color 0.2s ease, border-bottom-color 0.2s ease;
-        }
-        .instagram-nav-item.active {
-            color: var(--text-primary);
-            border-bottom-color: var(--text-primary);
-        }
-        .instagram-nav-item:hover {
-            color: var(--text-primary);
-        }
-
         /* Content sections that will be toggled */
         .content-section {
             display: none;
-            padding: 2rem;
-            margin-top: 1rem;
+            padding: 0 2rem; /* Match general padding */
+            margin-top: 1.5rem; /* Space from tabs */
         }
         .content-section.active {
             display: block;
@@ -246,10 +268,10 @@
         /* Portfolio Grid */
         .portfolio-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Slightly larger grid items */
             gap: 1rem;
-            padding: 1rem;
-            margin-top: 1rem;
+            padding: 0; /* Remove padding here, it's in content-section */
+            margin-top: 0;
         }
         .portfolio-item {
             width: 100%;
@@ -258,7 +280,7 @@
             cursor: pointer;
             overflow: hidden;
             border-radius: 4px;
-            border: 1px solid var(--skill-badge-bg); /* Use a subtle border for images */
+            border: 1px solid var(--border-color); /* Subtle border */
             transition: border-color 0.3s ease;
         }
         .portfolio-item img {
@@ -274,31 +296,60 @@
             transform: scale(1.05);
         }
 
+        /* General link styling */
+        a {
+            color: var(--link-color);
+            transition: color 0.3s ease;
+        }
+        a:hover {
+            color: var(--link-hover-color);
+        }
+        /* Ensure specific link colors within text also adapt */
+        .text-gray-600.hover\:underline {
+            color: var(--text-secondary); /* Use secondary text color for these links */
+        }
+        .text-gray-600.hover\:underline:hover {
+            color: var(--link-hover-color);
+        }
+
+
         /* Footer color */
         footer {
             color: var(--text-secondary);
             transition: color 0.3s ease;
+            padding-top: 1rem; /* Adjust footer padding */
+            border-top: 1px solid var(--border-color); /* Add a border to separate from content */
+            margin-top: 2rem; /* Add margin above footer */
         }
 
         /* Responsive adjustments */
         @media (max-width: 768px) {
-            .profile-header {
+            .cover-photo {
+                height: 180px; /* Shorter cover for mobile */
+            }
+            .profile-header-content {
                 flex-direction: column;
+                align-items: center;
                 text-align: center;
-                margin-top: -50px;
-                padding-top: 0;
+                margin-top: -60px; /* Adjust overlap */
+                padding: 0 1rem;
             }
             .profile-avatar {
                 margin-right: 0;
                 margin-bottom: 1rem;
-                transform: translateY(0);
-                margin-left: 0;
+                border-width: 3px; /* Slightly thinner border */
+            }
+            .profile-avatar img {
+                width: 120px;
+                height: 120px;
             }
             .profile-info {
-                padding-top: 0;
+                padding-bottom: 0.5rem;
+                min-height: auto;
             }
             .profile-name-group {
                 justify-content: center;
+                margin-bottom: 0.25rem;
             }
             .profile-name {
                 font-size: 2rem;
@@ -307,30 +358,50 @@
                 font-size: 1.25rem;
             }
             .profile-tagline {
-                font-size: 1rem;
+                font-size: 0.9rem;
+            }
+            .profile-bio {
+                font-size: 0.9rem;
             }
             .profile-stats {
                 justify-content: center;
-                gap: 1.5rem;
+                gap: 1rem;
+                margin-top: 0.5rem;
             }
-            .instagram-nav-item {
-                padding: 1rem 1rem;
+            .facebook-nav {
+                flex-wrap: wrap; /* Allow tabs to wrap on smaller screens */
+                padding: 0 0.5rem;
+                justify-content: space-around;
+            }
+            .facebook-nav-item {
+                padding: 0.6rem 0.5rem;
+                font-size: 0.8rem;
+            }
+            .facebook-nav-item i {
+                margin-right: 0.2rem;
+            }
+            .content-section {
+                padding: 0 1rem;
+            }
+            .card {
+                padding: 1rem;
+                margin-bottom: 1rem;
             }
             .portfolio-grid {
-                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
                 gap: 0.5rem;
             }
         }
     </style>
 </head>
 <body class="antialiased">
-    <div class="instagram-container">
+    <div class="facebook-container">
 
-        <!-- Banner Background -->
-        <div class="banner-background"></div>
+        <!-- Cover Photo -->
+        <div class="cover-photo"></div>
 
-        <!-- Header Section (Instagram Profile Header) -->
-        <header class="profile-header">
+        <!-- Header Section (Facebook Profile Header Content) -->
+        <header class="profile-header-content">
             <div class="profile-avatar">
                 <img src="/profile.png" alt="Foto Profil Rayden">
             </div>
@@ -338,10 +409,6 @@
                 <div class="profile-name-group">
                     <h1 class="profile-name">Rayden</h1>
                     <i class="fas fa-check-circle verified-badge" title="Profil Terverifikasi"></i>
-                    <!-- Theme Toggle Button -->
-                    <button id="theme-toggle" class="ml-auto focus:outline-none transition-colors duration-300">
-                        <i class="fas fa-moon text-xl"></i>
-                    </button>
                 </div>
                 <p class="profile-tagline">Pengembang Perangkat Lunak | Desainer UI/UX | Penulis Konten</p>
                 <p class="profile-bio">Bersemangat tentang teknologi, inovasi, dan pembelajaran berkelanjutan. Membangun pengalaman digital yang intuitif dan menarik.</p>
@@ -359,66 +426,76 @@
                         <span class="stat-label">Sertifikasi</span>
                     </div>
                 </div>
+                <div class="profile-action-buttons">
+                    <button class="action-button">
+                        <i class="fas fa-plus-circle"></i> Tambah ke Cerita
+                    </button>
+                    <button class="action-button secondary-action-button">
+                        <i class="fas fa-edit"></i> Edit Profil
+                    </button>
+                </div>
             </div>
         </header>
 
-        <!-- Instagram-like Navigation/Tabs -->
-        <nav class="instagram-nav">
-            <div class="instagram-nav-item active" data-target="portfolio-content">
-                <i class="fas fa-th mr-2"></i>Portofolio
+        <!-- Facebook-like Navigation Tabs -->
+        <nav class="facebook-nav">
+            <div class="facebook-nav-item active" data-target="portfolio-content">
+                <i class="fas fa-th-large"></i>Postingan
             </div>
-            <div class="instagram-nav-item" data-target="about-content">
-                <i class="fas fa-user mr-2"></i>Tentang
+            <div class="facebook-nav-item" data-target="about-content">
+                <i class="fas fa-info-circle"></i>Tentang
             </div>
-            <div class="instagram-nav-item" data-target="experience-education-content">
-                <i class="fas fa-briefcase mr-2"></i>Karir
+            <div class="facebook-nav-item" data-target="experience-education-content">
+                <i class="fas fa-briefcase"></i>Karir & Pendidikan
             </div>
-            <div class="instagram-nav-item" data-target="contact-content">
-                <i class="fas fa-envelope mr-2"></i>Kontak
+            <div class="facebook-nav-item" data-target="contact-content">
+                <i class="fas fa-envelope"></i>Kontak
             </div>
         </nav>
 
-        <!-- Main Content Area - mimicking Instagram's feed with sections -->
+        <!-- Main Content Area -->
         <main class="profile-main-content">
-            <!-- Portfolio Grid Section -->
+            <!-- Portfolio Grid Section (Renamed to Postingan for Facebook context) -->
             <section id="portfolio-content" class="content-section active">
-                <h2 class="text-xl font-bold mb-4 section-title px-4">Proyek Terbaru</h2>
-                <div class="portfolio-grid">
-                    <!-- Placeholder Project Items (Click to show details) -->
-                    <div class="portfolio-item" onclick="showProjectDetails('Project Web Interaktif', 'Sebuah aplikasi web interaktif yang dibangun dengan React.js dan Node.js, menampilkan visualisasi data real-time dan fitur kolaborasi. Merupakan proyek inti yang menunjukkan keahlian full-stack.')">
-                        <img src="https://placehold.co/300x300/e0e0e0/555555?text=R-N+Web" alt="Project Web App 1 Logo">
-                    </div>
-                    <div class="portfolio-item" onclick="showProjectDetails('Desain Aplikasi Mobile', 'Desain UI/UX lengkap untuk aplikasi seluler E-commerce, dibuat di Figma. Fokus pada alur pengguna yang intuitif dan estetika minimalis. Termasuk wireframe, mockup, dan prototipe interaktif.')">
-                        <img src="https://placehold.co/300x300/d0d0d0/444444?text=UI/UX+App" alt="Mobile App Design Logo">
-                    </div>
-                    <div class="portfolio-item" onclick="showProjectDetails('Kampanye Konten Digital', 'Pengembangan strategi konten dan penulisan untuk kampanye pemasaran digital, menghasilkan peningkatan engagement sebesar 25% di media sosial. Fokus pada SEO dan penceritaan merek.')">
-                        <img src="https://placehold.co/300x300/c0c0c0/333333?text=Content+Mkt" alt="Content Campaign Logo">
-                    </div>
-                    <div class="portfolio-item" onclick="showProjectDetails('Sistem Manajemen Data Python', 'Pengembangan sistem backend berbasis Python untuk manajemen data, mengotomatiskan proses impor dan analisis data besar. Menggunakan Flask sebagai kerangka kerja web.')">
-                        <img src="https://placehold.co/300x300/e0e0e0/555555?text=Py+Data" alt="Python System Logo">
-                    </div>
-                    <div class="portfolio-item" onclick="showProjectDetails('Aplikasi Flutter Lintas Platform', 'Membangun aplikasi seluler lintas platform menggunakan Dart dan Flutter, menyediakan antarmuka pengguna yang cepat dan responsif. Menampilkan integrasi API eksternal.')">
-                        <img src="https://placehold.co/300x300/d0d0d0/444444?text=Flutter+Dev" alt="Flutter App Logo">
-                    </div>
-                    <div class="portfolio-item" onclick="showProjectDetails('Pengembangan Game C++', 'Kontribusi pada pengembangan mesin game menggunakan C++, berfokus pada optimasi kinerja dan logika fisika dasar. Bagian dari proyek tim universitas.')">
-                        <img src="https://placehold.co/300x300/c0c0c0/333333?text=Game+Dev" alt="C++ Game Development Logo">
-                    </div>
-                    <div class="portfolio-item" onclick="showProjectDetails('Situs Web Dinamis PHP', 'Merancang dan mengembangkan situs web dinamis menggunakan PHP dan MySQL, termasuk sistem manajemen pengguna dan fitur forum. Proyek ini menampilkan keahlian dalam pengembangan web backend.')">
-                        <img src="https://placehold.co/300x300/e0e0e0/555555?text=PHP+Web" alt="PHP Website Logo">
-                    </div>
-                    <div class="portfolio-item" onclick="showProjectDetails('Desain Antarmuka Smart Home', 'Konsep desain UI/UX untuk sistem smart home, dengan fokus pada kesederhanaan dan aksesibilitas. Termasuk prototipe yang dapat diklik di Figma.')">
-                        <img src="https://placehold.co/300x300/d0d0d0/444444?text=Smart+UI" alt="Smart Home UI Logo">
-                    </div>
-                    <div class="portfolio-item" onclick="showProjectDetails('Penulisan Teknis API', 'Penulisan dokumentasi API yang komprehensif dan mudah dipahami untuk platform pengembang, meningkatkan adopsi API sebesar 10%.')">
-                        <img src="https://placehold.co/300x300/c0c0c0/333333?text=API+Docs" alt="API Documentation Logo">
+                <div class="card">
+                    <h2 class="section-title">Postingan Terbaru</h2>
+                    <div class="portfolio-grid">
+                        <!-- Placeholder Project Items (Click to show details) -->
+                        <div class="portfolio-item" onclick="showProjectDetails('Project Web Interaktif', 'Sebuah aplikasi web interaktif yang dibangun dengan React.js dan Node.js, menampilkan visualisasi data real-time dan fitur kolaborasi. Merupakan proyek inti yang menunjukkan keahlian full-stack.')">
+                            <img src="https://placehold.co/300x300/e0e0e0/555555?text=R-N+Web" alt="Project Web App 1 Logo">
+                        </div>
+                        <div class="portfolio-item" onclick="showProjectDetails('Desain Aplikasi Mobile', 'Desain UI/UX lengkap untuk aplikasi seluler E-commerce, dibuat di Figma. Fokus pada alur pengguna yang intuitif dan estetika minimalis. Termasuk wireframe, mockup, dan prototipe interaktif.')">
+                            <img src="https://placehold.co/300x300/d0d0d0/444444?text=UI/UX+App" alt="Mobile App Design Logo">
+                        </div>
+                        <div class="portfolio-item" onclick="showProjectDetails('Kampanye Konten Digital', 'Pengembangan strategi konten dan penulisan untuk kampanye pemasaran digital, menghasilkan peningkatan engagement sebesar 25% di media sosial. Fokus pada SEO dan penceritaan merek.')">
+                            <img src="https://placehold.co/300x300/c0c0c0/333333?text=Content+Mkt" alt="Content Campaign Logo">
+                        </div>
+                        <div class="portfolio-item" onclick="showProjectDetails('Sistem Manajemen Data Python', 'Pengembangan sistem backend berbasis Python untuk manajemen data, mengotomatiskan proses impor dan analisis data besar. Menggunakan Flask sebagai kerangka kerja web.')">
+                            <img src="https://placehold.co/300x300/e0e0e0/555555?text=Py+Data" alt="Python System Logo">
+                        </div>
+                        <div class="portfolio-item" onclick="showProjectDetails('Aplikasi Flutter Lintas Platform', 'Membangun aplikasi seluler lintas platform menggunakan Dart dan Flutter, menyediakan antarmuka pengguna yang cepat dan responsif. Menampilkan integrasi API eksternal.')">
+                            <img src="https://placehold.co/300x300/d0d0d0/444444?text=Flutter+Dev" alt="Flutter App Logo">
+                        </div>
+                        <div class="portfolio-item" onclick="showProjectDetails('Pengembangan Game C++', 'Kontribusi pada pengembangan mesin game menggunakan C++, berfokus pada optimasi kinerja dan logika fisika dasar. Bagian dari proyek tim universitas.')">
+                            <img src="https://placehold.co/300x300/c0c0c0/333333?text=Game+Dev" alt="C++ Game Development Logo">
+                        </div>
+                        <div class="portfolio-item" onclick="showProjectDetails('Situs Web Dinamis PHP', 'Merancang dan mengembangkan situs web dinamis menggunakan PHP dan MySQL, termasuk sistem manajemen pengguna dan fitur forum. Proyek ini menampilkan keahlian dalam pengembangan web backend.')">
+                            <img src="https://placehold.co/300x300/e0e0e0/555555?text=PHP+Web" alt="PHP Website Logo">
+                        </div>
+                        <div class="portfolio-item" onclick="showProjectDetails('Desain Antarmuka Smart Home', 'Konsep desain UI/UX untuk sistem smart home, dengan fokus pada kesederhanaan dan aksesibilitas. Termasuk prototipe yang dapat diklik di Figma.')">
+                            <img src="https://placehold.co/300x300/d0d0d0/444444?text=Smart+UI" alt="Smart Home UI Logo">
+                        </div>
+                        <div class="portfolio-item" onclick="showProjectDetails('Penulisan Teknis API', 'Penulisan dokumentasi API yang komprehensif dan mudah dipahami untuk platform pengembang, meningkatkan adopsi API sebesar 10%.')">
+                            <img src="https://placehold.co/300x300/c0c0c0/333333?text=API+Docs" alt="API Documentation Logo">
+                        </div>
                     </div>
                 </div>
             </section>
 
             <!-- About Me Section -->
             <section id="about-content" class="content-section">
-                <div class="card p-6 sm:p-8">
-                    <h2 class="text-2xl sm:text-3xl font-bold mb-6 section-title border-b-2 pb-2 border-gray-400">Tentang Saya</h2>
+                <div class="card">
+                    <h2 class="section-title">Tentang Saya</h2>
                     <div class="text-gray-700 leading-relaxed text-base sm:text-lg">
                         <p class="mb-4">
                             Halo! Nama saya Rayden. Saya adalah seorang profesional multifaset yang menggabungkan keahlian dalam pengembangan perangkat lunak, desain UI/UX, dan penulisan konten. Saya sangat bersemangat tentang bagaimana teknologi dapat menciptakan pengalaman pengguna yang intuitif dan memecahkan masalah dunia nyata.
@@ -431,30 +508,30 @@
                         </p>
                     </div>
                 </div>
-                <div class="card p-6 sm:p-8 mt-6">
-                    <h2 class="text-2xl sm:text-3xl font-bold mb-6 section-title border-b-2 pb-2 border-gray-400">Keahlian</h2>
+                <div class="card mt-6">
+                    <h2 class="section-title">Keahlian</h2>
                     <div class="flex flex-wrap gap-3">
-                        <span class="skill-badge px-4 py-2 rounded-full text-sm font-semibold" onclick="showSkillDetails('HTML5')">HTML5</span>
-                        <span class="skill-badge px-4 py-2 rounded-full text-sm font-semibold" onclick="showSkillDetails('CSS3 (Tailwind CSS)')">CSS3 (Tailwind CSS)</span>
-                        <span class="skill-badge px-4 py-2 rounded-full text-sm font-semibold" onclick="showSkillDetails('JavaScript (React.js)')">JavaScript (React.js)</span>
-                        <span class="skill-badge px-4 py-2 rounded-full text-sm font-semibold" onclick="showSkillDetails('Node.js')">Node.js</span>
-                        <span class="skill-badge px-4 py-2 rounded-full text-sm font-semibold" onclick="showSkillDetails('Figma')">Figma</span>
-                        <span class="skill-badge px-4 py-2 rounded-full text-sm font-semibold" onclick="showSkillDetails('Adobe Photoshop')">Adobe Photoshop</span>
-                        <span class="skill-badge px-4 py-2 rounded-full text-sm font-semibold" onclick="showSkillDetails('Manajemen Proyek')">Manajemen Proyek</span>
-                        <span class="skill-badge px-4 py-2 rounded-full text-sm font-semibold" onclick="showSkillDetails('Komunikasi')">Komunikasi</span>
-                        <span class="skill-badge px-4 py-2 rounded-full text-sm font-semibold" onclick="showSkillDetails('Penulisan Konten')">Penulisan Konten</span>
-                        <span class="skill-badge px-4 py-2 rounded-full text-sm font-semibold" onclick="showSkillDetails('PHP')">PHP</span>
-                        <span class="skill-badge px-4 py-2 rounded-full text-sm font-semibold" onclick="showSkillDetails('Python')">Python</span>
-                        <span class="skill-badge px-4 py-2 rounded-full text-sm font-semibold" onclick="showSkillDetails('Dart')">Dart</span>
-                        <span class="skill-badge px-4 py-2 rounded-full text-sm font-semibold" onclick="showSkillDetails('C++')">C++</span>
+                        <span class="skill-badge px-4 py-2 text-sm font-semibold" onclick="showSkillDetails('HTML5')">HTML5</span>
+                        <span class="skill-badge px-4 py-2 text-sm font-semibold" onclick="showSkillDetails('CSS3 (Tailwind CSS)')">CSS3 (Tailwind CSS)</span>
+                        <span class="skill-badge px-4 py-2 text-sm font-semibold" onclick="showSkillDetails('JavaScript (React.js)')">JavaScript (React.js)</span>
+                        <span class="skill-badge px-4 py-2 text-sm font-semibold" onclick="showSkillDetails('Node.js')">Node.js</span>
+                        <span class="skill-badge px-4 py-2 text-sm font-semibold" onclick="showSkillDetails('Figma')">Figma</span>
+                        <span class="skill-badge px-4 py-2 text-sm font-semibold" onclick="showSkillDetails('Adobe Photoshop')">Adobe Photoshop</span>
+                        <span class="skill-badge px-4 py-2 text-sm font-semibold" onclick="showSkillDetails('Manajemen Proyek')">Manajemen Proyek</span>
+                        <span class="skill-badge px-4 py-2 text-sm font-semibold" onclick="showSkillDetails('Komunikasi')">Komunikasi</span>
+                        <span class="skill-badge px-4 py-2 text-sm font-semibold" onclick="showSkillDetails('Penulisan Konten')">Penulisan Konten</span>
+                        <span class="skill-badge px-4 py-2 text-sm font-semibold" onclick="showSkillDetails('PHP')">PHP</span>
+                        <span class="skill-badge px-4 py-2 text-sm font-semibold" onclick="showSkillDetails('Python')">Python</span>
+                        <span class="skill-badge px-4 py-2 text-sm font-semibold" onclick="showSkillDetails('Dart')">Dart</span>
+                        <span class="skill-badge px-4 py-2 text-sm font-semibold" onclick="showSkillDetails('C++')">C++</span>
                     </div>
                 </div>
             </section>
 
             <!-- Experience and Education Section -->
             <section id="experience-education-content" class="content-section">
-                <div class="card p-6 sm:p-8 mb-6">
-                    <h2 class="text-2xl sm:text-3xl font-bold mb-6 section-title border-b-2 pb-2 border-gray-400">Pengalaman</h2>
+                <div class="card mb-6">
+                    <h2 class="section-title">Pengalaman</h2>
                     <div class="space-y-6">
                         <!-- Experience Item 1: Software Developer -->
                         <div class="experience-item pl-6 py-2 relative">
@@ -494,8 +571,8 @@
                     </div>
                 </div>
 
-                <div class="card p-6 sm:p-8">
-                    <h2 class="text-2xl sm:text-3xl font-bold mb-6 section-title border-b-2 pb-2 border-gray-400">Pendidikan</h2>
+                <div class="card">
+                    <h2 class="section-title">Pendidikan</h2>
                     <div class="space-y-4">
                         <div>
                             <h3 class="text-xl font-semibold text-gray-800">Sarjana Ilmu Komputer</h3>
@@ -518,8 +595,8 @@
 
             <!-- Contact Section -->
             <section id="contact-content" class="content-section">
-                <div class="card p-6 sm:p-8">
-                    <h2 class="text-2xl sm:text-3xl font-bold mb-6 section-title border-b-2 pb-2 border-gray-400">Kontak</h2>
+                <div class="card">
+                    <h2 class="section-title">Kontak</h2>
                     <div class="text-gray-700 text-base sm:text-lg">
                         <p class="mb-4">
                             Jangan ragu untuk menghubungi saya untuk kesempatan kolaborasi, pertanyaan, atau sekadar menyapa!
@@ -541,7 +618,7 @@
         </main>
 
         <!-- Footer -->
-        <footer class="text-center text-gray-500 text-sm mt-12 pb-4">
+        <footer class="text-center text-gray-500 text-sm">
             &copy; 2025 Rayden. Hak Cipta Dilindungi.
         </footer>
 
@@ -660,7 +737,7 @@
 
         // Script to handle tab switching
         document.addEventListener('DOMContentLoaded', () => {
-            const navItems = document.querySelectorAll('.instagram-nav-item');
+            const navItems = document.querySelectorAll('.facebook-nav-item');
             const contentSections = document.querySelectorAll('.content-section');
 
             navItems.forEach(item => {
@@ -678,20 +755,13 @@
                 });
             });
 
-            // Theme toggle logic
-            const themeToggleBtn = document.getElementById('theme-toggle');
+            // Theme auto-detection logic (removed toggle button functionality)
             const htmlElement = document.documentElement; // Get the html element
 
             // Function to set the theme
             function setTheme(theme) {
                 htmlElement.setAttribute('data-theme', theme);
-                localStorage.setItem('theme', theme);
-                // Update button icon based on current theme
-                if (theme === 'dark') {
-                    themeToggleBtn.innerHTML = '<i class="fas fa-sun text-xl"></i>'; // Sun icon for dark mode
-                } else {
-                    themeToggleBtn.innerHTML = '<i class="fas fa-moon text-xl"></i>'; // Moon icon for light mode
-                }
+                localStorage.setItem('theme', theme); // Still save preference for consistent experience
             }
 
             // Check for saved theme preference or system preference
@@ -706,17 +776,19 @@
                 setTheme('light'); // Default to light if no preference and not dark system preference
             }
 
-            // Toggle theme on button click
-            themeToggleBtn.addEventListener('click', () => {
-                const currentTheme = htmlElement.getAttribute('data-theme');
-                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-                setTheme(newTheme);
+            // Listen for changes in system color scheme
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+                if (event.matches) {
+                    setTheme('dark');
+                } else {
+                    setTheme('light');
+                }
             });
 
-            // Initial welcome message (optional)
+            // Initial welcome message
             Swal.fire({
-                title: 'Selamat Datang, Rayden!',
-                text: 'Jelajahi profil saya yang terinspirasi Instagram. Klik gambar di portofolio atau badge keahlian untuk detailnya. Coba juga fitur mode gelap/terang!',
+                title: 'Hai, Gue Rayden!',
+                text: 'Jelajahi profil saya yang terinspirasi Facebook. Klik gambar di postingan atau badge keahlian untuk detailnya.',
                 icon: 'info',
                 confirmButtonText: 'Oke',
                 confirmButtonColor: getComputedStyle(document.documentElement).getPropertyValue('--button-bg').trim()
