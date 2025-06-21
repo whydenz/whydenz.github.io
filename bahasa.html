@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penerjemah Logat Bahasa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- SweetAlert2 CSS and JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        /* This style block is copied from the main app for visual consistency */
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+            background-color: #f3f4f6;
+            color: #000000;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .form-section {
+            background-color: #ffffff;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            margin-bottom: 1.5rem;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+        .form-section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #000000;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 0.75rem;
+            margin-bottom: 1rem;
+            transition: color 0.3s, border-color 0.3s;
+        }
+        label {
+            font-weight: 500;
+            color: #000000;
+            margin-bottom: 0.5rem;
+            display: block;
+            transition: color 0.3s;
+        }
+        .input-field, .select-field, .textarea-field {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            background-color: #f9fafb;
+            transition: border-color 0.2s, box-shadow 0.2s, background-color 0.3s, color 0.3s;
+            color: #000000;
+        }
+        .input-field:focus, .select-field:focus, .textarea-field:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+        }
+        .btn {
+            padding: 0.75rem 1.5rem;
+            color: white;
+            font-weight: 600;
+            border-radius: 0.5rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .btn-primary { background: linear-gradient(to right, #16a34a, #15803d); }
+        .btn-secondary { background: linear-gradient(to right, #4f46e5, #7c3aed); }
+        .copy-btn {
+            background-color: #6b7280;
+            color: white;
+            padding: 0.3rem 0.75rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        .spinner {
+            display: none;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border-left-color: #fff;
+            animation: spin 1s ease infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        body.dark-mode { background-color: #1a202c; color: #e2e8f0; }
+        body.dark-mode .form-section { background-color: #2d3748; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2); }
+        body.dark-mode .form-section-title { color: #f7fafc; border-color: #4a5568; }
+        body.dark-mode label { color: #cbd5e0; }
+        body.dark-mode .input-field,
+        body.dark-mode .select-field,
+        body.dark-mode .textarea-field { background-color: #4a5568; border-color: #616e7f; color: #e2e8f0; }
+        .theme-toggle-btn { background-color: #4f46e5; color: white; border: none; border-radius: 9999px; padding: 0.75rem 1rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); }
+        .back-btn { background-color: #6b7280; margin-right: 1rem; }
+    </style>
+</head>
+<body class="bg-gray-100 p-4 md:p-8">
+    <header class="flex justify-between items-center max-w-4xl mx-auto mb-8">
+         <div class="flex items-center">
+             <a href="/veo3.html" class="btn back-btn">
+                 <i class="fas fa-arrow-left"></i>
+                 <span>Kembali</span>
+             </a>
+             <button id="theme-toggle" class="theme-toggle-btn">
+                 <i class="fas fa-sun" id="theme-icon"></i>
+                 <span id="theme-text">Mode Terang</span>
+             </button>
+         </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold dark:text-white">Penerjemah Logat Bahasa</h1>
+            <p class="mt-2 text-lg text-gray-600 dark:text-gray-400">Terjemahkan teks ke dalam berbagai logat atau gaya bahasa daerah.</p>
+        </div>
+
+        <div class="form-section">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                    <label for="source-lang">Dari Bahasa</label>
+                    <select id="source-lang" class="select-field">
+                        <option value="Indonesia" selected>Indonesia</option>
+                        <option value="Inggris">Inggris</option>
+                        <option value="Jawa">Jawa</option>
+                        <option value="Sunda">Sunda</option>
+                        <option value="Betawi">Betawi</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="target-lang">Ke Logat / Bahasa</label>
+                    <select id="target-lang" class="select-field">
+                        <option value="Jawa" selected>Jawa (Ngoko)</option>
+                        <option value="Jawa Krama Inggil">Jawa (Krama Inggil)</option>
+                        <option value="Sunda">Sunda</option>
+                        <option value="Betawi">Betawi</option>
+                        <option value="Medan">Logat Medan</option>
+                        <option value="Makassar">Logat Makassar</option>
+                        <option value="Gaya Puisi">Gaya Bahasa Puisi</option>
+                        <option value="Inggris Formal">Inggris (Formal)</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <label for="source-text">Teks Asli</label>
+                <textarea id="source-text" class="textarea-field" rows="6" placeholder="Masukkan teks yang ingin Anda terjemahkan di sini..."></textarea>
+            </div>
+
+            <button id="translate-btn" class="btn btn-primary w-full">
+                <span class="spinner"></span>
+                <i class="fas fa-language"></i>
+                <span>Terjemahkan</span>
+            </button>
+        </div>
+
+        <div id="output-section" class="form-section" style="display: none;">
+             <div class="flex justify-between items-center mb-2">
+                <h2 class="form-section-title !border-0 !mb-0">✅ Hasil Terjemahan</h2>
+                <button class="btn copy-btn" onclick="copyResult()">Salin <i class="fas fa-copy"></i></button>
+            </div>
+            <textarea id="output-text" class="textarea-field font-mono" rows="6" readonly></textarea>
+        </div>
+    </main>
+
+    <footer class="text-center mt-8 pb-4">
+        <p class="text-sm text-gray-500 dark:text-gray-400">&copy; <span id="current-year"></span> Rayyys</p>
+    </footer>
+
+<script>
+    // Function to toggle dark mode
+    function toggleTheme() {
+        const body = document.body;
+        const themeIcon = document.getElementById('theme-icon');
+        const themeText = document.getElementById('theme-text');
+        body.classList.toggle('dark-mode');
+        if (body.classList.contains('dark-mode')) {
+            localStorage.setItem('theme', 'dark');
+            themeIcon.classList.replace('fa-sun', 'fa-moon');
+            themeText.textContent = 'Mode Gelap';
+        } else {
+            localStorage.setItem('theme', 'light');
+            themeIcon.classList.replace('fa-moon', 'fa-sun');
+            themeText.textContent = 'Mode Terang';
+        }
+    }
+
+    // Apply theme on load
+    function applyThemeOnLoad() {
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        const body = document.body;
+        const themeIcon = document.getElementById('theme-icon');
+        const themeText = document.getElementById('theme-text');
+        if (savedTheme === 'dark') {
+            body.classList.add('dark-mode');
+            themeIcon.classList.replace('fa-sun', 'fa-moon');
+            themeText.textContent = 'Mode Gelap';
+        }
+    }
+
+    /**
+     * Copies the translated text to the clipboard.
+     */
+    function copyResult() {
+        const textarea = document.getElementById('output-text');
+        if (textarea && textarea.value) {
+            textarea.select();
+             if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(textarea.value).then(() => {
+                    Swal.fire({
+                        title: 'Disalin!',
+                        icon: 'success',
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                });
+            } else {
+                document.execCommand('copy');
+                Swal.fire({
+                    title: 'Disalin!',
+                    icon: 'success',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+            }
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        applyThemeOnLoad();
+        document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        const translateBtn = document.getElementById('translate-btn');
+        translateBtn.addEventListener('click', async () => {
+            const sourceLang = document.getElementById('source-lang').value;
+            const targetLang = document.getElementById('target-lang').value;
+            const sourceText = document.getElementById('source-text').value;
+
+            if (!sourceText.trim()) {
+                Swal.fire('Input Kosong', 'Silakan masukkan teks untuk diterjemahkan.', 'warning');
+                return;
+            }
+
+            const spinner = translateBtn.querySelector('.spinner');
+            spinner.style.display = 'inline-block';
+            translateBtn.disabled = true;
+
+            const translationPrompt = `
+                Terjemahkan teks berikut dari bahasa '${sourceLang}' ke gaya bahasa atau logat '${targetLang}'.
+                Fokus utama adalah menangkap nuansa, idiom, dan gaya bicara yang otentik dari logat '${targetLang}', bukan terjemahan literal.
+                Hanya berikan hasil terjemahannya saja, tanpa penjelasan tambahan.
+
+                Teks asli: "${sourceText}"
+            `;
+
+            try {
+                // NOTE: The API key is handled by the execution environment.
+                // Leaving this string empty is the correct approach. Do not hardcode secrets.
+                const apiKey = "AIzaSyDt_L5F31TXkkk2WwIZEXzDfBe1Sk2I35w";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                
+                const payload = { contents: [{ role: "user", parts: [{ text: translationPrompt }] }] };
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(`API Error: ${errorData.error ? errorData.error.message : 'Unknown error'}`);
+                }
+
+                const result = await response.json();
+                const translatedText = result.candidates[0].content.parts[0].text;
+                
+                document.getElementById('output-text').value = translatedText.trim();
+                document.getElementById('output-section').style.display = 'block';
+                document.getElementById('output-section').scrollIntoView({ behavior: 'smooth' });
+
+            } catch (error) {
+                console.error("Translation API call failed:", error);
+                Swal.fire('Terjadi Kesalahan', error.message, 'error');
+            } finally {
+                spinner.style.display = 'none';
+                translateBtn.disabled = false;
+            }
+        });
+    });
+</script>
+</body>
+</html>
