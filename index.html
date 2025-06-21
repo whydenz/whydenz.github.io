@@ -464,14 +464,13 @@
                         <span class="stat-label">Sertifikasi</span>
                     </div>
                 </div>
-                <a href="/download">
                 <div class="profile-action-buttons">
-                    <button class="action-button">
+                    <a href="/download" class="action-button">
                         <i class="fas fa-plus-circle"></i> Download Script HTML
-                    </button></a>
-                    <a href="/"> <button class="action-button secondary-action-button">
+                    </a>
+                    <button class="action-button secondary-action-button" onclick="showEditProfileAlert()">
                         <i class="fas fa-edit"></i> Edit Profil
-                    </button></a>
+                    </button>
                 </div>
             </div>
         </header>
@@ -687,6 +686,19 @@
                 text: description,
                 icon: 'info',
                 confirmButtonText: 'Tutup',
+                confirmButtonColor: confirmBtnColor
+            });
+        }
+        
+        // Function to show alert for Edit Profile button
+        function showEditProfileAlert() {
+            const rootStyles = getComputedStyle(document.documentElement);
+            const confirmBtnColor = rootStyles.getPropertyValue('--button-bg').trim();
+            Swal.fire({
+                title: 'Kyahhhhh....!',
+                text: "Don't touch me....",
+                icon: 'warning',
+                confirmButtonText: 'Baiklah, maaf!',
                 confirmButtonColor: confirmBtnColor
             });
         }
