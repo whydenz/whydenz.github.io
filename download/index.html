@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ryy GNTNG ^_^</title>
     <!-- Menggunakan Tailwind CSS untuk styling -->
+    <link rel="icon" href="/profile.png" type="image/png">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Menambahkan font Inter untuk tampilan yang lebih bersih */
@@ -41,14 +42,14 @@
                 </div>
             </div>
             <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white">DOWNLOAD SC BUCIN</h1>
-            <p class="text-gray-500 dark:text-gray-400 mt-2">NOTE: File berextensi .PHP rename dulu ke HTML sebelum dikirim ke cewek lo.</p>
+            <p class="text-gray-500 dark:text-gray-400 mt-2"><font color="red">NOTE: Jangan claim SC gue yahh adik"<br>gue tampol lu kalo nakal....<br></font>.</p>
         </div>
 
         <!-- Form Input -->
         <div class="space-y-4">
             <div>
-                <label for="secret-code" class="sr-only">Paste Link VT</label>
-                <input type="text" id="secret-code" placeholder="Paste link di sini..."
+                <label for="secret-code" class="sr-only">Maukkin Nama File</label>
+                <input type="text" id="secret-code" placeholder="e.g Nama script..."
                     class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 rounded-lg text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors text-center tracking-widest lowcase">
             </div>
         </div>
@@ -73,17 +74,17 @@
             {
                 code: 'last',
                 fileURL: '/file/last.html.php',
-                displayName: 'DOWNLOAD SCRIPT'
+                displayName: 'Last.html'
             },
             {
                 code: 'ayang',
                 fileURL: '/file/ayang.html.php',
-                displayName: 'DOWNLOAD SCRIPT'
+                displayName: 'Ayang.html'
             },
             {
                 code: 'sindiran',
                 fileURL: '/file/sindiran.html.php',
-                displayName: 'DOWNLOAD SCRIPT'
+                displayName: 'Sindiran.html'
             },
             {
                 code: 'Last',
@@ -159,11 +160,11 @@
 
             if (matchedFile) {
                 // Jika kode ditemukan, buat tombol download
-                showMessage('Link VT valid! File siap.', 'success');
+                showMessage('Kode valid! File siap.', 'success');
                 createDownloadButton(matchedFile);
             } else {
                 // Jika kode tidak ditemukan
-                showMessage('Link VT-nya salah vantekkkk!!!.', 'error');
+                showMessage('Kode salah.', 'error');
             }
         });
         
@@ -177,7 +178,7 @@
             
             button.innerHTML = `
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                <span>Unduh: ${fileData.displayName}</span>
+                <span>DOWNLOAD: ${fileData.displayName}</span>
             `;
             
             downloadArea.appendChild(button);
