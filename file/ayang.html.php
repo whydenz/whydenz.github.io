@@ -13,6 +13,7 @@
     <!-- Application Structure Plan: The application is designed as an interactive "digital card" generator. Instead of displaying a static list, it presents one pick-up line at a time within a central card. This focuses the user's attention, making each message feel more personal and impactful. Navigation is handled by 'Next' and 'Previous' buttons, creating a simple and intuitive user flow. This structure was chosen to transform the passive act of reading a list into an engaging and romantic experience, mimicking the act of opening a series of love notes. -->
     <!-- Visualization & Content Choices: Report Info: Six text-based pick-up lines. Goal: To inform and create an emotional connection. Viz/Presentation: Structured HTML/CSS styled as a card to hold the text. The text is vertically and horizontally centered using a table element as per user request. Interaction: JavaScript powers 'Next'/'Previous' buttons to cycle through an array of the lines, updating the table cell's text dynamically. A counter shows progress. Justification: This method is ideal for sequential, text-heavy content where the goal is emotional engagement. SweetAlert2 is added for a final, conclusive message. Library/Method: Vanilla JavaScript, HTML Table for layout. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <!-- Cr by Rayden -->
     <style>
         body {
             font-family: 'Poppins', sans-serif;
