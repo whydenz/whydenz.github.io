@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ryy Unduh File</title>
+    <!-- Menggunakan Tailwind CSS untuk styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Menambahkan font Inter untuk tampilan yang lebih bersih */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Transisi untuk area download agar muncul dengan mulus */
+        #download-area a {
+            transition: all 0.3s ease-in-out;
+            transform: translateY(10px);
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+        }
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 flex items-center justify-center min-h-screen p-4">
+
+    <div class="w-full max-w-lg bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 text-center">
+        
+        <!-- Header -->
+        <div class="mb-6">
+            <div class="flex justify-center mb-4">
+                <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
+                    <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m.75 12 3 3m0 0 3-3m-3 3v-6m-1.5-9H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+                    </svg>
+                </div>
+            </div>
+            <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white">DOWNLOAD SC BUCIN</h1>
+            <p class="text-gray-500 dark:text-gray-400 mt-2">NOTE: File berextensi .PHP rename dulu ke HTML sebelum dikirim ke cewek lo.</p>
+        </div>
+
+        <!-- Form Input -->
+        <div class="space-y-4">
+            <div>
+                <label for="secret-code" class="sr-only">Paste Link VT</label>
+                <input type="text" id="secret-code" placeholder="Paste link di sini..."
+                    class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 rounded-lg text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors text-center tracking-widest uppercase">
+            </div>
+        </div>
+
+        <!-- Area Pesan & Tombol Download Dinamis -->
+        <div class="mt-4 h-24 flex flex-col justify-center items-center">
+             <div id="message-area" class="text-sm font-medium h-6 mb-2">
+                <!-- Pesan akan muncul di sini -->
+             </div>
+             <div id="download-area" class="w-full">
+                <!-- Tombol download akan dibuat oleh JavaScript di sini -->
+             </div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- PENGATURAN ---
+        // Edit daftar file dan kode unik di bawah ini.
+        // Anda bisa menambah atau mengurangi jumlah file sesuai kebutuhan.
+        const FILES_DATA = [
+            {
+                code: 'https://vt.tiktok.com/ZSk7xW96Q/',
+                fileURL: '/file/last.html.php',
+                displayName: 'DOWNLOAD SCRIPT'
+            },
+            {
+                code: 'https://vt.tiktok.com/ZSk7xTkP2/',
+                fileURL: '/file/ayang.html.php',
+                displayName: 'DOWNLOAD SCRIPT'
+            },
+            {
+                code: 'https://vt.tiktok.com/ZSk7xKYrB/',
+                fileURL: '/file/sindiran.html.php',
+                displayName: 'DOWNLOAD SCRIPT'
+            },
+            {
+                code: 'PRESENTASI24',
+                fileURL: '/path/to/your/presentation.pptx',
+                displayName: 'DOWNLOAD SCRIPT'
+            },
+            {
+                code: 'DATABACKUP',
+                fileURL: '/path/to/your/data-backup.rar',
+                displayName: 'DOWNLOAD SCRIPT'
+            },
+            {
+                code: 'FOTOPROYEK',
+                fileURL: '/path/to/your/project-photos.zip',
+                displayName: 'DOWNLOAD SCRIPT'
+            },
+            {
+                code: 'SKRIPSIFINAL',
+                fileURL: '/path/to/your/thesis.pdf',
+                displayName: 'DOWNLOAD SCRIPT'
+            },
+            {
+                code: 'SOFTWAREBARU',
+                fileURL: '/path/to/your/new-software.exe',
+                displayName: 'DOWNLOAD SCRIPT'
+            },
+            {
+                code: 'VIDEOEVENT',
+                fileURL: '/path/to/your/event-video.mp4',
+                displayName: 'DOWNLOAD SCRIPT'
+            },
+            {
+                code: 'RAHASIAX',
+                fileURL: '/path/to/your/secret-file.txt',
+                displayName: 'DOWNLOAD SCRIPT'
+            }
+        ];
+
+        // --- LOGIKA JAVASCRIPT ---
+        const codeInput = document.getElementById('secret-code');
+        const messageArea = document.getElementById('message-area');
+        const downloadArea = document.getElementById('download-area');
+
+        // Event listener untuk setiap kali pengguna mengetik
+        codeInput.addEventListener('input', function() {
+            const enteredCode = codeInput.value.trim().toUpperCase();
+            
+            // Kosongkan area download dan pesan setiap kali ada input baru
+            downloadArea.innerHTML = '';
+            messageArea.innerHTML = '';
+
+            if (enteredCode.length === 0) {
+                return; // Jangan lakukan apa-apa jika input kosong
+            }
+
+            // Cari file yang cocok dengan kode yang dimasukkan
+            const matchedFile = FILES_DATA.find(file => file.code.toUpperCase() === enteredCode);
+
+            if (matchedFile) {
+                // Jika kode ditemukan, buat tombol download
+                showMessage('Kode valid! File Anda siap diunduh.', 'success');
+                createDownloadButton(matchedFile);
+            } else {
+                // Jika kode tidak ditemukan
+                showMessage('Kode salah atau tidak ditemukan. Coba lagi.', 'error');
+            }
+        });
+        
+        // Fungsi untuk membuat tombol download secara dinamis
+        function createDownloadButton(fileData) {
+            const button = document.createElement('a'); // Gunakan tag <a> agar bisa diunduh
+            button.href = fileData.fileURL;
+            button.setAttribute('download', fileData.displayName);
+            
+            button.className = 'w-full max-w-xs mx-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-all duration-300 transform hover:translate-y-[-2px] shadow-lg hover:shadow-xl';
+            
+            button.innerHTML = `
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                <span>Unduh: ${fileData.displayName}</span>
+            `;
+            
+            downloadArea.appendChild(button);
+        }
+
+        // Fungsi untuk menampilkan pesan
+        function showMessage(message, type) {
+            let colorClass = type === 'error' ? 'text-red-500' : 'text-green-500';
+            messageArea.innerHTML = `<p class="${colorClass}">${message}</p>`;
+        }
+    </script>
+</body>
+</html>
