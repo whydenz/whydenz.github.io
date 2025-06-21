@@ -50,82 +50,36 @@
             <div>
                 <label for="secret-code" class="sr-only">Maukkin Nama File</label>
                 <input type="text" id="secret-code" placeholder="e.g Nama script..."
-                    class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 rounded-lg text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors text-center tracking-widest lowcase">
+                       class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 rounded-lg text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors text-center tracking-widest lowcase">
             </div>
         </div>
 
         <!-- Area Pesan & Tombol Download Dinamis -->
         <div class="mt-4 h-24 flex flex-col justify-center items-center">
              <div id="message-area" class="text-sm font-medium h-6 mb-2">
-                <!-- Pesan akan muncul di sini -->
+                 <!-- Pesan akan muncul di sini -->
              </div>
              <div id="download-area" class="w-full">
-                <!-- Tombol download akan dibuat oleh JavaScript di sini -->
+                 <!-- Tombol download akan dibuat oleh JavaScript di sini -->
              </div>
         </div>
 
     </div>
 
     <script>
-        // --- PENGATURAN ---
-        // Edit daftar file dan kode unik di bawah ini.
-        // Anda bisa menambah atau mengurangi jumlah file sesuai kebutuhan.
+        // --- PENGATURAN FILE ---
         const FILES_DATA = [
-            {
-                code: 'last',
-                fileURL: '/file/last.html',
-                displayName: 'Last.html'
-            },
-            {
-                code: 'ayang',
-                fileURL: '/file/ayang.html',
-                displayName: 'Ayang.html'
-            },
-            {
-                code: 'sindiran',
-                fileURL: '/file/sindiran.html',
-                displayName: 'Sindiran.html'
-            },
-            {
-                code: 'Si',
-                fileURL: '/file/yz.txt',
-                displayName: 'Yz.txt'
-            },
-            {
-                code: 'PRESENTASI24',
-                fileURL: '/path/to/your/presentation.pptx',
-                displayName: 'DOWNLOAD SCRIPT'
-            },
-            {
-                code: 'DATABACKUP',
-                fileURL: '/path/to/your/data-backup.rar',
-                displayName: 'DOWNLOAD SCRIPT'
-            },
-            {
-                code: 'FOTOPROYEK',
-                fileURL: '/path/to/your/project-photos.zip',
-                displayName: 'DOWNLOAD SCRIPT'
-            },
-            {
-                code: 'SKRIPSIFINAL',
-                fileURL: '/path/to/your/thesis.pdf',
-                displayName: 'DOWNLOAD SCRIPT'
-            },
-            {
-                code: 'SOFTWAREBARU',
-                fileURL: '/path/to/your/new-software.exe',
-                displayName: 'DOWNLOAD SCRIPT'
-            },
-            {
-                code: 'VIDEOEVENT',
-                fileURL: '/path/to/your/event-video.mp4',
-                displayName: 'DOWNLOAD SCRIPT'
-            },
-            {
-                code: 'RAHASIAX',
-                fileURL: '/path/to/your/secret-file.txt',
-                displayName: 'DOWNLOAD SCRIPT'
-            }
+            { code: 'last', fileURL: '/file/last.html', displayName: 'Last.html' },
+            { code: 'ayang', fileURL: '/file/ayang.html', displayName: 'Ayang.html' },
+            { code: 'sindiran', fileURL: '/file/sindiran.html', displayName: 'Sindiran.html' },
+            { code: 'Si', fileURL: '/file/yz.txt', displayName: 'Yz.txt' },
+            { code: 'PRESENTASI24', fileURL: '/path/to/your/presentation.pptx', displayName: 'DOWNLOAD SCRIPT' },
+            { code: 'DATABACKUP', fileURL: '/path/to/your/data-backup.rar', displayName: 'DOWNLOAD SCRIPT' },
+            { code: 'FOTOPROYEK', fileURL: '/path/to/your/project-photos.zip', displayName: 'DOWNLOAD SCRIPT' },
+            { code: 'SKRIPSIFINAL', fileURL: '/path/to/your/thesis.pdf', displayName: 'DOWNLOAD SCRIPT' },
+            { code: 'SOFTWAREBARU', fileURL: '/path/to/your/new-software.exe', displayName: 'DOWNLOAD SCRIPT' },
+            { code: 'VIDEOEVENT', fileURL: '/path/to/your/event-video.mp4', displayName: 'DOWNLOAD SCRIPT' },
+            { code: 'RAHASIAX', fileURL: '/path/to/your/secret-file.txt', displayName: 'DOWNLOAD SCRIPT' }
         ];
 
         // --- LOGIKA JAVASCRIPT ---
@@ -133,34 +87,30 @@
         const messageArea = document.getElementById('message-area');
         const downloadArea = document.getElementById('download-area');
 
-        // Event listener untuk setiap kali pengguna mengetik
+        // Event listener untuk input kode file
         codeInput.addEventListener('input', function() {
             const enteredCode = codeInput.value.trim().toUpperCase();
             
-            // Kosongkan area download dan pesan setiap kali ada input baru
             downloadArea.innerHTML = '';
             messageArea.innerHTML = '';
 
             if (enteredCode.length === 0) {
-                return; // Jangan lakukan apa-apa jika input kosong
+                return;
             }
 
-            // Cari file yang cocok dengan kode yang dimasukkan
             const matchedFile = FILES_DATA.find(file => file.code.toUpperCase() === enteredCode);
 
             if (matchedFile) {
-                // Jika kode ditemukan, buat tombol download
                 showMessage('Kode valid! File siap.', 'success');
                 createDownloadButton(matchedFile);
             } else {
-                // Jika kode tidak ditemukan
                 showMessage('Kode salah.', 'error');
             }
         });
         
-        // Fungsi untuk membuat tombol download secara dinamis
+        // Fungsi untuk membuat tombol download
         function createDownloadButton(fileData) {
-            const button = document.createElement('a'); // Gunakan tag <a> agar bisa diunduh
+            const button = document.createElement('a');
             button.href = fileData.fileURL;
             button.setAttribute('download', fileData.displayName);
             
@@ -179,6 +129,21 @@
             let colorClass = type === 'error' ? 'text-red-500' : 'text-green-500';
             messageArea.innerHTML = `<p class="${colorClass}">${message}</p>`;
         }
+    </script>
+    
+    <!-- SKRIP UNTUK MENCEGAH VIEW-SOURCE -->
+    <script>
+        // Mencegah klik kanan
+        document.addEventListener('contextmenu', event => event.preventDefault());
+
+        // Mencegah pintasan keyboard untuk membuka developer tools
+        document.addEventListener('keydown', event => {
+            if (event.key === 'F12' || 
+               (event.ctrlKey && event.shiftKey && (event.key === 'I' || event.key === 'i' || event.key === 'J' || event.key === 'j')) ||
+               (event.ctrlKey && (event.key === 'U' || event.key === 'u'))) {
+                event.preventDefault();
+            }
+        });
     </script>
 </body>
 </html>
