@@ -1,333 +1,825 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="ms" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pesan Bucin Untukmu</title>
-     <link rel="icon" href="/profile.png" type="image/png">
-    <!-- Tailwind CSS CDN untuk styling modern dan responsif -->
+    <title>Rayden - Profil</title>
+    <!-- Favicon -->
+    <link rel="icon" href="/profile.png" type="image/png">
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- SweetAlert2 CDN untuk pop-up yang cantik -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- Tone.js CDN untuk menghasilkan suara efek (opsional, jika ingin menambahkan efek suara lain di masa depan) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.min.js"></script>
+    <!-- SweetAlert2 CSS and JS CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.1/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.1/dist/sweetalert2.all.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Menggunakan font Inter dari Google Fonts */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+        /* CSS Variables for Light and Dark Theme (Facebook-inspired light mode) */
+        :root {
+            --bg-primary: #f0f2f5; /* Facebook light grey background */
+            --bg-secondary: #ffffff; /* Card and container background */
+            --text-primary: #050505; /* Main text color */
+            --text-secondary: #65676b; /* Secondary text color */
+            --border-color: #dadde1; /* Subtle border color */
+            --card-shadow: rgba(0, 0, 0, 0.1); /* Slightly more prominent shadow for Facebook cards */
+            --skill-badge-bg: #e4e6eb;
+            --skill-badge-hover-bg: #d8dade;
+            --experience-border: #bcc0c4;
+            --button-bg: #1877f2; /* Facebook blue */
+            --button-hover-bg: #166fe5; /* Darker Facebook blue */
+            --verified-badge-color: #1877f2; /* Facebook blue for verified badge */
+            --theme-toggle-color: #65676b; /* Keep for general text adapting to theme */
+            --theme-toggle-hover-color: #050505; /* Keep for general text adapting to theme */
+            --link-color: #1877f2;
+            --link-hover-color: #166fe5;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #18191a; /* Dark Facebook background */
+            --bg-secondary: #242526; /* Dark card background */
+            --text-primary: #e4e6eb; /* Light text for dark mode (white-ish) */
+            --text-secondary: #b0b3b8; /* Lighter secondary text for dark mode */
+            --border-color: #3e4042;
+            --card-shadow: rgba(255, 255, 255, 0.05);
+            --skill-badge-bg: #3a3b3c;
+            --skill-badge-hover-bg: #5a5b5c;
+            --experience-border: #888888;
+            --button-bg: #2d88ff; /* Slightly lighter blue for dark mode button */
+            --button-hover-bg: #4299e1;
+            --verified-badge-color: #2d88ff;
+            --theme-toggle-color: #b0b3b8;
+            --theme-toggle-hover-color: #e4e6eb;
+            --link-color: #2d88ff;
+            --link-hover-color: #4299e1;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #e9f2f7; /* Warna latar belakang mirip Facebook yang lebih terang */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            overflow: hidden; /* Mencegah scrolling */
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            margin: 0; /* Ensure no default body margin */
+            padding: 0; /* Ensure no default body padding */
+            overflow-x: hidden; /* Prevent horizontal scroll on small screens */
         }
-        .container {
-            text-align: center;
-            padding: 2.5rem; /* Padding yang lebih besar */
-            background-color: #fff;
-            border-radius: 1.5rem; /* Sudut lebih membulat */
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); /* Bayangan yang lebih lembut, sedikit lebih gelap */
-            max-width: 90%; /* Responsif untuk layar kecil */
-            animation: fadeIn 1s ease-out; /* Animasi fade in */
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .bucin-button {
-            background-image: linear-gradient(to right, #1877f2, #3b5998); /* Gradient warna biru Facebook */
-            color: white;
-            padding: 1rem 2.5rem; /* Padding lebih besar untuk tombol */
-            border-radius: 9999px; /* Tombol sangat membulat (pill-shaped) */
-            font-size: 1.25rem; /* Ukuran font lebih besar */
-            font-weight: 700;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease; /* Transisi halus untuk hover */
-            box-shadow: 0 5px 15px rgba(24, 119, 242, 0.4); /* Bayangan tombol biru */
-        }
-        .bucin-button:hover {
-            transform: translateY(-3px); /* Efek melayang saat hover */
-            box-shadow: 0 8px 20px rgba(24, 119, 242, 0.6); /* Bayangan lebih intens saat hover */
-        }
-        .bucin-button:active {
-            transform: translateY(0); /* Kembali ke posisi semula saat diklik */
-            box-shadow: 0 3px 10px rgba(24, 119, 242, 0.3);
-        }
-        .heart-icon {
-            color: #1877f2; /* Warna hati menjadi biru Facebook */
-            animation: pulse 1.5s infinite ease-in-out; /* Animasi detak jantung */
-            display: block;
-            margin: 0 auto 1.5rem; /* Margin di bawah ikon hati */
-            font-size: 3rem; /* Ukuran ikon hati lebih besar */
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-        /* Styling untuk daftar gombalan (tidak lagi digunakan dalam SweetAlert utama, tetapi dipertahankan untuk referensi) */
-        .gombalan-list {
-            list-style: none; /* Hilangkan bullet point default */
-            padding: 0;
-            margin-top: 1.5rem;
-            text-align: left; /* Rata kiri untuk daftar */
-        }
-        .gombalan-list li {
-            font-size: 1rem;
-            color: #666;
-            margin-bottom: 0.5rem;
-            padding-left: 1.5rem; /* Indentasi untuk ikon */
-            position: relative;
-        }
-        .gombalan-list li::before {
-            content: '✨'; /* Ikon bintang sebagai bullet point */
-            position: absolute;
-            left: 0;
-            top: 0;
-        }
-        .volume-control {
+        .facebook-container {
+            max-width: 960px;
+            margin: 0 auto;
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px; /* Slightly less rounded than Instagram */
+            box-shadow: 0 2px 4px var(--card-shadow); /* Facebook-like shadow */
             margin-top: 2rem;
+            padding-bottom: 2rem;
+            transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            box-sizing: border-box; /* Include padding and border in element's total width and height */
+        }
+        .cover-photo {
+            width: 100%;
+            height: 300px; /* Taller cover photo */
+            background-image: url('/banner.png'); /* Please ensure this path is correct */
+            background-size: cover;
+            background-position: center;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            overflow: hidden;
+            position: relative; /* For z-index stacking */
+        }
+        .profile-header-content {
+            position: relative;
+            margin-top: -100px; /* Overlap avatar on cover photo */
+            padding: 0 2rem;
+            display: flex;
+            align-items: flex-end; /* Align items to the bottom */
+            z-index: 2; /* Ensure header content is above cover */
+        }
+        .profile-avatar {
+            flex-shrink: 0;
+            margin-right: 1.5rem;
+            z-index: 3; /* Avatar on top */
+            border: 4px solid var(--bg-secondary); /* White border around avatar */
+            border-radius: 50%;
+            transition: border-color 0.3s ease;
+        }
+        .profile-avatar img {
+            width: 160px; /* Slightly larger avatar */
+            height: 160px;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block; /* Remove extra space below image */
+        }
+        .profile-info {
+            flex-grow: 1;
+            padding-bottom: 1rem; /* Space below info before tabs */
+            min-height: 160px; /* Ensure info section has height even if bio is short */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end; /* Push content to bottom for alignment */
+        }
+        .profile-name-group {
             display: flex;
             align-items: center;
-            justify-content: center;
+            margin-bottom: 0.25rem; /* Reduced margin */
+        }
+        .profile-name {
+            font-size: 2.5rem; /* Larger name */
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-right: 0.5rem;
+            transition: color 0.3s ease;
+        }
+        .verified-badge {
+            color: var(--verified-badge-color);
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+        .profile-tagline {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
+        }
+        .profile-bio {
+            font-size: 1rem;
+            color: var(--text-primary);
+            line-height: 1.5;
+            transition: color 0.3s ease;
+        }
+        .profile-action-buttons {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem; /* Space below bio */
+            flex-wrap: wrap; /* Allow buttons to wrap */
+        }
+        .action-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.6rem 1rem;
+            background-color: var(--button-bg);
+            color: white; /* Always white text on primary buttons */
+            border-radius: 6px;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+            font-size: 0.9rem;
+            flex-grow: 1; /* Allow buttons to grow and fill space */
+            justify-content: center; /* Center text and icon */
+        }
+        .action-button i {
+            margin-right: 0.4rem;
+        }
+        .action-button:hover {
+            background-color: var(--button-hover-bg);
+        }
+        .secondary-action-button {
+            background-color: var(--skill-badge-bg);
+            color: var(--text-primary);
+        }
+        .secondary-action-button:hover {
+            background-color: var(--skill-badge-hover-bg);
+        }
+
+        /* Facebook-like navigation tabs */
+        .facebook-nav {
+            display: flex;
+            justify-content: flex-start; /* Align tabs to the left */
+            border-top: 1px solid var(--border-color);
+            background-color: var(--bg-secondary);
+            padding: 0 2rem; /* Align with header padding */
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            transition: background-color 0.3s ease, border-top-color 0.3s ease;
+            flex-wrap: wrap; /* Allow tabs to wrap on smaller screens */
+        }
+        .facebook-nav-item {
+            padding: 0.8rem 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-secondary);
+            border-bottom: 3px solid transparent; /* Thicker active border */
+            transition: color 0.2s ease, border-bottom-color 0.2s ease;
+            white-space: nowrap; /* Prevent text wrapping */
+        }
+        .facebook-nav-item.active {
+            color: var(--link-color); /* Active tab is blue */
+            border-bottom-color: var(--link-color);
+        }
+        .facebook-nav-item:hover {
+            background-color: var(--skill-badge-bg); /* Light hover background */
+            border-radius: 4px;
+            color: var(--text-primary);
+        }
+        .facebook-nav-item i {
+            margin-right: 0.4rem;
+        }
+
+
+        .section-title {
+            color: var(--text-primary);
+            transition: color 0.3s ease;
+            font-size: 1.5rem; /* Smaller section titles for content area */
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+        .card {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            box-shadow: 0 1px 2px var(--card-shadow); /* Lighter shadow for inner cards */
+            padding: 1.5rem; /* Adjusted padding for inner cards */
+            margin-bottom: 1.5rem; /* Spacing between cards */
+            transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .skill-badge {
+            background-color: var(--skill-badge-bg);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out, color 0.3s ease;
+            border-radius: 4px; /* More square-ish badges */
+        }
+        .skill-badge:hover {
+            background-color: var(--skill-badge-hover-bg);
+        }
+        .experience-item {
+            border-left: 2px solid var(--experience-border);
+            transition: border-color 0.3s ease;
+        }
+        .experience-item .absolute {
+            background-color: var(--experience-border);
+            transition: background-color 0.3s ease;
+        }
+        .contact-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--button-bg);
+            color: white; /* Keep white for primary contact button */
+            border-radius: 6px; /* Match other buttons */
+            font-weight: 600;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        .contact-button:hover {
+            background-color: var(--button-hover-bg);
+        }
+
+        /* Content sections that will be toggled */
+        .content-section {
+            display: none;
+            padding: 0 2rem; /* Match general padding */
+            margin-top: 1.5rem; /* Space from tabs */
+        }
+        .content-section.active {
+            display: block;
+        }
+
+        /* Portfolio Grid */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Slightly larger grid items */
             gap: 1rem;
+            padding: 0; /* Remove padding here, it's in content-section */
+            margin-top: 0;
         }
-        .volume-control input[type="range"] {
-            width: 70%;
-            -webkit-appearance: none;
-            height: 8px;
-            border-radius: 5px;
-            background: #a8d9f9; /* Warna track lebih terang */
-            outline: none;
-            opacity: 0.7;
-            transition: opacity .2s;
-        }
-        .volume-control input[type="range"]:hover {
-            opacity: 1;
-        }
-        .volume-control input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #1877f2; /* Warna thumb biru Facebook */
+        .portfolio-item {
+            width: 100%;
+            padding-bottom: 100%;
+            position: relative;
             cursor: pointer;
-            box-shadow: 0 2px 5px rgba(24, 119, 242, 0.2);
+            overflow: hidden;
+            border-radius: 4px;
+            border: 1px solid var(--border-color); /* Subtle border */
+            transition: border-color 0.3s ease;
         }
-        .volume-control input[type="range"]::-moz-range-thumb {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #1877f2; /* Warna thumb biru Facebook */
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(24, 119, 242, 0.2);
+        .portfolio-item img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease-in-out;
+        }
+        .portfolio-item:hover img {
+            transform: scale(1.05);
+        }
+
+        /* General link styling */
+        a {
+            color: var(--link-color);
+            transition: color 0.3s ease;
+        }
+        a:hover {
+            color: var(--link-hover-color);
+        }
+        /* Ensure specific link colors within text also adapt */
+        .text-gray-600.hover\:underline {
+            color: var(--text-secondary); /* Use secondary text color for these links */
+        }
+        .text-gray-600.hover\:underline:hover {
+            color: var(--link-hover-color);
+        }
+
+
+        /* Footer color */
+        footer {
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
+            padding-top: 1rem; /* Adjust footer padding */
+            border-top: 1px solid var(--border-color); /* Add a border to separate from content */
+            margin-top: 2rem; /* Add margin above footer */
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .facebook-container {
+                margin-top: 0; /* No margin on top for mobile */
+                border-radius: 0; /* No border-radius on mobile */
+                border-left: none;
+                border-right: none;
+            }
+            .cover-photo {
+                height: 180px; /* Shorter cover for mobile */
+            }
+            .profile-header-content {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                margin-top: -60px; /* Adjust overlap */
+                padding: 0 1rem; /* Smaller horizontal padding */
+            }
+            .profile-avatar {
+                margin-right: 0;
+                margin-bottom: 1rem;
+                border-width: 3px; /* Slightly thinner border */
+            }
+            .profile-avatar img {
+                width: 120px;
+                height: 120px;
+            }
+            .profile-info {
+                padding-bottom: 0.5rem;
+                min-height: auto;
+                width: 100%; /* Ensure info takes full width in column layout */
+            }
+            .profile-name-group {
+                justify-content: center;
+                margin-bottom: 0.25rem;
+            }
+            .profile-name {
+                font-size: 2rem;
+            }
+            .verified-badge {
+                font-size: 1.25rem;
+            }
+            .profile-tagline {
+                font-size: 0.9rem;
+            }
+            .profile-bio {
+                font-size: 0.9rem;
+            }
+            .profile-stats {
+                justify-content: center;
+                gap: 1rem;
+                margin-top: 0.5rem;
+            }
+            .profile-action-buttons {
+                flex-direction: column; /* Stack buttons vertically on mobile */
+                width: 100%;
+                gap: 0.5rem;
+            }
+            .action-button {
+                width: 100%; /* Full width buttons */
+            }
+
+            .facebook-nav {
+                flex-wrap: wrap; /* Allow tabs to wrap on smaller screens */
+                padding: 0 0.5rem;
+                justify-content: space-around;
+            }
+            .facebook-nav-item {
+                padding: 0.6rem 0.5rem;
+                font-size: 0.8rem;
+                flex-basis: auto; /* Allow items to size naturally */
+                flex-grow: 1; /* Allow items to grow evenly */
+                text-align: center;
+            }
+            .facebook-nav-item i {
+                margin-right: 0.2rem;
+            }
+            .content-section {
+                padding: 0 1rem;
+            }
+            .card {
+                padding: 1rem;
+                margin-bottom: 1rem;
+            }
+            .portfolio-grid {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Smaller grid items for mobile */
+                gap: 0.5rem;
+            }
+            footer {
+                margin-top: 1.5rem; /* Reduce footer margin on mobile */
+            }
+        }
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .facebook-container {
+                margin-left: 1rem;
+                margin-right: 1rem;
+            }
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <div class="heart-icon">❤️</div>
-        <h1 class="text-3xl font-bold text-blue-700 mb-6">Buatmu ^_^</h1>
-        <p class="text-lg text-gray-700 mb-8">
-            Sebuah pesan kecil dari hati untuk membuat harimu lebih ceria!
-        </p>
-        <button id="showBucinMessage" class="bucin-button">
-            Klik Aku Donggg!
-        </button>
+<body class="antialiased">
+    <div class="facebook-container">
 
-        <div class="volume-control">
-            <span class="text-gray-600">🔊</span>
-            <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5">
-            <span class="text-gray-600">🎵</span>
-        </div>
+        <!-- Cover Photo -->
+        <div class="cover-photo"></div>
+
+        <!-- Header Section (Facebook Profile Header Content) -->
+        <header class="profile-header-content">
+            <div class="profile-avatar">
+                <img src="/profile.png" alt="Foto Profil Rayden">
+            </div>
+            <div class="profile-info">
+                <div class="profile-name-group">
+                    <h1 class="profile-name">Rayden</h1>
+                    <i class="fas fa-check-circle verified-badge" title="Profil Terverifikasi"></i>
+                </div>
+                <p class="profile-tagline">Pengembang Perangkat Lunak | Desainer UI/UX | Penulis Konten</p>
+                <p class="profile-bio">Bersemangat tentang teknologi, inovasi, dan pembelajaran berkelanjutan. Membangun pengalaman digital yang intuitif dan menarik.</p>
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">12</span>
+                        <span class="stat-label">Proyek</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">5</span>
+                        <span class="stat-label">Tahun Exp.</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">8</span>
+                        <span class="stat-label">Sertifikasi</span>
+                    </div>
+                </div>
+                <div class="profile-action-buttons" a href="/download.html">
+                    <button class="action-button">
+                        <i class="fas fa-plus-circle"></i> Download Script HTML
+                    </button>
+                    <button class="action-button secondary-action-button">
+                        <i class="fas fa-edit"></i> Edit Profil
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Facebook-like Navigation Tabs -->
+        <nav class="facebook-nav">
+            <div class="facebook-nav-item active" data-target="portfolio-content">
+                <i class="fas fa-th-large"></i>Postingan
+            </div>
+            <div class="facebook-nav-item" data-target="about-content">
+                <i class="fas fa-info-circle"></i>Tentang
+            </div>
+            <div class="facebook-nav-item" data-target="experience-education-content">
+                <i class="fas fa-briefcase"></i>Karir & Pendidikan
+            </div>
+            <div class="facebook-nav-item" data-target="contact-content">
+                <i class="fas fa-envelope"></i>Kontak
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="profile-main-content">
+            <!-- Portfolio Grid Section (Renamed to Postingan for Facebook context) -->
+            <section id="portfolio-content" class="content-section active">
+                <div class="card">
+                    <h2 class="section-title">Postingan Terbaru</h2>
+                    <div class="portfolio-grid">
+                        <!-- Placeholder Project Items (Click to show details) -->
+                        <div class="portfolio-item" onclick="showProjectDetails('Project Web Interaktif', 'Sebuah aplikasi web interaktif yang dibangun dengan React.js dan Node.js, menampilkan visualisasi data real-time dan fitur kolaborasi. Merupakan proyek inti yang menunjukkan keahlian full-stack.')">
+                            <img src="https://placehold.co/300x300/e0e0e0/555555?text=R-N+Web" alt="Project Web App 1 Logo">
+                        </div>
+                        <div class="portfolio-item" onclick="showProjectDetails('Desain Aplikasi Mobile', 'Desain UI/UX lengkap untuk aplikasi seluler E-commerce, dibuat di Figma. Fokus pada alur pengguna yang intuitif dan estetika minimalis. Termasuk wireframe, mockup, dan prototipe interaktif.')">
+                            <img src="https://placehold.co/300x300/d0d0d0/444444?text=UI/UX+App" alt="Mobile App Design Logo">
+                        </div>
+                        <div class="portfolio-item" onclick="showProjectDetails('Kampanye Konten Digital', 'Pengembangan strategi konten dan penulisan untuk kampanye pemasaran digital, menghasilkan peningkatan engagement sebesar 25% di media sosial. Fokus pada SEO dan penceritaan merek.')">
+                            <img src="https://placehold.co/300x300/c0c0c0/333333?text=Content+Mkt" alt="Content Campaign Logo">
+                        </div>
+                        <div class="portfolio-item" onclick="showProjectDetails('Sistem Manajemen Data Python', 'Pengembangan sistem backend berbasis Python untuk manajemen data, mengotomatiskan proses impor dan analisis data besar. Menggunakan Flask sebagai kerangka kerja web.')">
+                            <img src="https://placehold.co/300x300/e0e0e0/555555?text=Py+Data" alt="Python System Logo">
+                        </div>
+                        <div class="portfolio-item" onclick="showProjectDetails('Aplikasi Flutter Lintas Platform', 'Membangun aplikasi seluler lintas platform menggunakan Dart dan Flutter, menyediakan antarmuka pengguna yang cepat dan responsif. Menampilkan integrasi API eksternal.')">
+                            <img src="https://placehold.co/300x300/d0d0d0/444444?text=Flutter+Dev" alt="Flutter App Logo">
+                        </div>
+                        <div class="portfolio-item" onclick="showProjectDetails('Pengembangan Game C++', 'Kontribusi pada pengembangan mesin game menggunakan C++, berfokus pada optimasi kinerja dan logika fisika dasar. Bagian dari proyek tim universitas.')">
+                            <img src="https://placehold.co/300x300/c0c0c0/333333?text=Game+Dev" alt="C++ Game Development Logo">
+                        </div>
+                        <div class="portfolio-item" onclick="showProjectDetails('Situs Web Dinamis PHP', 'Merancang dan mengembangkan situs web dinamis menggunakan PHP dan MySQL, termasuk sistem manajemen pengguna dan fitur forum. Proyek ini menampilkan keahlian dalam pengembangan web backend.')">
+                            <img src="https://placehold.co/300x300/e0e0e0/555555?text=PHP+Web" alt="PHP Website Logo">
+                        </div>
+                        <div class="portfolio-item" onclick="showProjectDetails('Desain Antarmuka Smart Home', 'Konsep desain UI/UX untuk sistem smart home, dengan fokus pada kesederhanaan dan aksesibilitas. Termasuk prototipe yang dapat diklik di Figma.')">
+                            <img src="https://placehold.co/300x300/d0d0d0/444444?text=Smart+UI" alt="Smart Home UI Logo">
+                        </div>
+                        <div class="portfolio-item" onclick="showProjectDetails('Penulisan Teknis API', 'Penulisan dokumentasi API yang komprehensif dan mudah dipahami untuk platform pengembang, meningkatkan adopsi API sebesar 10%.')">
+                            <img src="https://placehold.co/300x300/c0c0c0/333333?text=API+Docs" alt="API Documentation Logo">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- About Me Section -->
+            <section id="about-content" class="content-section">
+                <div class="card">
+                    <h2 class="section-title">Tentang Saya</h2>
+                    <div class="text-gray-700 leading-relaxed text-base sm:text-lg">
+                        <p class="mb-4">
+                            Halo! Nama saya Rayden. Saya adalah seorang profesional multifaset yang menggabungkan keahlian dalam pengembangan perangkat lunak, desain UI/UX, dan penulisan konten. Saya sangat bersemangat tentang bagaimana teknologi dapat menciptakan pengalaman pengguna yang intuitif dan memecahkan masalah dunia nyata.
+                        </p>
+                        <p class="mb-4">
+                            Dengan latar belakang di Ilmu Komputer dan gairah yang kuat untuk estetika visual, saya telah mengembangkan kemampuan untuk membangun solusi digital yang fungsional dan menarik secara visual. Saya percaya bahwa komunikasi yang efektif adalah kunci dalam setiap proyek, baik itu melalui kode yang bersih, desain yang jelas, atau narasi yang menarik.
+                        </p>
+                        <p>
+                            Saya adalah pembelajar seumur hidup yang selalu mencari cara baru untuk meningkatkan keterampilan dan beradaptasi dengan tren teknologi yang terus berkembang. Di luar pekerjaan, saya senang menjelajahi teknologi baru, membaca buku tentang inovasi, dan berkontribusi pada komunitas open-source. Saya selalu terbuka untuk kolaborasi yang inovatif dan terhubung dengan sesama profesional.
+                        </p>
+                    </div>
+                </div>
+                <div class="card mt-6">
+                    <h2 class="section-title">Keahlian</h2>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="skill-badge px-4 py-2 text-sm font-semibold" onclick="showSkillDetails('HTML5')">HTML5</span>
+                        <span class="skill-badge px-4 py-2 text-sm font-semibold" onclick="showSkillDetails('CSS3 (Tailwind CSS)')">CSS3 (Tailwind CSS)</span>
+                        <span class="skill-badge px-4 py-2 text-sm font-semibold" onclick="showSkillDetails('JavaScript (React.js)')">JavaScript (React.js)</span>
+                        <span class="skill-badge px-4 py-2 text-sm font-semibold" onclick="showSkillDetails('Node.js')">Node.js</span>
+                        <span class="skill-badge px-4 py-2 text-sm font-semibold" onclick="showSkillDetails('Figma')">Figma</span>
+                        <span class="skill-badge px-4 py-2 text-sm font-semibold" onclick="showSkillDetails('Adobe Photoshop')">Adobe Photoshop</span>
+                        <span class="skill-badge px-4 py-2 text-sm font-semibold" onclick="showSkillDetails('Manajemen Proyek')">Manajemen Proyek</span>
+                        <span class="skill-badge px-4 py-2 text-sm font-semibold" onclick="showSkillDetails('Komunikasi')">Komunikasi</span>
+                        <span class="skill-badge px-4 py-2 text-sm font-semibold" onclick="showSkillDetails('Penulisan Konten')">Penulisan Konten</span>
+                        <span class="skill-badge px-4 py-2 text-sm font-semibold" onclick="showSkillDetails('PHP')">PHP</span>
+                        <span class="skill-badge px-4 py-2 text-sm font-semibold" onclick="showSkillDetails('Python')">Python</span>
+                        <span class="skill-badge px-4 py-2 text-sm font-semibold" onclick="showSkillDetails('Dart')">Dart</span>
+                        <span class="skill-badge px-4 py-2 text-sm font-semibold" onclick="showSkillDetails('C++')">C++</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Experience and Education Section -->
+            <section id="experience-education-content" class="content-section">
+                <div class="card mb-6">
+                    <h2 class="section-title">Pengalaman</h2>
+                    <div class="space-y-6">
+                        <!-- Experience Item 1: Software Developer -->
+                        <div class="experience-item pl-6 py-2 relative">
+                            <div class="absolute w-3 h-3 bg-gray-600 rounded-full -left-1.5 top-3"></div>
+                            <h3 class="text-xl font-semibold text-gray-800">Pengembang Perangkat Lunak Senior</h3>
+                            <p class="text-md text-gray-600">Tech Solutions Inc. | Januari 2022 - Sekarang</p>
+                            <ul class="list-disc list-inside text-gray-700 mt-2 space-y-1">
+                                <li>Memimpin pengembangan full-stack untuk aplikasi SaaS skala besar menggunakan React.js dan Node.js, meningkatkan skalabilitas sistem sebesar 30%.</li>
+                                <li>Mengimplementasikan praktik pengkodean bersih dan pengujian unit, mengurangi bug pasca-peluncuran sebesar 25%.</li>
+                                <li>Berkoordinasi dengan tim desain untuk mengintegrasikan antarmuka pengguna yang responsif dan berkinerja tinggi.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Experience Item 2: UI/UX Designer -->
+                        <div class="experience-item pl-6 py-2 relative">
+                            <div class="absolute w-3 h-3 bg-gray-600 rounded-full -left-1.5 top-3"></div>
+                            <h3 class="text-xl font-semibold text-gray-800">Desainer UI/UX</h3>
+                            <p class="text-md text-gray-600">Creative Digital Agency | Mei 2019 - Desember 2021</p>
+                            <ul class="list-disc list-inside text-gray-700 mt-2 space-y-1">
+                                <li>Merancang wireframe, mockup, dan prototipe interaktif menggunakan Figma untuk berbagai aplikasi web dan seluler, meningkatkan kepuasan pengguna sebesar 15%.</li>
+                                <li>Melakukan riset pengguna, pengujian kegunaan, dan analisis kompetitor untuk menginformasikan keputusan desain.</li>
+                                <li>Berhasil menerjemahkan persyaratan bisnis menjadi pengalaman pengguna yang intuitif dan menarik secara visual.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Experience Item 3: Content Writer -->
+                        <div class="experience-item pl-6 py-2 relative">
+                            <div class="absolute w-3 h-3 bg-gray-600 rounded-full -left-1.5 top-3"></div>
+                            <h3 class="text-xl font-semibold text-gray-800">Penulis Konten Teknis & Pemasaran</h3>
+                            <p class="text-md text-gray-600">Global Tech Media | Juli 2017 - April 2019</p>
+                            <ul class="list-disc list-inside text-gray-700 mt-2 space-y-1">
+                                <li>Menulis artikel teknis, postingan blog, dan salinan pemasaran yang menarik untuk platform dan produk teknologi, meningkatkan lalu lintas organik sebesar 20%.</li>
+                                <li>Mengembangkan strategi konten SEO-friendly untuk meningkatkan visibilitas online dan engagement audiens.</li>
+                                <li>Berkoordinasi dengan tim produk dan pemasaran untuk memastikan akurasi dan konsistensi pesan.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 class="section-title">Pendidikan</h2>
+                    <div class="space-y-4">
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-800">Sarjana Ilmu Komputer</h3>
+                            <p class="text-md text-gray-600">Universitas Teknologi Terkemuka | 2013 - 2017</p>
+                            <p class="text-gray-700 text-sm mt-1">Fokus pada Pengembangan Perangkat Lunak, Algoritma, dan Struktur Data. Proyek akhir: Aplikasi Web Kolaborasi Real-time.</p>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-800">Sertifikasi Profesional Desain UX</h3>
+                            <p class="text-md text-gray-600">Coursera (Google UX Design Professional Certificate) | 2019</p>
+                            <p class="text-700 text-sm mt-1">Mempelajari metodologi riset pengguna, wireframing, prototyping, dan pengujian kegunaan.</p>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-800">Kursus Lanjutan Penulisan Konten SEO</h3>
+                            <p class="text-md text-gray-600">Udemy | 2018</p>
+                            <p class="text-gray-700 text-sm mt-1">Memperdalam strategi SEO, penulisan persuasif, dan analitik konten.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contact Section -->
+            <section id="contact-content" class="content-section">
+                <div class="card">
+                    <h2 class="section-title">Kontak</h2>
+                    <div class="text-gray-700 leading-relaxed text-base sm:text-lg">
+                        <p class="mb-4">
+                            Jangan ragu untuk menghubungi saya untuk kesempatan kolaborasi, pertanyaan, atau sekadar menyapa!
+                        </p>
+                        <ul class="space-y-2 mb-6">
+                            <li><strong>Email:</strong> <a href="mailto:raydencyberart@gmail.com" class="text-gray-600 hover:underline">raydencyberart@gmail.com</a></li>
+                            <li><strong>LinkedIn:</strong> <a href="/about.html" target="_blank" class="text-gray-600 hover:underline">Secret</a></li>
+                            <li><strong>GitHub:</strong> <a href="https://github.com" target="_blank" class="text-gray-600 hover:underline">github.com</a></li>
+                            <li><strong>Portofolio:</strong> <a href="/about.html" target="_blank" class="text-gray-600 hover:underline">Secret</a></li>
+                        </ul>
+                        <!-- SweetAlert2 Call Example -->
+                        <button onclick="showContactConfirmation()" class="contact-button">
+                            Kirim Pesan
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="text-center text-gray-500 text-sm">
+            &copy; 2025 Rayden. Hak Cipta Dilindungi.
+        </footer>
+
     </div>
 
-    <!-- Tag audio untuk backsound. Ganti 'URL_AUDIO_ANDA_DI_SINI.mp3' dengan link audio Anda -->
-    <!-- Contoh: <audio id="backgroundMusic" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop preload="auto"></audio> -->
-    <!-- PENTING: Ganti URL di bawah dengan link audio eksternal Anda sendiri. -->
-    <audio id="backgroundMusic" src="/dzz.mp3" loop preload="auto"></audio>
-
     <script>
-        // Mengambil elemen tombol, slider volume, dan audio berdasarkan ID
-        const bucinButton = document.getElementById('showBucinMessage');
-        const volumeSlider = document.getElementById('volumeSlider');
-        const backgroundMusic = document.getElementById('backgroundMusic'); // Referensi ke elemen audio HTML
+        // Data proyek untuk SweetAlert
+        const projectsData = {
+            'Project Web Interaktif': 'Sebuah aplikasi web interaktif yang dibangun dengan React.js dan Node.js, menampilkan visualisasi data real-time dan fitur kolaborasi. Merupakan proyek inti yang menunjukkan keahlian full-stack.',
+            'Desain Aplikasi Mobile': 'Desain UI/UX lengkap untuk aplikasi seluler E-commerce, dibuat di Figma. Fokus pada alur pengguna yang intuitif dan estetika minimalis. Termasuk wireframe, mockup, dan prototipe interaktif.',
+            'Kampanye Konten Digital': 'Pengembangan strategi konten dan penulisan untuk kampanye pemasaran digital, menghasilkan peningkatan engagement sebesar 25% di media sosial. Fokus pada SEO dan penceritaan merek.',
+            'Sistem Manajemen Data Python': 'Pengembangan sistem backend berbasis Python untuk manajemen data, mengotomatiskan proses impor dan analisis data besar. Menggunakan Flask sebagai kerangka kerja web.',
+            'Aplikasi Flutter Lintas Platform': 'Membangun aplikasi seluler lintas platform menggunakan Dart dan Flutter, menyediakan antarmuka pengguna yang cepat dan responsif. Menampilkan integrasi API eksternal.',
+            'Pengembangan Game C++': 'Kontribusi pada pengembangan mesin game menggunakan C++, berfokus pada optimasi kinerja dan logika fisika dasar. Bagian dari proyek tim universitas.',
+            'Situs Web Dinamis PHP': 'Merancang dan mengembangkan situs web dinamis menggunakan PHP dan MySQL, termasuk sistem manajemen pengguna dan fitur forum. Proyek ini menampilkan keahlian dalam pengembangan web backend.',
+            'Desain Antarmuka Smart Home': 'Konsep desain UI/UX untuk sistem smart home, dengan fokus pada kesederhanaan dan aksesibilitas. Termasuk prototipe yang dapat diklik di Figma.',
+            'Penulisan Teknis API': 'Penulisan dokumentasi API yang komprehensif dan mudah dipahami untuk platform pengembang, meningkatkan adopsi API sebesar 10%.'
+        };
 
-        // feedbackSynth tidak lagi digunakan untuk backsound atau efek klik tombol,
-        // tetapi Tone.js masih diimpor jika ingin menambahkan efek suara di masa depan.
-        let feedbackSynth = new Tone.MembraneSynth({
-            envelope: {
-                attack: 0.005,
-                decay: 0.4,
-                sustain: 0,
-                release: 0.1
-            }
-        }).toDestination();
+        // Function to show SweetAlert for project details
+        function showProjectDetails(title, description) {
+            const rootStyles = getComputedStyle(document.documentElement);
+            const confirmBtnColor = rootStyles.getPropertyValue('--button-bg').trim();
 
-
-        let isPlaying = false; // Status apakah musik sedang diputar
-
-        // Fungsi untuk memulai atau menghentikan musik
-        function toggleMusic() {
-            if (isPlaying) {
-                backgroundMusic.pause(); // Jeda audio HTML
-                isPlaying = false;
-            } else {
-                // Mainkan audio HTML. Menggunakan .catch() untuk menangani jika autoplay diblokir.
-                backgroundMusic.play().catch(e => console.error("Gagal memutar audio:", e));
-                isPlaying = true;
-            }
+            Swal.fire({
+                title: title,
+                text: description,
+                icon: 'info',
+                confirmButtonText: 'Tutup',
+                confirmButtonColor: confirmBtnColor
+            });
         }
 
-        // Daftar 10 gombalan romantis
-        const gombalanRomantis = [
-            "Kalau kamu itu buku, aku mau jadi perpustakaannya, biar bisa baca kamu setiap hari.",
-            "Senyummu itu seperti matahari, setiap pagi selalu membuatku semangat.",
-            "Aku rela jadi keyboard, asal kamu jadi 'Enter'nya, biar cinta kita gak ada spasi.",
-            "Kalau aku jadi astronot, aku nggak akan pergi ke bulan, cukup ke matamu aja.",
-            "Kamu itu seperti kopi instan, sekali seduh langsung bikin ketagihan.",
-            "Aku sakit hati kalau lihat kamu sedih, soalnya hatiku ada di kamu.",
-            "Bukan cuma tanggal merah aja yang bikin libur, senyummu juga bikin duniaku libur dari masalah.",
-            "Cintaku padamu itu kayak utang, awalnya sedikit, lama-lama membukit.",
-            "Biarin deh aku jadi orang ketiga, asalkan orang ketiganya adalah yang bisa bahagiain kamu.",
-            "Aku mau jadi vitamin, biar kamu bisa kuat jalanin hari bareng aku."
-        ];
+        // Function to show SweetAlert2 confirmation when 'Kirim Pesan' button is clicked
+        function showContactConfirmation() {
+            const rootStyles = getComputedStyle(document.documentElement);
+            const confirmBtnColor = rootStyles.getPropertyValue('--button-bg').trim();
+            const cancelBtnColor = rootStyles.getPropertyValue('--text-secondary').trim();
 
-        // Menambahkan event listener untuk klik tombol
-        bucinButton.addEventListener('click', async () => {
-            // Memulai audio context Tone.js jika belum berjalan (untuk efek suara jika ada di masa depan)
-            if (Tone.context.state !== 'running') {
-                await Tone.start();
-            }
-
-            // Putar musik latar jika belum diputar
-            if (!isPlaying) {
-                toggleMusic();
-            }
-
-            // Tampilkan input nama di awal
-            const { value: name } = await Swal.fire({
-                title: 'Siapa nama kamu?',
-                input: 'text',
-                inputPlaceholder: 'Misalnya Rayden...',
-                showCancelButton: false,
-                confirmButtonText: 'Lanjut!',
-                confirmButtonColor: '#1877f2', /* Warna tombol konfirmasi SweetAlert menjadi biru */
-                background: '#fff',
-                backdrop: `
-                    rgba(24,119,242,0.1) /* Warna backdrop SweetAlert menjadi biru */
-                    url('https://placehold.co/100x100/4267B2/ffffff?text=❤️') /* Placeholder ikon hati biru */
-                    left top
-                    no-repeat
-                `,
-                customClass: {
-                    container: 'my-swal-container',
-                    popup: 'my-swal-popup',
-                    header: 'my-swal-header',
-                    title: 'my-swal-title',
-                    content: 'my-swal-content',
-                    input: 'my-swal-input',
-                    confirmButton: 'my-swal-confirm-button'
-                },
-                inputValidator: (value) => {
-                    if (!value) {
-                        return 'Nama tidak boleh kosong!'
-                    }
+            Swal.fire({
+                title: 'Tertarik untuk Terhubung?',
+                text: 'Apakah Anda ingin mengirim email ke saya sekarang?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: confirmBtnColor,
+                cancelButtonColor: cancelBtnColor,
+                confirmButtonText: 'Ya, Kirim Email!',
+                cancelButtonText: 'Tidak, Terima Kasih'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = 'mailto:raydencyberart@gmail.com';
                 }
             });
+        }
 
-            if (name) { // Lanjutkan hanya jika nama dimasukkan
-                // Tampilkan pesan pembuka utama dengan nama yang dimasukkan
-                await Swal.fire({
-                    title: `Hai ${name}, Kamu Tahu Kan?`, // Judul SweetAlert
-                    html: `
-                        <p style="font-size: 1.15rem; color: #555;">
-                            Setiap kali aku melihat senyummu, duniaku terasa lebih indah.<br>
-                            Kamu adalah alasan di balik setiap kebahagiaanku.
-                        </p>
-                        <p style="font-size: 1.15rem; color: #555; margin-top: 1rem;">
-                            Terima kasih sudah hadir dalam hidupku, Sayang. ❤️
-                        </p>
-                        <hr style="border-top: 1px dashed #ccc; margin: 1.5rem 0;">
-                        <p style="font-size: 1.1rem; color: #777; margin-bottom: 1rem; font-weight: bold;">
-                            Siap-siap untuk serangkaian gombalan spesial berikutnya!
-                        </p>
-                    `, // Konten HTML untuk SweetAlert
-                    confirmButtonText: 'Aku Siap!', // Teks tombol konfirmasi
-                    confirmButtonColor: '#1877f2', /* Warna tombol konfirmasi SweetAlert menjadi biru */
-                    background: '#fff', // Latar belakang SweetAlert
-                    backdrop: `
-                        rgba(24,119,242,0.1) /* Warna backdrop SweetAlert menjadi biru */
-                        url('https://placehold.co/100x100/4267B2/ffffff?text=❤️') /* Placeholder ikon hati biru */
-                        left top
-                        no-repeat
-                    `, // Backdrop dengan sedikit warna pink dan ikon hati
-                    customClass: {
-                        container: 'my-swal-container',
-                        popup: 'my-swal-popup',
-                        header: 'my-swal-header',
-                        title: 'my-swal-title',
-                        content: 'my-swal-content',
-                        confirmButton: 'my-swal-confirm-button'
-                    }
-                });
+        // Function to show SweetAlert2 with details for each skill
+        function showSkillDetails(skillName) {
+            let title = skillName;
+            let description = '';
 
-                // Tampilkan setiap gombalan dalam SweetAlert terpisah secara berurutan
-                for (let i = 0; i < gombalanRomantis.length; i++) {
-                    const gombalan = gombalanRomantis[i];
-                    await Swal.fire({
-                        title: `Untuk ${name} ❤️`,
-                        html: `<p style="font-size: 1.15rem; color: #555;">${gombalan}</p>`,
-                        confirmButtonText: (i === gombalanRomantis.length - 1) ? 'Selesai!' : 'Lanjut!',
-                        confirmButtonColor: '#1877f2', /* Warna tombol konfirmasi SweetAlert menjadi biru */
-                        background: '#fff',
-                        backdrop: `
-                            rgba(24,119,242,0.1) /* Warna backdrop SweetAlert menjadi biru */
-                            url('https://placehold.co/100x100/4267B2/ffffff?text=💙')
-                            left top
-                            no-repeat
-                        `,
-                        customClass: {
-                            container: 'my-swal-container',
-                            popup: 'my-swal-popup',
-                            header: 'my-swal-header',
-                            title: 'my-swal-title',
-                            content: 'my-swal-content',
-                            confirmButton: 'my-swal-confirm-button'
-                        }
-                    });
-                }
-            } else {
-                // Jika nama tidak dimasukkan, beri tahu pengguna
-                Swal.fire({
-                    title: 'Ups!',
-                    text: 'Nama tidak boleh kosong, Sayang. Coba lagi ya!',
-                    icon: 'warning',
-                    confirmButtonText: 'Oke',
-                    confirmButtonColor: '#1877f2', /* Warna tombol konfirmasi SweetAlert menjadi biru */
-                    background: '#fff',
-                    backdrop: `
-                        rgba(24,119,242,0.1) /* Warna backdrop SweetAlert menjadi biru */
-                        url('https://placehold.co/100x100/4267B2/ffffff?text=💔')
-                        left top
-                        no-repeat
-                    `,
-                });
+            const rootStyles = getComputedStyle(document.documentElement);
+            const confirmBtnColor = rootStyles.getPropertyValue('--button-bg').trim();
+
+            switch (skillName) {
+                case 'HTML5':
+                    description = 'Bahasa markup standar untuk membuat halaman web dan aplikasi web, memberikan struktur konten.';
+                    break;
+                case 'CSS3 (Tailwind CSS)':
+                    description = 'Bahasa stylesheet untuk mendeskripsikan presentasi dokumen HTML. Tailwind CSS adalah kerangka kerja CSS yang berpusat pada utilitas untuk membangun desain kustom dengan cepat.';
+                    break;
+                case 'JavaScript (React.js)':
+                    description = 'Bahasa pemrograman yang memungkinkan Anda mengimplementasikan fitur-fitur kompleks pada halaman web. React.js adalah library JavaScript untuk membangun antarmuka pengguna yang interaktif.';
+                    break;
+                case 'Node.js':
+                    description = 'Lingkungan runtime JavaScript yang memungkinkan Anda menjalankan JavaScript di sisi server. Ideal untuk membangun API, aplikasi web, dan layanan backend yang skalabel.';
+                    break;
+                case 'Figma':
+                    description = 'Aplikasi desain antarmuka berbasis web dan desktop yang digunakan untuk merancang prototipe, UI, dan UX. Memungkinkan kolaborasi real-time antar desainer.';
+                    break;
+                case 'Adobe Photoshop':
+                    description = 'Software pengeditan gambar standar industri untuk manipulasi foto, desain grafis, dan seni digital.';
+                    break;
+                case 'Manajemen Proyek':
+                    description = 'Kemampuan untuk merencanakan, melaksanakan, dan mengontrol pekerjaan tim untuk mencapai tujuan dan memenuhi kriteria keberhasilan yang ditentukan dalam jangka waktu tertentu.';
+                    break;
+                case 'Komunikasi':
+                    description = 'Kemampuan untuk menyampaikan informasi, ide, dan emosi secara efektif kepada orang lain, baik secara lisan maupun tulisan. Kunci untuk kolaborasi tim yang sukses.';
+                    break;
+                case 'Penulisan Konten':
+                    description = 'Proses perencanaan, penulisan, dan pengeditan konten web, biasanya untuk tujuan pemasaran digital, blog, atau informasi situs web.';
+                    break;
+                case 'PHP':
+                    description = 'Bahasa scripting sisi server yang banyak digunakan untuk pengembangan web, sering digunakan bersama database seperti MySQL.';
+                    break;
+                case 'Python':
+                    description = 'Bahasa pemrograman tingkat tinggi yang serbaguna, digunakan untuk pengembangan web, analisis data, kecerdasan buatan, dan otomatisasi.';
+                    break;
+                case 'Dart':
+                    description = 'Bahasa pemrograman yang dioptimalkan untuk klien, terutama digunakan untuk membangun aplikasi seluler, web, dan desktop dengan kerangka kerja Flutter.';
+                    break;
+                case 'C++':
+                    description = 'Bahasa pemrograman berkinerja tinggi yang digunakan untuk pengembangan sistem, game, perangkat lunak desktop, dan aplikasi yang membutuhkan efisiensi tinggi.';
+                    break;
+                default:
+                    description = 'Tidak ada deskripsi yang tersedia untuk keahlian ini.';
             }
-        });
 
-        // Event listener untuk slider volume
-        volumeSlider.addEventListener('input', (event) => {
-            backgroundMusic.volume = parseFloat(event.target.value); // Kontrol volume audio HTML
-        });
+            Swal.fire({
+                title: title,
+                text: description,
+                icon: 'info',
+                confirmButtonText: 'Tutup',
+                confirmButtonColor: confirmBtnColor
+            });
+        }
 
-        // Tetapkan volume awal saat halaman dimuat
-        backgroundMusic.volume = parseFloat(volumeSlider.value);
+        // Script to handle tab switching
+        document.addEventListener('DOMContentLoaded', () => {
+            const navItems = document.querySelectorAll('.facebook-nav-item');
+            const contentSections = document.querySelectorAll('.content-section');
+
+            navItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    // Remove active class from all nav items and hide all content sections
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    contentSections.forEach(section => section.classList.remove('active'));
+
+                    // Add active class to clicked nav item
+                    item.classList.add('active');
+
+                    // Show the corresponding content section
+                    const targetId = item.getAttribute('data-target');
+                    document.getElementById(targetId).classList.add('active');
+                });
+            });
+
+            // Theme auto-detection logic (removed toggle button functionality)
+            const htmlElement = document.documentElement; // Get the html element
+
+            // Function to set the theme
+            function setTheme(theme) {
+                htmlElement.setAttribute('data-theme', theme);
+                // No longer storing in localStorage as per user request for auto-adjust
+                // localStorage.setItem('theme', theme);
+            }
+
+            // Check system preference on load
+            const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (prefersDark) {
+                setTheme('dark');
+            } else {
+                setTheme('light');
+            }
+
+            // Listen for changes in system color scheme
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+                if (event.matches) {
+                    setTheme('dark');
+                } else {
+                    setTheme('light');
+                }
+            });
+        });
     </script>
 </body>
 </html>
