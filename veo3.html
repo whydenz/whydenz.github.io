@@ -126,12 +126,11 @@
             color: #e2e8f0;
         }
 
-        /* Theme toggle button styling */
-        .theme-toggle-btn {
-            background-color: #4f46e5;
+        /* Header Buttons Styling */
+        .header-btn {
             color: white;
             border: none;
-            border-radius: 9999px; /* Full rounded */
+            border-radius: 9999px;
             padding: 0.75rem 1rem;
             cursor: pointer;
             display: flex;
@@ -139,31 +138,29 @@
             gap: 0.5rem;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
             transition: background-color 0.3s ease;
+            margin-right: 1rem;
+        }
+        .header-btn i {
+            font-size: 1.2rem;
+        }
+        .about-btn {
+            background-color: #2563eb; /* Blue */
+        }
+        .about-btn:hover {
+            background-color: #3b82f6;
+        }
+        .translator-btn {
+            background-color: #16a34a; /* Green */
+        }
+        .translator-btn:hover {
+            background-color: #15803d;
+        }
+        .theme-toggle-btn {
+            background-color: #4f46e5; /* Purple */
+             margin-right: 0; /* No margin on the last button */
         }
         .theme-toggle-btn:hover {
             background-color: #6d5eed;
-        }
-        .theme-toggle-btn i {
-            font-size: 1.2rem;
-        }
-
-        /* About button styling */
-        .about-btn {
-            background-color: #2563eb; /* Blue color */
-            color: white;
-            border: none;
-            border-radius: 9999px; /* Full rounded */
-            padding: 0.75rem 1rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            transition: background-color 0.3s ease;
-            margin-right: 1rem; /* Space between buttons */
-        }
-        .about-btn:hover {
-            background-color: #3b82f6; /* Lighter blue on hover */
         }
 
         /* Copy button styling */
@@ -206,11 +203,15 @@
     <!-- Header Section -->
     <header class="flex justify-between items-center max-w-7xl mx-auto mb-8">
          <div class="flex items-center">
-             <button id="about-app-btn" class="about-btn">
+             <button id="about-app-btn" class="header-btn about-btn">
                  <i class="fas fa-info-circle"></i>
                  <span>Tentang Aplikasi</span>
              </button>
-             <button id="theme-toggle" class="theme-toggle-btn">
+             <a href="/bahasa.html" target="_blank" class="header-btn translator-btn">
+                <i class="fas fa-language"></i>
+                <span>Penerjemah</span>
+             </a>
+             <button id="theme-toggle" class="header-btn theme-toggle-btn">
                  <i class="fas fa-sun" id="theme-icon"></i>
                  <span id="theme-text">Mode Terang</span>
              </button>
@@ -344,14 +345,7 @@
                         </div>
                         <div id="dialogs-container"></div>
                         <div class="mb-4">
-                            <!-- START: Added Button Here -->
-                            <div class="flex justify-between items-center">
-                                <label for="aksen_bahasa">Aksen/Logat Bahasa</label>
-                                <a href="/bahasa.html" target="_blank" class="btn btn-info">
-                                    <i class="fas fa-language"></i> Buka Penerjemah
-                                </a>
-                            </div>
-                             <!-- END: Added Button Here -->
+                            <label for="aksen_bahasa">Aksen/Logat Bahasa</label>
                             <select id="aksen_bahasa" name="aksen_bahasa" class="select-field">
                                 <option selected>Standar (Standard)</option>
                                 <option>Jawa (Javanese)</option>
