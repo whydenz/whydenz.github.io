@@ -77,6 +77,7 @@
         .btn-primary { background: linear-gradient(to right, #16a34a, #15803d); }
         .btn-secondary { background: linear-gradient(to right, #4f46e5, #7c3aed); }
         .btn-danger { background: linear-gradient(to right, #dc2626, #b91c1c); }
+        .btn-info { background: linear-gradient(to right, #3b82f6, #2563eb); font-size: 0.75rem; padding: 0.25rem 0.75rem; }
         .btn:hover { opacity: 0.9; }
         .spinner {
             display: none;
@@ -205,15 +206,15 @@
     <!-- Header Section -->
     <header class="flex justify-between items-center max-w-7xl mx-auto mb-8">
          <div class="flex items-center">
-            <button id="about-app-btn" class="about-btn">
-                <i class="fas fa-info-circle"></i>
-                <span>Tentang Aplikasi</span>
-            </button>
-            <button id="theme-toggle" class="theme-toggle-btn">
-                <i class="fas fa-sun" id="theme-icon"></i>
-                <span id="theme-text">Mode Terang</span>
-            </button>
-        </div>
+             <button id="about-app-btn" class="about-btn">
+                 <i class="fas fa-info-circle"></i>
+                 <span>Tentang Aplikasi</span>
+             </button>
+             <button id="theme-toggle" class="theme-toggle-btn">
+                 <i class="fas fa-sun" id="theme-icon"></i>
+                 <span id="theme-text">Mode Terang</span>
+             </button>
+         </div>
     </header>
 
     <main class="max-w-7xl mx-auto">
@@ -314,7 +315,7 @@
                                 <label for="pencahayaan">Pencahayaan</label>
                                 <select name="pencahayaan" class="select-field">
                                     <option selected>Cahaya Alami (Natural Light)</option>
-                                    <option>Low-key</mption>
+                                    <option>Low-key</option>
                                     <option>High-key</option>
                                 </select>
                             </div>
@@ -343,7 +344,14 @@
                         </div>
                         <div id="dialogs-container"></div>
                         <div class="mb-4">
-                            <label for="aksen_bahasa">Aksen/Logat Bahasa</label>
+                            <!-- START: Added Button Here -->
+                            <div class="flex justify-between items-center">
+                                <label for="aksen_bahasa">Aksen/Logat Bahasa</label>
+                                <a href="/bahasa.html" target="_blank" class="btn btn-info">
+                                    <i class="fas fa-language"></i> Buka Penerjemah
+                                </a>
+                            </div>
+                             <!-- END: Added Button Here -->
                             <select id="aksen_bahasa" name="aksen_bahasa" class="select-field">
                                 <option selected>Standar (Standard)</option>
                                 <option>Jawa (Javanese)</option>
@@ -455,7 +463,7 @@ let characterCount = 0;
  */
 function createCharacterCard(id) {
     const card = document.createElement('div');
-    card.className = 'border rounded-lg p-4 mb-4 relative';
+    card.className = 'border rounded-lg p-4 mb-4 relative dark:border-gray-600';
     card.id = `character-card-${id}`;
     card.innerHTML = `
         <button type="button" class="btn btn-danger btn-sm absolute top-2 right-2" onclick="removeCharacter(${id})" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">Hapus</button>
@@ -493,7 +501,7 @@ function addCharacter() {
     const newCard = createCharacterCard(characterCount);
     container.appendChild(newCard);
     
-    // Remove prefill logic, rely on placeholders
+    // Update dialog UI based on the new character
     updateDialogUI();
 }
 
@@ -505,7 +513,7 @@ function removeCharacter(id) {
     const card = document.getElementById(`character-card-${id}`);
     if (card) {
         card.remove();
-        // characterCount doesn't need to be decremented to avoid ID conflicts with new additions
+        // Update dialog UI after removing a character
         updateDialogUI();
     }
 }
@@ -527,19 +535,35 @@ function updateDialogUI() {
 
     characterCards.forEach(card => {
         const id = card.id.split('-')[2];
-        // Get character name from the input field, default to 'Karakter [ID]' if empty
         const nameInput = document.getElementById(`nama_karakter_${id}`);
-        const name = nameInput ? nameInput.value || `Karakter ${id}` : `Karakter ${id}`;
+        // Update name in dialog placeholder dynamically as user types
+        const updateName = () => {
+            const name = nameInput.value || `Karakter ${id}`;
+            const dialogLabel = document.querySelector(`label[for="isi_dialog_${id}"]`);
+            const dialogTextarea = document.getElementById(`isi_dialog_${id}`);
+            if (dialogLabel) {
+                 dialogLabel.textContent = `Isi Dialog (${name})`;
+            }
+            if(dialogTextarea){
+                dialogTextarea.placeholder = `Tuliskan dialog untuk ${name} e.g., Ngapain lo disini?`;
+            }
+        };
         
         const dialogInput = document.createElement('div');
         dialogInput.className = 'mb-2';
         dialogInput.innerHTML = `
-            <label for="isi_dialog_${id}">Isi Dialog (${name})</label>
-            <textarea name="isi_dialog_${id}" id="isi_dialog_${id}" class="textarea-field" rows="2" placeholder="Tuliskan dialog untuk ${name}  e.g., Ngapain lo disini?"></textarea>
+            <label for="isi_dialog_${id}">Isi Dialog (Karakter ${id})</label>
+            <textarea name="isi_dialog_${id}" id="isi_dialog_${id}" class="textarea-field" rows="2" placeholder="Tuliskan dialog untuk Karakter ${id} e.g., Ngapain lo disini?"></textarea>
         `;
         dialogsContainer.appendChild(dialogInput);
+        
+        if (nameInput) {
+            nameInput.addEventListener('input', updateName);
+            updateName(); // Initial call
+        }
     });
 }
+
 
 // Function to toggle dark mode
 function toggleTheme() {
@@ -608,26 +632,46 @@ function copyPrompt(elementId) {
     const textarea = document.getElementById(elementId);
     if (textarea) {
         textarea.select();
-        document.execCommand('copy');
-        Swal.fire({
-            title: 'Disalin!',
-            text: 'Prompt telah disalin ke clipboard Anda.',
-            icon: 'success',
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 1500,
-            timerProgressBar: true
-        });
+        // Use the Clipboard API for modern browsers, with a fallback to execCommand
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(textarea.value).then(() => {
+                showCopySuccess();
+            });
+        } else {
+            document.execCommand('copy');
+            showCopySuccess();
+        }
     }
 }
 
+function showCopySuccess() {
+    Swal.fire({
+        title: 'Disalin!',
+        text: 'Prompt telah disalin ke clipboard Anda.',
+        icon: 'success',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 1500,
+        timerProgressBar: true
+    });
+}
+
+
 /**
  * Handles the click event for the "RESET PROMPT" button.
- * Redirects the user to the specified URL.
+ * Resets the entire form to its initial state.
  */
 function resetPrompt() {
-    window.location.href = '/veo3.html';
+    document.getElementById('prompt-form').reset();
+    document.getElementById('characters-container').innerHTML = '';
+    characterCount = 0;
+    addCharacter(); // Add back the first character card
+    document.getElementById('output-section').style.display = 'none';
+    document.getElementById('output_id').value = '';
+    document.getElementById('output_en').value = '';
+     // Smooth scroll to the top of the form
+    document.getElementById('prompt-form').scrollIntoView({ behavior: 'smooth' });
 }
 
 
@@ -636,7 +680,6 @@ document.getElementById('add-character-btn').addEventListener('click', addCharac
 document.getElementById('tipe_dialog').addEventListener('change', updateDialogUI);
 document.getElementById('theme-toggle').addEventListener('click', toggleTheme); // Theme toggle listener
 document.getElementById('about-app-btn').addEventListener('click', showAboutApp); // About app button listener
-// Add event listener for the new reset button
 document.getElementById('reset-prompt-btn').addEventListener('click', resetPrompt);
 
 // Initialize with one character card on page load and apply theme
@@ -727,9 +770,8 @@ form.addEventListener('submit', async function(event) {
 
     // 3. Call Gemini API
     try {
-        // API key will be provided by the environment, leaving it blank is correct.
-        // Jika Anda menjalankan di lingkungan lokal atau lingkungan lain yang memerlukan kunci API eksplisit,
-        // Anda harus mengganti "" dengan kunci API Gemini Anda yang sebenarnya.
+        // NOTE: The API key is handled by the execution environment.
+        // Leaving this string empty is the correct approach. Do not hardcode secrets.
         const apiKey = "AIzaSyDt_L5F31TXkkk2WwIZEXzDfBe1Sk2I35w"; 
         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
         
@@ -747,14 +789,26 @@ form.addEventListener('submit', async function(event) {
         }
 
         const result = await response.json();
+        
+        if (!result.candidates || !result.candidates[0].content || !result.candidates[0].content.parts[0].text) {
+             throw new Error("Invalid response structure from API.");
+        }
+        
         const fullText = result.candidates[0].content.parts[0].text;
         
         // Split the generated text into Indonesian and English versions
-        const [promptID, promptEN] = fullText.split('|||---|||');
+        const separator = '|||---|||';
+        if (!fullText.includes(separator)) {
+            // If separator is missing, put the whole response in the first box as a fallback
+            document.getElementById('output_id').value = fullText.trim();
+            document.getElementById('output_en').value = "Translation separator not found in AI response.";
+        } else {
+            const [promptID, promptEN] = fullText.split(separator);
+            document.getElementById('output_id').value = promptID.trim();
+            document.getElementById('output_en').value = promptEN ? promptEN.trim() : "";
+        }
 
         // 4. Display results
-        document.getElementById('output_id').value = promptID.trim();
-        document.getElementById('output_en').value = promptEN.trim();
         document.getElementById('output-section').style.display = 'block';
         
         // Smooth scroll to the output section
