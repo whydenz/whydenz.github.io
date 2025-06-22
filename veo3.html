@@ -131,17 +131,19 @@
             color: white;
             border: none;
             border-radius: 9999px;
-            padding: 0.75rem 1rem;
+            padding: 0.75rem; /* Adjusted padding for icon only */
+            width: 2.75rem; /* Fixed width */
+            height: 2.75rem; /* Fixed height */
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            justify-content: center; /* Center icon */
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
             transition: background-color 0.3s ease;
             margin-right: 1rem;
         }
         .header-btn i {
-            font-size: 1.2rem;
+            font-size: 1.25rem; /* Slightly larger icon */
         }
         .about-btn {
             background-color: #2563eb; /* Blue */
@@ -201,25 +203,23 @@
 </head>
 <body class="bg-gray-100 p-4 md:p-8">
     <!-- Header Section -->
-    <header class="flex justify-between items-center max-w-7xl mx-auto mb-8">
+    <header class="flex justify-end items-center max-w-7xl mx-auto mb-8">
          <div class="flex items-center">
-             <button id="about-app-btn" class="header-btn about-btn">
+             <button id="about-app-btn" class="header-btn about-btn" aria-label="Tentang Aplikasi">
                  <i class="fas fa-info-circle"></i>
-                 <span>Tentang Aplikasi</span>
              </button>
-             <a href="/bahasa.html" target="_blank" class="header-btn translator-btn">
+             <a href="/bahasa.html" target="_blank" class="header-btn translator-btn" aria-label="Buka Penerjemah">
                 <i class="fas fa-language"></i>
-                <span>Penerjemah</span>
              </a>
-             <button id="theme-toggle" class="header-btn theme-toggle-btn">
+             <button id="theme-toggle" class="header-btn theme-toggle-btn" aria-label="Ganti Tema">
                  <i class="fas fa-sun" id="theme-icon"></i>
-                 <span id="theme-text">Mode Terang</span>
              </button>
          </div>
     </header>
 
     <main class="max-w-7xl mx-auto">
         <div class="text-center mb-8">
+             <h1 class="text-3xl md:text-4xl font-bold dark:text-white">Prompt Generator V3</h1>
             <p class="mt-2 text-lg text-gray-600 dark:text-gray-400">Buat prompt sinematik berdasarkan struktur detail yang Anda inginkan.
             <br><font color="red">NOTE: Form input bersifat OPSIONAL, Boleh diisi atau Abaikan.</font></p>
         </div>
@@ -563,7 +563,7 @@ function updateDialogUI() {
 function toggleTheme() {
     const body = document.body;
     const themeIcon = document.getElementById('theme-icon');
-    const themeText = document.getElementById('theme-text');
+    const themeBtn = document.getElementById('theme-toggle');
 
     body.classList.toggle('dark-mode');
 
@@ -571,11 +571,11 @@ function toggleTheme() {
     if (body.classList.contains('dark-mode')) {
         localStorage.setItem('theme', 'dark');
         themeIcon.classList.replace('fa-sun', 'fa-moon');
-        themeText.textContent = 'Mode Gelap';
+        themeBtn.setAttribute('aria-label', 'Ganti ke Mode Terang');
     } else {
         localStorage.setItem('theme', 'light');
         themeIcon.classList.replace('fa-moon', 'fa-sun');
-        themeText.textContent = 'Mode Terang';
+        themeBtn.setAttribute('aria-label', 'Ganti ke Mode Gelap');
     }
 }
 
@@ -584,16 +584,16 @@ function applyThemeOnLoad() {
     const savedTheme = localStorage.getItem('theme') || 'light'; // Default to light if no theme is saved
     const body = document.body;
     const themeIcon = document.getElementById('theme-icon');
-    const themeText = document.getElementById('theme-text');
+    const themeBtn = document.getElementById('theme-toggle');
 
     if (savedTheme === 'dark') {
         body.classList.add('dark-mode');
         themeIcon.classList.replace('fa-sun', 'fa-moon');
-        themeText.textContent = 'Mode Gelap';
+        themeBtn.setAttribute('aria-label', 'Ganti ke Mode Terang');
     } else {
         body.classList.remove('dark-mode');
         themeIcon.classList.replace('fa-moon', 'fa-sun');
-        themeText.textContent = 'Mode Terang';
+        themeBtn.setAttribute('aria-label', 'Ganti ke Mode Gelap');
     }
 }
 
