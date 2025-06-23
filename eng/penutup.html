@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penutup & Bonus</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f3ff; /* Light purple background */
+        }
+        .lesson-card {
+            scroll-margin-top: 80px;
+        }
+        .bonus-list li {
+            padding: 10px 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            background-color: #ede9fe;
+            border-left: 4px solid #8b5cf6;
+        }
+        #certificate {
+            border: 10px solid #c4b5fd;
+            border-style: double;
+            background: white;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Sticky Header -->
+    <header class="bg-white/80 backdrop-blur-lg shadow-md sticky top-0 z-50">
+        <div class="container mx-auto p-4 flex justify-between items-center">
+            <h1 class="text-xl md:text-2xl font-bold text-purple-600">🏁 Penutup & Bonus</h1>
+            <a href="index.html" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded-lg transition-colors">
+                &larr; Kembali ke Menu
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto p-6 md:p-10">
+
+        <!-- Bonus 31: Evaluasi Interaktif (Translate Word) -->
+        <section id="bonus-31" class="lesson-card bg-white p-6 md:p-8 rounded-2xl shadow-lg mb-8">
+            <h2 class="text-2xl font-bold text-purple-700 mb-4">31. Evaluasi Interaktif (Terjemahkan Kata) 🎮</h2>
+            <p class="mb-4">Uji kosakatamu! Terjemahkan kata berikut ke dalam bahasa Inggris.</p>
+            <div id="game-container" class="text-center bg-purple-50 p-6 rounded-lg">
+                <p class="text-lg mb-2">Terjemahkan kata ini:</p>
+                <div id="clue-word" class="mb-4 text-4xl font-bold text-purple-800 p-4 h-24 flex items-center justify-center">
+                    [Kata]
+                </div>
+                <input type="text" id="answer-input" placeholder="Tulis jawabanmu di sini..." class="w-full max-w-sm p-2 border-2 border-purple-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none">
+                <button id="check-btn" class="bg-purple-500 text-white font-bold py-2 px-6 rounded-lg mt-2 hover:bg-purple-600 transition-colors">Cek Jawaban</button>
+                <p id="feedback-message" class="mt-4 font-semibold h-6"></p>
+                <button id="next-btn" class="hidden bg-green-500 text-white font-bold py-2 px-6 rounded-lg mt-2 hover:bg-green-600 transition-colors">Soal Berikutnya</button>
+            </div>
+        </section>
+
+        <!-- Bonus 32: Sertifikat -->
+        <section id="bonus-32" class="lesson-card bg-white p-6 md:p-8 rounded-2xl shadow-lg mb-8">
+            <h2 class="text-2xl font-bold text-purple-700 mb-4">32. Sertifikat “English Explorer Junior” 🏆</h2>
+            <p class="mb-4">Selamat! Kamu telah menyelesaikan semua materi. Tulis namamu dan cetak sertifikat ini sebagai kenang-kenangan.</p>
+            <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                <label for="name-input" class="font-semibold">Masukkan Namamu:</label>
+                <input type="text" id="name-input" class="p-2 border rounded-md" placeholder="Contoh: Budi">
+                <button id="generate-cert-btn" class="bg-blue-500 text-white py-2 px-4 rounded-md ml-2">Tulis di Sertifikat</button>
+            </div>
+            <div id="certificate" class="p-8 text-center">
+                <h3 class="text-3xl font-serif text-purple-800">Certificate of Achievement</h3>
+                <p class="mt-4 text-lg">This certifies that</p>
+                <p id="cert-name" class="text-4xl font-bold font-serif text-blue-600 my-4 border-b-2 border-gray-400 pb-2">[ Nama Kamu ]</p>
+                <p class="text-lg">has successfully completed the</p>
+                <p class="text-2xl font-semibold">English for Kids Fun Learning</p>
+                <p class="mt-8 text-sm">Congratulations on your great achievement!</p>
+            </div>
+             <button onclick="window.print()" class="w-full mt-4 bg-gray-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-gray-700 transition-colors">Cetak atau Simpan Sertifikat</button>
+        </section>
+
+        <!-- Bonus 33 & 34: Rekomendasi -->
+        <div class="grid md:grid-cols-2 gap-8">
+            <section id="bonus-33" class="lesson-card bg-white p-6 md:p-8 rounded-2xl shadow-lg">
+                <h2 class="text-2xl font-bold text-purple-700 mb-4">33. Daftar Lagu Populer 🎵</h2>
+                <p class="mb-4">Ajak Ayah/Bunda mencari lagu ini di YouTube untuk belajar sambil bernyanyi!</p>
+                <ul class="bonus-list list-inside">
+                    <li>Twinkle, Twinkle, Little Star</li>
+                    <li>Wheels on the Bus</li>
+                    <li>Baby Shark Dance</li>
+                    <li>Old MacDonald Had a Farm</li>
+                    <li>Johny Johny Yes Papa</li>
+                    <li>Head, Shoulders, Knees & Toes</li>
+                </ul>
+            </section>
+            <section id="bonus-34" class="lesson-card bg-white p-6 md:p-8 rounded-2xl shadow-lg">
+                <h2 class="text-2xl font-bold text-purple-700 mb-4">34. Rekomendasi Aplikasi & Channel 📱</h2>
+                <p class="mb-4">Sumber belajar tambahan yang seru dan interaktif.</p>
+                <h3 class="font-bold mt-4">Aplikasi:</h3>
+                <ul class="bonus-list list-inside">
+                    <li>Duolingo Kids</li>
+                    <li>Lingokids</li>
+                </ul>
+                <h3 class="font-bold mt-4">Channel YouTube:</h3>
+                <ul class="bonus-list list-inside">
+                    <li>Cocomelon</li>
+                    <li>Super Simple Songs</li>
+                </ul>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white text-center p-4 mt-10">
+        <p>&copy; 2025 English for Kids Fun Learning. Dibuat dengan ❤️.</p>
+    </footer>
+
+    <script>
+        // --- Game Logic ---
+        const clueWordDiv = document.getElementById('clue-word');
+        const answerInput = document.getElementById('answer-input');
+        const checkBtn = document.getElementById('check-btn');
+        const feedbackMessage = document.getElementById('feedback-message');
+        const nextBtn = document.getElementById('next-btn');
+
+        const questions = [
+            { indonesian: 'apel', answer: 'apple' },
+            { indonesian: 'kucing', answer: 'cat' },
+            { indonesian: 'pensil', answer: 'pencil' },
+            { indonesian: 'biru', answer: 'blue' },
+            { indonesian: 'keluarga', answer: 'family' },
+            { indonesian: 'buku', answer: 'book' }
+        ];
+        let currentQuestionIndex = 0;
+
+        function loadQuestion() {
+            clueWordDiv.textContent = questions[currentQuestionIndex].indonesian;
+            answerInput.value = '';
+            feedbackMessage.textContent = '';
+            nextBtn.classList.add('hidden');
+            answerInput.disabled = false;
+            checkBtn.disabled = false;
+            answerInput.focus();
+        }
+
+        function checkAnswer() {
+             const userAnswer = answerInput.value.trim().toLowerCase();
+            if (userAnswer === questions[currentQuestionIndex].answer) {
+                feedbackMessage.textContent = 'Benar! 🎉';
+                feedbackMessage.style.color = 'green';
+                nextBtn.classList.remove('hidden');
+                answerInput.disabled = true;
+                checkBtn.disabled = true;
+            } else {
+                feedbackMessage.textContent = 'Salah, coba lagi!';
+                feedbackMessage.style.color = 'red';
+            }
+        }
+        
+        checkBtn.addEventListener('click', checkAnswer);
+        answerInput.addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+
+
+        nextBtn.addEventListener('click', () => {
+            currentQuestionIndex = (currentQuestionIndex + 1) % questions.length;
+            loadQuestion();
+        });
+        
+        loadQuestion(); // Load the first question on page load
+
+        // --- Certificate Logic ---
+        const nameInput = document.getElementById('name-input');
+        const generateCertBtn = document.getElementById('generate-cert-btn');
+        const certName = document.getElementById('cert-name');
+
+        generateCertBtn.addEventListener('click', () => {
+            const name = nameInput.value.trim();
+            if (name) {
+                certName.textContent = name;
+            } else {
+                certName.textContent = "[ Nama Kamu ]";
+            }
+        });
+
+    </script>
+</body>
+</html>
