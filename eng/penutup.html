@@ -9,8 +9,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Poppins:wght@400;600&family=Tangerine:wght@700&display=swap" rel="stylesheet">
-    <!-- Menambahkan library html2canvas untuk mengubah HTML menjadi gambar -->
+    <!-- Menambahkan library html2canvas dan SweetAlert2 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -214,6 +215,9 @@
             { indonesian: 'keluarga', answer: 'family' }, { indonesian: 'buku', answer: 'book' }
         ];
         let currentQuestionIndex = 0;
+        let correctlyAnswered = new Set();
+        let alertShown = false;
+
         function loadQuestion() {
             clueWordDiv.textContent = questions[currentQuestionIndex].indonesian;
             answerInput.value = '';
@@ -223,6 +227,7 @@
             checkBtn.disabled = false;
             answerInput.focus();
         }
+
         function checkAnswer() {
              const userAnswer = answerInput.value.trim().toLowerCase();
             if (userAnswer === questions[currentQuestionIndex].answer) {
@@ -231,6 +236,20 @@
                 nextBtn.classList.remove('hidden');
                 answerInput.disabled = true;
                 checkBtn.disabled = true;
+                
+                correctlyAnswered.add(currentQuestionIndex);
+
+                // Cek jika semua soal sudah dijawab benar
+                if (correctlyAnswered.size === questions.length && !alertShown) {
+                    Swal.fire({
+                        title: 'Hebat!',
+                        text: 'Kamu berhasil menjawab semua pertanyaan dengan benar!',
+                        icon: 'success',
+                        confirmButtonText: 'Keren!'
+                    });
+                    alertShown = true; // Tandai bahwa alert sudah muncul
+                }
+
             } else {
                 feedbackMessage.textContent = 'Salah, coba lagi!';
                 feedbackMessage.style.color = 'red';
