@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penutup & Bonus</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Menambahkan Font dari Google Fonts untuk desain sertifikat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Poppins:wght@400;600&family=Tangerine:wght@700&display=swap" rel="stylesheet">
+    <!-- Menambahkan library html2canvas untuk mengubah HTML menjadi gambar -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f4f8; /* Light blue-gray background */
+        }
+        .lesson-card {
+            scroll-margin-top: 80px;
+        }
+        /* Wrapper untuk membuat sertifikat responsif di layar */
+        #certificate-wrapper {
+            width: 100%;
+            max-width: 1123px; /* Lebar A4 Lanskap */
+            margin: auto;
+            border: 1px solid #ddd;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            overflow: hidden; /* Menjaga agar dekorasi tidak keluar */
+        }
+        /* Desain Sertifikat Baru (Lanskap) */
+        #certificate {
+            width: 1123px; /* A4 width (landscape) */
+            height: 794px; /* A4 height (landscape) */
+            padding: 60px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #ffffff;
+            position: relative;
+            overflow: hidden; /* Penting untuk menampung elemen absolut */
+        }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+        .font-tangerine { font-family: 'Tangerine', cursive; }
+        .input-group {
+            margin-bottom: 1rem;
+        }
+        .input-group label {
+            display: block;
+            text-align: left;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        .input-group input {
+            width: 100%;
+        }
+        /* Elemen Dekoratif */
+        .deco-shape {
+            position: absolute;
+            background-color: #1e3a8a; /* Dark Blue */
+        }
+        .deco-shape-light {
+            background-color: #60a5fa; /* Light Blue */
+        }
+        /* Top Left */
+        .tl-1 { top: -50px; left: 80px; width: 200px; height: 100px; transform: skewX(-45deg); }
+        .tl-2 { top: 0px; left: -80px; width: 200px; height: 120px; transform: skewX(-45deg); }
+        /* Top Right */
+        .tr-1 { top: 80px; right: -80px; width: 200px; height: 100px; transform: skewX(-45deg); }
+        .tr-2 { top: -40px; right: 50px; width: 200px; height: 100px; transform: skewX(-45deg); }
+         /* Bottom Left */
+        .bl-1 { bottom: -50px; left: 80px; width: 200px; height: 100px; transform: skewX(-45deg); }
+        .bl-2 { bottom: 0px; left: -80px; width: 200px; height: 120px; transform: skewX(-45deg); }
+        /* Bottom Right */
+        .br-1 { bottom: 80px; right: -80px; width: 200px; height: 100px; transform: skewX(-45deg); }
+        .br-2 { bottom: -40px; right: 50px; width: 200px; height: 100px; transform: skewX(-45deg); }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Sticky Header -->
+    <header class="bg-white/80 backdrop-blur-lg shadow-md sticky top-0 z-50">
+        <div class="container mx-auto p-4 flex justify-between items-center">
+            <h1 class="text-xl md:text-2xl font-bold text-blue-600">🏁 Penutup & Bonus</h1>
+            <a href="index.html" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition-colors">
+                &larr; Kembali ke Menu
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto p-6 md:p-10">
+        
+        <!-- Bonus 31: Evaluasi Interaktif (Terjemahkan Kata) -->
+        <section id="bonus-31" class="lesson-card bg-white p-6 md:p-8 rounded-2xl shadow-lg mb-8">
+            <h2 class="text-2xl font-bold text-blue-700 mb-4">31. Evaluasi Interaktif (Terjemahkan Kata) 🎮</h2>
+            <div id="game-container" class="text-center bg-gray-100 p-6 rounded-lg">
+                <p class="text-lg mb-2">Terjemahkan kata ini:</p>
+                <div id="clue-word" class="mb-4 text-4xl font-bold text-blue-800 p-4 h-24 flex items-center justify-center">[Kata]</div>
+                <input type="text" id="answer-input" placeholder="Tulis jawabanmu di sini..." class="w-full max-w-sm p-2 border-2 border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                <button id="check-btn" class="bg-blue-600 text-white font-bold py-2 px-6 rounded-lg mt-2 hover:bg-blue-700 transition-colors">Cek Jawaban</button>
+                <p id="feedback-message" class="mt-4 font-semibold h-6"></p>
+                <button id="next-btn" class="hidden bg-green-500 text-white font-bold py-2 px-6 rounded-lg mt-2 hover:bg-green-600 transition-colors">Soal Berikutnya</button>
+            </div>
+        </section>
+
+        <!-- Bonus 32: Sertifikat -->
+        <section id="bonus-32" class="lesson-card bg-white p-6 md:p-8 rounded-2xl shadow-lg mb-8">
+            <h2 class="text-2xl font-bold text-blue-700 mb-4">32. Sertifikat Penghargaan 🏆</h2>
+            
+            <!-- Formulir Input -->
+            <div class="bg-gray-100 p-6 rounded-lg mb-4 grid grid-cols-1 md:grid-cols-2 gap-x-6">
+                <div class="input-group">
+                    <label for="student-name-input">Nama Murid:</label>
+                    <input type="text" id="student-name-input" class="p-2 border rounded-md" placeholder="Contoh: Budi">
+                </div>
+                <div class="input-group">
+                    <label for="school-name-input">Nama Sekolah:</label>
+                    <input type="text" id="school-name-input" class="p-2 border rounded-md" placeholder="Contoh: SDN 1 Merdeka">
+                </div>
+                 <div class="input-group">
+                    <label for="headmaster-name-input">Nama Kepala Sekolah:</label>
+                    <input type="text" id="headmaster-name-input" class="p-2 border rounded-md" placeholder="Contoh: Drs. Ahmad">
+                </div>
+                <div class="input-group">
+                    <label for="teacher-name-input">Nama Guru:</label>
+                    <input type="text" id="teacher-name-input" class="p-2 border rounded-md" placeholder="Contoh: Siti, S.Pd.">
+                </div>
+                <div class="md:col-span-2 text-center mt-4">
+                     <button id="generate-cert-btn" class="bg-blue-600 text-white py-2 px-6 rounded-md">Terapkan ke Sertifikat</button>
+                </div>
+            </div>
+
+            <div id="certificate-wrapper">
+                <div id="certificate" class="text-gray-800">
+                    <!-- Elemen Dekoratif CSS -->
+                    <div class="deco-shape tl-1"></div>
+                    <div class="deco-shape deco-shape-light tl-2"></div>
+                    <div class="deco-shape tr-1"></div>
+                    <div class="deco-shape deco-shape-light tr-2"></div>
+                    <div class="deco-shape bl-1"></div>
+                    <div class="deco-shape deco-shape-light bl-2"></div>
+                    <div class="deco-shape br-1"></div>
+                    <div class="deco-shape deco-shape-light br-2"></div>
+                    
+                    <!-- Konten Sertifikat -->
+                    <div class="text-center z-10 mt-16">
+                        <h1 class="font-montserrat font-bold text-6xl tracking-wider text-blue-900">SERTIFIKAT</h1>
+                        <p class="font-montserrat text-2xl mt-2 text-gray-600">PENGHARGAAN</p>
+                        
+                        <p class="mt-16 text-xl">Dengan bangga diberikan kepada:</p>
+                        
+                        <p id="cert-student-name" class="font-tangerine text-9xl my-4 text-blue-800">[ Nama Murid ]</p>
+                        
+                        <p class="mt-8 text-lg w-3/4 mx-auto">
+                           Atas keberhasilannya menyelesaikan program pembelajaran<br>
+                           <span class="font-bold">"English for Kids Fun Learning"</span>
+                        </p>
+                    </div>
+
+                    <!-- Emblem Emas di Bawah -->
+                    <div class="absolute bottom-24 z-10">
+                        <svg class="w-28 h-28" viewBox="0 0 100 125"><path fill="#fcc242" d="M50 87.5c-11.4 0-21.2-6.5-26.2-16.3l2.2-1c4.5 8.9 13.5 14.8 24 14.8s19.5-5.9 24-14.8l2.2 1C71.2 81 61.4 87.5 50 87.5z"/><path fill="#fce062" d="M50 2.5C23.8 2.5 2.5 23.8 2.5 50S23.8 97.5 50 97.5 97.5 76.2 97.5 50 76.2 2.5 50 2.5zm0 85C29.3 87.5 12.5 70.7 12.5 50S29.3 12.5 50 12.5 87.5 29.3 87.5 50 70.7 87.5 50 87.5z"/><path fill="#fcc242" d="M37.5 112.5L50 87.5l12.5 25zM25 87.5h50v10H25z"/></svg>
+                    </div>
+
+                    <div class="w-full flex justify-between items-end absolute bottom-10 left-0 px-24 mt-auto z-10">
+                        <div class="text-center">
+                            <p id="cert-headmaster-name" class="font-montserrat font-bold">[ Nama Kepala Sekolah ]</p>
+                            <div class="w-56 h-px bg-gray-600 mt-1"></div>
+                            <p class="text-sm">Kepala Sekolah</p>
+                        </div>
+                        <div class="text-center">
+                            <p id="cert-teacher-name" class="font-montserrat font-bold">[ Nama Guru ]</p>
+                            <div class="w-56 h-px bg-gray-600 mt-1"></div>
+                            <p class="text-sm">Guru Pembimbing</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <button id="download-cert-btn" class="w-full mt-4 bg-blue-800 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-900 transition-colors">Unduh Sertifikat A4 (JPEG)</button>
+        </section>
+        
+    </main>
+
+    <footer class="bg-gray-800 text-white text-center p-4 mt-10">
+        <p>&copy; 2024 English for Kids Fun Learning. Dibuat dengan ❤️.</p>
+    </footer>
+
+    <script>
+        // --- Game Logic ---
+        const clueWordDiv = document.getElementById('clue-word');
+        const answerInput = document.getElementById('answer-input');
+        const checkBtn = document.getElementById('check-btn');
+        const feedbackMessage = document.getElementById('feedback-message');
+        const nextBtn = document.getElementById('next-btn');
+        const questions = [
+            { indonesian: 'apel', answer: 'apple' }, { indonesian: 'kucing', answer: 'cat' },
+            { indonesian: 'pensil', answer: 'pencil' }, { indonesian: 'biru', answer: 'blue' },
+            { indonesian: 'keluarga', answer: 'family' }, { indonesian: 'buku', answer: 'book' }
+        ];
+        let currentQuestionIndex = 0;
+        function loadQuestion() {
+            clueWordDiv.textContent = questions[currentQuestionIndex].indonesian;
+            answerInput.value = '';
+            feedbackMessage.textContent = '';
+            nextBtn.classList.add('hidden');
+            answerInput.disabled = false;
+            checkBtn.disabled = false;
+            answerInput.focus();
+        }
+        function checkAnswer() {
+             const userAnswer = answerInput.value.trim().toLowerCase();
+            if (userAnswer === questions[currentQuestionIndex].answer) {
+                feedbackMessage.textContent = 'Benar! 🎉';
+                feedbackMessage.style.color = 'green';
+                nextBtn.classList.remove('hidden');
+                answerInput.disabled = true;
+                checkBtn.disabled = true;
+            } else {
+                feedbackMessage.textContent = 'Salah, coba lagi!';
+                feedbackMessage.style.color = 'red';
+            }
+        }
+        checkBtn.addEventListener('click', checkAnswer);
+        answerInput.addEventListener('keyup', (event) => { if (event.key === 'Enter') checkAnswer(); });
+        nextBtn.addEventListener('click', () => {
+            currentQuestionIndex = (currentQuestionIndex + 1) % questions.length;
+            loadQuestion();
+        });
+        loadQuestion();
+
+        // --- Certificate Logic ---
+        const studentNameInput = document.getElementById('student-name-input');
+        const schoolNameInput = document.getElementById('school-name-input');
+        const headmasterNameInput = document.getElementById('headmaster-name-input');
+        const teacherNameInput = document.getElementById('teacher-name-input');
+        const generateCertBtn = document.getElementById('generate-cert-btn');
+        
+        const certStudentName = document.getElementById('cert-student-name');
+        const certHeadmasterName = document.getElementById('cert-headmaster-name');
+        const certTeacherName = document.getElementById('cert-teacher-name');
+        
+        const downloadCertBtn = document.getElementById('download-cert-btn');
+        const certificateElement = document.getElementById('certificate');
+
+        function updateCertificate() {
+            certStudentName.textContent = studentNameInput.value.trim() || "[ Nama Murid ]";
+            // Nama sekolah tidak ditampilkan di desain baru ini, tapi logikanya bisa disimpan
+            certHeadmasterName.textContent = headmasterNameInput.value.trim() || "[ Nama Kepala Sekolah ]";
+            certTeacherName.textContent = teacherNameInput.value.trim() || "[ Nama Guru ]";
+        }
+
+        generateCertBtn.addEventListener('click', updateCertificate);
+
+        downloadCertBtn.addEventListener('click', () => {
+            downloadCertBtn.textContent = 'Sedang memproses...';
+            downloadCertBtn.disabled = true;
+            
+            // Memastikan data terbaru ada di sertifikat sebelum diunduh
+            updateCertificate();
+
+            html2canvas(certificateElement, {
+                useCORS: true,
+                scale: 2 
+            }).then(canvas => {
+                const link = document.createElement('a');
+                const studentName = studentNameInput.value.trim().replace(/ /g, '_') || 'english-explorer';
+                link.download = `sertifikat-${studentName}.jpeg`;
+                link.href = canvas.toDataURL('image/jpeg', 0.95);
+                link.click();
+                
+                downloadCertBtn.textContent = 'Unduh Sertifikat A4 (JPEG)';
+                downloadCertBtn.disabled = false;
+            }).catch(err => {
+                console.error('Oops, something went wrong!', err);
+                downloadCertBtn.textContent = 'Gagal, coba lagi';
+                downloadCertBtn.disabled = false;
+            });
+        });
+    </script>
+</body>
+</html>
