@@ -295,12 +295,14 @@
 
             html2canvas(certificateElement, {
                 useCORS: true,
-                scale: 2 
+                // Tingkatkan skala untuk resolusi lebih tinggi & ukuran file lebih besar
+                scale: 3 
             }).then(canvas => {
                 const link = document.createElement('a');
                 const studentName = studentNameInput.value.trim().replace(/ /g, '_') || 'english-explorer';
                 link.download = `sertifikat-${studentName}.jpeg`;
-                link.href = canvas.toDataURL('image/jpeg', 0.95);
+                // Atur kualitas JPEG ke maksimum (1.0)
+                link.href = canvas.toDataURL('image/jpeg', 1.0);
                 link.click();
                 
                 downloadCertBtn.textContent = 'Unduh Sertifikat (JPEG)';
