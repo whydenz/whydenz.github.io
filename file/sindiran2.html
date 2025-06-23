@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sindiran Pedas</title>
+    
+    <!-- Memuat Tailwind CSS untuk styling modern -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Memuat SweetAlert2 untuk pop-up yang cantik -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <!-- Menggunakan font Inter dari Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Menerapkan font Inter ke seluruh halaman */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+    <!-- Kontainer utama -->
+    <div class="bg-white p-8 sm:p-12 rounded-2xl shadow-xl text-center max-w-md mx-4">
+        
+        <!-- Ikon lucu -->
+        <div class="text-6xl mb-4 animate-bounce">😴</div>
+        
+        <!-- Judul Utama -->
+        <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">
+            Spesial Untuk Kaum Rebahan
+        </h1>
+        
+        <!-- Deskripsi -->
+        <p class="text-gray-600 mb-8">
+            Punya cita-cita jadi sultan tapi hobinya mentok di kasur? Klik tombol di bawah ini untuk dapat pencerahan beruntun.
+        </p>
+        
+        <!-- Tombol Aksi -->
+        <button id="sindiranButton" class="w-full bg-red-500 text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-red-300 transform transition-transform duration-200 hover:scale-105">
+            Kasih Aku Sindiran!
+        </button>
+        
+    </div>
+
+    <script>
+        // --- LOGIC JAVASCRIPT ---
+
+        // 1. Mengambil elemen tombol dari HTML
+        const sindiranButton = document.getElementById('sindiranButton');
+
+        // 2. Daftar 5 sindiran pedas dalam bentuk array
+        const daftarSindiran = [
+            "Pengen kaya tapi kerjaan cuma rebahan? Coba gosok bantalnya, siapa tahu keluar jin pesugihan.",
+            "Dompet setipis tisu dibagi dua, cita-cita setinggi Himalaya. Sinkronin dulu, bro!",
+            "Rebahan terus? Duitnya capek nungguin, jadi terbang ke orang lain yang lagi kerja keras.",
+            "Mimpi jadi sultan, realita kaum rebahan. Minimal gerakin jari buat checkout, bukan cuma buat scroll sosmed.",
+            "Kasur: 'Makasih ya udah setia nemenin aku.' Rekening Bank: 'Aku kapan ditemenin?'"
+        ];
+
+        // 3. Menambahkan event listener 'click' ke tombol
+        // Menggunakan 'async' agar kita bisa memakai 'await' di dalamnya
+        sindiranButton.addEventListener('click', async () => {
+            // Melakukan perulangan untuk setiap sindiran di dalam daftar
+            for (const sindiran of daftarSindiran) {
+                // 'await' akan menjeda perulangan sampai pengguna menutup SweetAlert
+                await Swal.fire({
+                    title: 'JLEB!',
+                    text: sindiran,
+                    icon: 'warning', // Ikon peringatan agar lebih menusuk
+                    confirmButtonText: 'Lanjut...', // Mengubah teks tombol
+                    confirmButtonColor: '#ef4444', // Warna tombol merah
+                    customClass: {
+                        title: 'font-bold text-red-500',
+                        popup: 'rounded-2xl'
+                    },
+                    allowOutsideClick: false // Mencegah menutup alert dengan klik di luar
+                });
+            }
+
+            // Pesan terakhir setelah semua sindiran ditampilkan
+            await Swal.fire({
+                title: 'Sudah Habis!',
+                text: 'Semoga cepat tobat dari rebahan dan mulai bekerja keras!',
+                icon: 'success',
+                confirmButtonText: 'Siap!',
+                confirmButtonColor: '#10B981' // Warna tombol hijau
+            });
+        });
+    </script>
+
+</body>
+</html>
