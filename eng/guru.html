@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guru Bahasa Inggris Ceria</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Baloo 2 for a friendly, rounded look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom font, background, and animations */
+        body {
+            font-family: 'Baloo 2', cursive;
+            background: linear-gradient(135deg, #ffdde1, #ee9ca7); /* Soft pink gradient */
+            color: #4A4A4A;
+        }
+        /* Bouncy animation for cards */
+        @keyframes bounce-in {
+            0% { transform: scale(0.9); opacity: 0; }
+            80% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .card {
+            animation: bounce-in 0.6s ease-out forwards;
+        }
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fade-in 0.5s ease-out forwards;
+        }
+        /* Custom styles for the button */
+        .btn-fun {
+            box-shadow: 0 4px #c13a5f;
+            transition: all 0.1s ease-in-out;
+        }
+        .btn-fun:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 #c13a5f;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="min-h-screen p-4 flex flex-col items-center justify-center">
+        <div class="w-full max-w-4xl">
+            <header class="text-center mb-8">
+                <h1 class="text-4xl md:text-5xl font-bold text-white" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.2);">Guru Bahasa Inggris Ceria</h1>
+                <p class="text-xl text-white/90 mt-1 font-medium">Belajar Bahasa Inggris</p>
+            </header>
+
+            <main class="grid md:grid-cols-2 gap-8">
+                <!-- Kolom Kamu -->
+                <div class="card bg-white/80 rounded-3xl border-2 border-white/50 shadow-2xl shadow-pink-300/30 p-6 flex flex-col backdrop-blur-md">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-blue-200 p-3 rounded-full mr-4">
+                            <!-- Kid icon -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /><path d="M12 14c-2 0-3 1-4.5 2.5" /><path d="M12 14c2 0 3 1 4.5 2.5" /><path d="M12 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" /><path d="M9 9a.5.5 0 0 1 0-1" /><path d="M15 9a.5.5 0 0 1 0-1" /></svg>
+                        </div>
+                        <h2 class="text-3xl font-bold text-gray-700">Kamu</h2>
+                    </div>
+                    <p class="text-gray-600 mb-4 text-lg flex-grow">Ketik kata yang mau ditanya di sini ya!</p>
+                    <textarea id="inputText" class="w-full p-4 border-2 border-gray-300 rounded-2xl text-lg text-gray-700 placeholder-gray-400 focus:ring-4 focus:ring-blue-300 focus:border-blue-400 transition duration-200 resize-none" rows="3" placeholder="Contoh: Kucing lucu"></textarea>
+                    <button id="translateButton" class="btn-fun mt-5 w-full flex items-center justify-center bg-pink-500 text-white font-bold text-2xl py-4 px-4 rounded-2xl hover:bg-pink-600 disabled:bg-gray-400 disabled:shadow-none transition-colors">
+                        <span id="buttonText" class="flex items-center gap-2">
+                            Ayo Tanya!
+                            <!-- Magic Wand Icon -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 3-3 3 3 3"/><path d="m19 21 3-3-3-3"/><path d="m3 12.5 1.5-1.5 4 4L10 16.5"/><path d="m14 7.5 1.5-1.5 4 4-1.5 1.5"/><path d="M8.5 8.5 7 7l4-4 1.5 1.5"/><path d="m12.5 15.5 1.5-1.5 4 4-1.5 1.5"/></svg>
+                        </span>
+                        <span id="buttonLoading" class="hidden flex items-center gap-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="animate-spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+                            Sebentar...
+                        </span>
+                    </button>
+                </div>
+
+                <!-- Kolom Guru -->
+                <div class="card bg-white/80 rounded-3xl border-2 border-white/50 shadow-2xl shadow-pink-300/30 p-6 flex flex-col backdrop-blur-md">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-green-200 p-3 rounded-full mr-4">
+                            <!-- Owl Icon -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12A10 10 0 1 1 2 12a10 10 0 0 1 20 0Z"/><path d="M6 12c0-1.5 2-3 6-3s6 1.5 6 3-2 3-6 3-6-1.5-6-3Z"/><path d="M8.5 10.5a.5.5 0 1 0-1 0 .5.5 0 0 0 1 0Z"/><path d="M16.5 10.5a.5.5 0 1 0-1 0 .5.5 0 0 0 1 0Z"/></svg>
+                        </div>
+                        <h2 class="text-3xl font-bold text-gray-700">Guru Burung Hantu</h2>
+                    </div>
+                    <div id="outputContainer" class="bg-white/70 rounded-2xl p-4 flex-grow flex flex-col justify-center min-h-[210px] border-2 border-gray-200/50">
+                        <div id="initialState" class="text-center text-gray-500 text-lg">
+                            <p>Jawaban dari Guru akan muncul di sini!</p>
+                        </div>
+                        <div id="loadingState" class="hidden flex-col items-center justify-center text-gray-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-spin mb-2 text-gray-400"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+                            <span class="text-lg">Sedang berpikir...</span>
+                        </div>
+                        <div id="errorState" class="hidden text-red-500 text-center font-bold text-lg"></div>
+                        <div id="resultState" class="hidden space-y-4">
+                            <div class="animate-fade-in">
+                                <h3 class="font-bold text-gray-500 text-base mb-1">Artinya:</h3>
+                                <div class="flex items-center justify-between">
+                                    <p id="translationOutput" class="text-2xl font-bold text-green-600"></p>
+                                    <button id="speakButton" title="Dengarkan suaranya" class="text-gray-500 hover:text-green-500 p-2 rounded-full hover:bg-green-100 transition-colors">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="animate-fade-in" style="animation-delay: 100ms;">
+                                <h3 class="font-bold text-gray-500 text-base mb-1">Cara bacanya:</h3>
+                                <p id="pronunciationOutput" class="text-xl text-blue-600 bg-blue-100/70 py-2 px-4 rounded-lg font-semibold"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const inputText = document.getElementById('inputText');
+        const translateButton = document.getElementById('translateButton');
+        const buttonText = document.getElementById('buttonText');
+        const buttonLoading = document.getElementById('buttonLoading');
+        
+        const outputContainer = document.getElementById('outputContainer');
+        const initialState = document.getElementById('initialState');
+        const loadingState = document.getElementById('loadingState');
+        const errorState = document.getElementById('errorState');
+        const resultState = document.getElementById('resultState');
+
+        const translationOutput = document.getElementById('translationOutput');
+        const pronunciationOutput = document.getElementById('pronunciationOutput');
+        const speakButton = document.getElementById('speakButton');
+
+        // Main translation function
+        const handleTranslate = async () => {
+            const textToTranslate = inputText.value.trim();
+            if (!textToTranslate) {
+                showError("Jangan lupa ketik sesuatu dulu ya!");
+                return;
+            }
+            setLoading(true);
+            initialState.classList.add('hidden');
+            errorState.classList.add('hidden');
+            resultState.classList.add('hidden');
+            loadingState.style.display = 'flex';
+            const prompt = `Translate the following Indonesian text to English. Also, provide a simple Indonesian phonetic transcription for the English translation to help with pronunciation. The phonetic transcription should be very simple, for example: "they" becomes "dei", "every day" becomes "evri dei", "what" becomes "wat", "your" becomes "yor".
+Indonesian Text: "${textToTranslate}"
+Provide the response as a JSON object with two keys: "translation" and "pronunciation".
+Example output for "nama saya Budi":
+{ "translation": "my name is Budi", "pronunciation": "mai neim is Budi" }`;
+
+            try {
+                const chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+                const payload = {
+                    contents: chatHistory,
+                    generationConfig: {
+                        responseMimeType: "application/json",
+                        responseSchema: {
+                            type: "OBJECT",
+                            properties: { "translation": { "type": "STRING" }, "pronunciation": { "type": "STRING" } },
+                            required: ["translation", "pronunciation"]
+                        }
+                    }
+                };
+                const apiKey = "AIzaSyDt_L5F31TXkkk2WwIZEXzDfBe1Sk2I35w";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                if (!response.ok) throw new Error(`API returned status ${response.status}`);
+                const result = await response.json();
+                if (result.candidates && result.candidates.length > 0) {
+                    const jsonText = result.candidates[0].content.parts[0].text;
+                    const parsedJson = JSON.parse(jsonText);
+                    showResult(parsedJson);
+                } else { throw new Error("No valid response from API."); }
+            } catch (e) {
+                console.error("Translation error:", e);
+                showError(`Ups, ada yang salah nih. Coba lagi ya!`);
+            } finally {
+                setLoading(false);
+                loadingState.style.display = 'none';
+            }
+        };
+
+        const setLoading = (isLoading) => {
+            translateButton.disabled = isLoading;
+            inputText.disabled = isLoading;
+            if (isLoading) {
+                buttonText.classList.add('hidden');
+                buttonLoading.classList.remove('hidden');
+            } else {
+                buttonText.classList.remove('hidden');
+                buttonLoading.classList.add('hidden');
+            }
+        };
+
+        const showError = (message) => {
+            resultState.classList.add('hidden');
+            initialState.classList.add('hidden');
+            errorState.textContent = message;
+            errorState.classList.remove('hidden');
+        };
+
+        const showResult = (data) => {
+            errorState.classList.add('hidden');
+            initialState.classList.add('hidden');
+            translationOutput.textContent = data.translation;
+            pronunciationOutput.textContent = data.pronunciation;
+            resultState.classList.remove('hidden');
+        };
+        
+        const speak = () => {
+            const textToSpeak = translationOutput.textContent;
+            if ('speechSynthesis' in window && textToSpeak) {
+                const utterance = new SpeechSynthesisUtterance(textToSpeak);
+                utterance.lang = 'en-US';
+                utterance.pitch = 1.2;
+                utterance.rate = 0.9;
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert("Maaf, browser kamu tidak mendukung fitur suara ini.");
+            }
+        };
+
+        translateButton.addEventListener('click', handleTranslate);
+        speakButton.addEventListener('click', speak);
+        inputText.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                handleTranslate();
+            }
+        });
+    </script>
+</body>
+  </html>
+    
