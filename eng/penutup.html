@@ -279,11 +279,39 @@
         const certificateElement = document.getElementById('certificate');
 
         function updateCertificate() {
-            certStudentName.textContent = studentNameInput.value.trim() || "[ Nama Murid ]";
+            // --- UPDATED LOGIC ---
+            const studentName = studentNameInput.value.trim() || "[ Nama Murid ]";
+            certStudentName.textContent = studentName;
+            
+            const nameLength = studentName.length;
+
+            // Hapus kelas ukuran font yang ada untuk menghindari konflik
+            certStudentName.classList.remove('text-9xl', 'text-8xl', 'text-7xl', 'text-6xl', 'text-5xl');
+
+            // Tentukan kelas font baru berdasarkan panjang nama
+            if (nameLength <= 15) {
+                certStudentName.classList.add('text-9xl'); // Ukuran terbesar
+            } else if (nameLength <= 20) {
+                certStudentName.classList.add('text-8xl');
+            } else if (nameLength <= 25) {
+                certStudentName.classList.add('text-7xl');
+            } else if (nameLength <= 30) {
+                certStudentName.classList.add('text-6xl');
+            } else {
+                certStudentName.classList.add('text-5xl'); // Ukuran terkecil
+            }
+
+            // Kembalikan ke default jika input kosong
+            if (studentName === "[ Nama Murid ]") {
+                 certStudentName.classList.add('text-9xl');
+            }
+            // --- END OF UPDATED LOGIC ---
+
             certSchoolName.textContent = schoolNameInput.value.trim() || "[ Nama Sekolah ]";
             certHeadmasterName.textContent = headmasterNameInput.value.trim() || "[ Nama Kepala Sekolah ]";
             certTeacherName.textContent = teacherNameInput.value.trim() || "[ Nama Guru ]";
         }
+
 
         generateCertBtn.addEventListener('click', updateCertificate);
 
@@ -291,6 +319,7 @@
             downloadCertBtn.textContent = 'Sedang memproses...';
             downloadCertBtn.disabled = true;
             
+            // Panggil fungsi update sekali lagi untuk memastikan nama panjang pun tergambar dengan benar
             updateCertificate();
 
             html2canvas(certificateElement, {
