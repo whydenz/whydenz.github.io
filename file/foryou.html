@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pesan Spesial Untukmu</title>
+    <!-- cr by rayden -->
+    <!-- Impor Tailwind CSS untuk styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Impor SweetAlert2 untuk alert yang cantik -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <!-- Gaya tambahan -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0fdf4; /* Warna latar belakang hijau sangat muda */
+        }
+
+        .title-font {
+            font-family: 'Pacifico', cursive;
+        }
+
+        /* Custom styling untuk SweetAlert */
+        .swal2-title {
+            color: #15803d; /* Hijau tua */
+        }
+        .swal2-html-container {
+            font-size: 1.25rem;
+            color: #4a5568;
+        }
+        .swal2-confirm {
+            transition: background-color 0.3s;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+
+    <div class="text-center p-8 bg-white rounded-2xl shadow-xl max-w-md mx-auto">
+        <h1 class="text-4xl md:text-5xl font-bold text-green-700 title-font mb-4">Untuk Kamu</h1>
+        <p class="text-gray-600 mb-8">Aku punya beberapa pesan untukmu. Klik tombol di bawah ini untuk melihatnya.</p>
+        
+        <!-- Tombol untuk memicu alert -->
+        <button id="show-message-btn" class="w-full bg-green-500 text-white font-bold py-3 px-6 rounded-xl hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-green-300 transition-transform transform hover:scale-105 shadow-lg">
+            Buka Pesan 💌
+        </button>
+    </div>
+
+    <script>
+        // Daftar 6 kata-kata romantis + 1 kata motivasi
+        const messages = [
+            "Aku sangat beruntung bisa memilikimu di sisiku.",
+            "Setiap hari bersamamu terasa seperti mimpi yang jadi nyata.",
+            "Senyummu adalah pemandangan terindah yang pernah aku lihat.",
+            "Kamu adalah alasan di balik setiap kebahagiaanku.",
+            "Dunia terasa lebih lengkap dan berwarna saat ada kamu.",
+            "Aku ingin menghabiskan sisa waktuku hanya denganmu.",
+            "Teruslah jadi dirimu yang hebat. Kamu lebih kuat dari yang kamu kira!" // Pesan ke-7 (Motivasi)
+        ];
+
+        // Indeks untuk melacak pesan mana yang sedang ditampilkan
+        let messageIndex = 0;
+
+        // Ambil elemen tombol dari HTML
+        const showMessageButton = document.getElementById('show-message-btn');
+
+        // Fungsi untuk menampilkan teks dengan efek ketikan
+        function typeWriter(text, element) {
+            let i = 0;
+            const typingSpeed = 80; // Kecepatan ketikan dalam milidetik
+
+            // Hentikan tombol agar tidak bisa diklik selama animasi
+            Swal.getConfirmButton().disabled = true;
+
+            const interval = setInterval(() => {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(interval);
+                    // Aktifkan kembali tombol setelah selesai
+                    Swal.getConfirmButton().disabled = false;
+                }
+            }, typingSpeed);
+        }
+
+        // Fungsi untuk menampilkan SweetAlert
+        function showAlert() {
+            const isLastMessage = messageIndex === messages.length - 1;
+            const currentMessage = messages[messageIndex];
+            
+            // Membuat judul dinamis: "Pesan #1", "Pesan #2", dst.
+            const alertTitle = isLastMessage ? 'Satu Pesan Terakhir...' : `Pesan #${messageIndex + 1}`;
+
+            Swal.fire({
+                title: alertTitle,
+                icon: isLastMessage ? 'info' : 'success',
+                
+                html: '<div id="typed-text" class="text-center min-h-[7rem] flex items-center justify-center p-4"></div>',
+                
+                confirmButtonText: isLastMessage ? 'Selesai 🥰' : 'Lanjut',
+                confirmButtonColor: isLastMessage ? '#3b82f6' : '#22c55e', // Biru untuk terakhir, Hijau untuk lainnya
+                iconColor: isLastMessage ? '#3b82f6' : '#22c55e', // Warna ikon disesuaikan
+                
+                didOpen: () => {
+                    const typedTextElement = document.getElementById('typed-text');
+                    typeWriter(currentMessage, typedTextElement);
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    if (isLastMessage) {
+                        messageIndex = 0; // Reset agar bisa diulang
+                    } else {
+                        messageIndex++;
+                        showAlert(); // Panggil fungsi rekursif untuk pesan berikutnya
+                    }
+                }
+            });
+        }
+
+        // Tambahkan event listener ke tombol utama
+        showMessageButton.addEventListener('click', () => {
+            messageIndex = 0; // Selalu mulai dari awal
+            showAlert();
+        });
+    </script>
+
+</body>
+</html>
