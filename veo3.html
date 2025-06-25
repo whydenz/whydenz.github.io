@@ -209,7 +209,7 @@
                  <i class="fas fa-info-circle"></i>
              </button>
              <a href="/bahasa.html" target="_blank" class="header-btn translator-btn" aria-label="Buka Penerjemah">
-                <i class="fas fa-language"></i>
+                 <i class="fas fa-language"></i>
              </a>
              <button id="theme-toggle" class="header-btn theme-toggle-btn" aria-label="Ganti Tema">
                  <i class="fas fa-sun" id="theme-icon"></i>
@@ -539,7 +539,7 @@ function updateDialogUI() {
                  dialogLabel.textContent = `Isi Dialog (${name})`;
             }
             if(dialogTextarea){
-                dialogTextarea.placeholder = `Tuliskan dialog untuk ${name} e.g., Ngapain lo disini?`;
+                 dialogTextarea.placeholder = `Tuliskan dialog untuk ${name} e.g., Ngapain lo disini?`;
             }
         };
         
@@ -626,14 +626,19 @@ function copyPrompt(elementId) {
     const textarea = document.getElementById(elementId);
     if (textarea) {
         textarea.select();
-        // Use the Clipboard API for modern browsers, with a fallback to execCommand
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(textarea.value).then(() => {
-                showCopySuccess();
-            });
-        } else {
+        textarea.setSelectionRange(0, 99999); // For mobile compatibility
+
+        // Use the document.execCommand for broader compatibility in iFrames
+        try {
             document.execCommand('copy');
             showCopySuccess();
+        } catch (err) {
+            console.error('Gagal menyalin teks: ', err);
+             Swal.fire({
+                title: 'Gagal Menyalin',
+                text: 'Browser Anda tidak mendukung aksi ini.',
+                icon: 'error'
+            });
         }
     }
 }
@@ -753,9 +758,18 @@ form.addEventListener('submit', async function(event) {
         Anda adalah seorang penulis naskah dan sutradara ahli. Tugas Anda adalah mengubah data terstruktur berikut menjadi dua buah prompt video yang kaya, deskriptif, dan sinematik.
         Prompt pertama harus dalam Bahasa Indonesia yang baik dan puitis.
         Prompt kedua harus dalam Bahasa Inggris yang natural dan sinematik.
-        Kembangkan detail yang diberikan menjadi narasi yang hidup. Deskripsikan suasana, visual, dan audio untuk menciptakan pengalaman yang imersif. Jangan hanya mendaftar fakta, tetapi rangkailah menjadi sebuah cerita pendek dalam satu paragraf yang padat.
-        Pastikan untuk TIDAK menerjemahkan isi dialog secara langsung, gunakan dialog asli dalam kedua versi prompt.
         
+        Kembangkan detail yang diberikan menjadi narasi yang hidup. Deskripsikan suasana, visual, dan audio untuk menciptakan pengalaman yang imersif. Jangan hanya mendaftar fakta, tetapi rangkailah menjadi sebuah cerita pendek dalam satu paragraf yang padat.
+
+        **Aturan Penting untuk Dialog:**
+        Jika seorang karakter memiliki dialog (properti 'dialog' tidak kosong), Anda HARUS menyertakannya dalam prompt dengan format berikut:
+        - Untuk prompt Bahasa Indonesia, gunakan: [berbicara: "Teks dialog asli di sini"]
+        - Untuk prompt Bahasa Inggris, gunakan: [speaking: "The original dialog text here"]
+        
+        Contoh: Jika dialognya adalah "Kita harus pergi sekarang.", maka dalam narasi prompt harus muncul kalimat seperti ini "...dia melihat ke arah temannya [berbicara: "Kita harus pergi sekarang."]".
+        
+        PENTING: JANGAN menerjemahkan isi dialog. Gunakan teks dialog asli apa adanya untuk kedua versi bahasa. Jika properti 'dialog' pada data terstruktur kosong, jangan tulis apa-apa tentang dialog.
+
         Gunakan token '|||---|||' sebagai pemisah WAJIB antara versi Bahasa Indonesia dan Bahasa Inggris.
         
         Berikut adalah data terstrukturnya:
