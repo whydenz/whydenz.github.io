@@ -383,7 +383,7 @@ async function handleImageGeneration() {
     imageOutputSection.scrollIntoView({ behavior: 'smooth' });
 
     try {
-        const apiKey = ""; // Handled by environment
+        const apiKey = "AIzaSyDt_L5F31TXkkk2WwIZEXzDfBe1Sk2I35w"; // Handled by environment
         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${apiKey}`;
         const payload = { instances: [{ prompt: imagePrompt }], parameters: { sampleCount: 1 } };
 
