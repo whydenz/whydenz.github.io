@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pesan Khusus Untukmu ❤️</title>
+
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- SweetAlert2 Library -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        /* CSS Reset and Basic Setup */
+        :root {
+            --bg-start: #fff0f5; /* Lavender Blush */
+            --bg-end: #ffe4e1;   /* Misty Rose */
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --text-color: #333;
+            --primary-color: #ff69b4; /* Hot Pink */
+            --primary-hover: #ff1493; /* Deep Pink */
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden; /* Mencegah scroll */
+        }
+
+        /* Gradient Background and Centering */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+        }
+
+        /* Main container with card style */
+        .container {
+            text-align: center;
+            padding: 40px 50px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Title Styling */
+        h1 {
+            color: var(--primary-color);
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        /* Subtitle Styling */
+        p {
+            color: var(--text-color);
+            font-size: 1.1em;
+            margin-bottom: 30px;
+        }
+
+        /* The main button styling */
+        .magic-button {
+            background: linear-gradient(45deg, var(--primary-color), var(--primary-hover));
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 105, 180, 0.4);
+        }
+
+        /* Button hover effect */
+        .magic-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 105, 180, 0.6);
+        }
+        
+        .magic-button:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        /* Custom styles for SweetAlert2 */
+        .custom-swal-popup {
+            border-radius: 15px !important;
+            font-family: 'Poppins', sans-serif !important;
+        }
+        
+        .custom-swal-title {
+            color: var(--primary-hover) !important;
+        }
+        
+        .custom-swal-confirm-button {
+            background-color: var(--primary-color) !important;
+            border-radius: 8px !important;
+            box-shadow: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Pesan Khusus Untukmu</h1>
+        <p>Ada sesuatu yang penting nih, klik tombol di bawah ya!</p>
+        <button id="pesanButton" class="magic-button">Klik Aku Dong ❤️</button>
+    </div>
+
+    <script>
+        // Mengambil elemen tombol dari HTML
+        const tombolPesan = document.getElementById('pesanButton');
+
+        // Kumpulan kata-kata romantis pedas
+        const daftarPesan = [
+            "Peringatan: terlalu lama menatap kamu bisa menyebabkan jatuh cinta permanen. Risiko ditanggung sendiri ya.",
+            "Kamu itu kayak sambel, pedesnya bikin nagih. Makin diliatin makin pengen nambah.",
+            "Aku nggak butuh Google Maps, soalnya tujuanku cuma satu: masa depan yang pedas manis bareng kamu.",
+            "Kalau jadi gubernur, aku pasti gagal. Soalnya aku cuma mau ngurusin kamu seorang, bukan satu provinsi.",
+            "Kamu tau bedanya kamu sama utang? Kalau utang makin dipikirin bikin pusing, kalau kamu makin dipikirin bikin kangen.",
+            "Kalau disuruh lupain kamu, aku harus ke kelurahan dulu. Minta surat keterangan tidak mampu.",
+            "Sayang, otakku pasti korslet ya? Soalnya tiap mikirin kamu, langsung nyetrum ke hati.",
+            "Tolong jangan terlalu manis, nanti aku bisa diabetes karena jatuh cinta sama kamu terus-terusan."
+        ];
+        
+        let hitunganPesan = 0;
+        let pesanYangDiacak;
+
+        // Fungsi untuk mengacak urutan array
+        function acakArray(array) {
+            let salinanArray = [...array];
+            for (let i = salinanArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [salinanArray[i], salinanArray[j]] = [salinanArray[j], salinanArray[i]];
+            }
+            return salinanArray;
+        }
+
+        // Fungsi untuk menampilkan pesan satu per satu secara manual
+        function tampilkanPesanManual() {
+            // Jika sudah pesan ke-6, tampilkan pesan penutup
+            if (hitunganPesan >= 6) {
+                tampilkanPesanPenutup();
+                return; // Hentikan fungsi
+            }
+
+            // Ambil pesan dari array yang sudah diacak
+            const pesan = pesanYangDiacak[hitunganPesan];
+            
+            // Tambah hitungan untuk pesan berikutnya
+            hitunganPesan++;
+
+            // Menampilkan SweetAlert
+            Swal.fire({
+                title: `<strong>Pesan ke-${hitunganPesan} dari 6</strong>`,
+                icon: 'success',
+                html: `<p style="font-size: 1.1em;">"${pesan}"</p>`,
+                confirmButtonText: 'Lanjut!',
+                customClass: {
+                    popup: 'custom-swal-popup',
+                    title: 'custom-swal-title',
+                    confirmButton: 'custom-swal-confirm-button'
+                }
+            }).then((result) => {
+                // Jika tombol "Lanjut!" diklik, panggil fungsi ini lagi
+                if (result.isConfirmed) {
+                    tampilkanPesanManual();
+                }
+            });
+        }
+
+        function tampilkanPesanPenutup() {
+            tombolPesan.disabled = false; // Aktifkan kembali tombol
+            tombolPesan.innerText = 'Klik Lagi Dong ❤️';
+            Swal.fire({
+                title: '<strong>Sudah dulu ya! 😉</strong>',
+                icon: 'info',
+                html: '<p style="font-size: 1.1em;">Cukup 6 dulu, nanti kamu makin sayang. Sampai jumpa di kejutan berikutnya!</p>',
+                confirmButtonText: 'Oke, Sayang! 😘',
+                customClass: {
+                    popup: 'custom-swal-popup',
+                    title: 'custom-swal-title',
+                    confirmButton: 'custom-swal-confirm-button'
+                }
+            });
+        }
+
+        // Menambahkan event listener untuk click pada tombol
+        tombolPesan.addEventListener('click', function() {
+            // Nonaktifkan tombol agar tidak diklik berulang kali selama rangkaian pesan
+            tombolPesan.disabled = true;
+            tombolPesan.innerText = 'Lihat Pesannya...';
+
+            // Reset hitungan dan acak urutan pesannya setiap kali tombol utama diklik
+            hitunganPesan = 0;
+            pesanYangDiacak = acakArray(daftarPesan);
+            
+            // Mulai rangkaian pesan manual
+            tampilkanPesanManual();
+        });
+    </script>
+
+</body>
+</html>
