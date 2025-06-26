@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Image Generator (New Look)</title>
+    
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons for UI elements -->
+    <script src="https://unpkg.com/lucide-react@0.292.0/dist/lucide-react.js"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
+            colors: {
+              'brand-yellow': '#FFD24C',
+              'brand-yellow-dark': '#FDBF2C'
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+        /* Custom styles for a better look and feel */
+        body {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .loader {
+            border-top-color: #FFD24C;
+            -webkit-animation: spin 1s linear infinite;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { -webkit-transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+
+    <!-- Header Section -->
+    <header class="bg-brand-yellow p-4 shadow-md">
+        <div class="container mx-auto flex items-center justify-between">
+            <!-- NEW: Back Button -->
+            <a href="/veo3.html" class="p-2 rounded-full hover:bg-black/10 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left text-gray-800"><path d="m15 18-6-6 6-6"/></svg>
+            </a>
+            
+             <div class="text-center">
+                <h1 class="text-2xl lg:text-3xl font-bold text-gray-900">AI Image Generator</h1>
+                <p class="text-sm text-gray-700 mt-1">Ciptakan karya visual menakjubkan</p>
+            </div>
+
+            <!-- Placeholder for centering -->
+             <div class="w-11 h-11"></div>
+        </div>
+    </header>
+    
+    <div class="container mx-auto p-4 lg:p-8">
+        <!-- Main content: Grid for controls and image display -->
+        <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+            <!-- Left column: Controls -->
+            <div class="lg:col-span-1 bg-white p-6 rounded-2xl shadow-lg flex flex-col gap-6">
+                <div>
+                    <label for="prompt" class="block text-sm font-medium text-gray-600 mb-2">1. Masukkan Prompt Anda</label>
+                    <textarea id="prompt" rows="4" class="w-full bg-gray-100 border-gray-300 text-gray-800 rounded-lg p-3 focus:ring-2 focus:ring-brand-yellow focus:border-brand-yellow transition" placeholder="Contoh: astronot kucing mengendarai sepeda di Mars"></textarea>
+                </div>
+                
+                <div>
+                    <label for="negative-prompt" class="block text-sm font-medium text-gray-600 mb-2">
+                        2. Negative Prompt <span class="text-gray-400 text-xs">(Opsional)</span>
+                    </label>
+                    <textarea id="negative-prompt" rows="3" class="w-full bg-gray-100 border-gray-300 text-gray-800 rounded-lg p-3 focus:ring-2 focus:ring-brand-yellow focus:border-brand-yellow transition" placeholder="Elemen yang ingin dihindari. Contoh: buram, kualitas rendah, cacat, teks"></textarea>
+                </div>
+
+                <div>
+                    <label for="style-select" class="block text-sm font-medium text-gray-600 mb-2">3. Pilih Gaya Gambar</label>
+                    <select id="style-select" class="w-full bg-gray-100 border-gray-300 text-gray-800 rounded-lg p-3 focus:ring-2 focus:ring-brand-yellow focus:border-brand-yellow transition">
+                        <option value="realistis">Realisitis / Fotografi</option>
+                        <option value="anime">Anime</option>
+                        <option value="kartun">Kartun</option>
+                        <option value="seni digital">Seni Digital</option>
+                        <option value="pixel art">Pixel Art</option>
+                        <option value="fantasi">Fantasi</option>
+                        <option value="cat air">Cat Air</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label for="ethnicity-select" class="block text-sm font-medium text-gray-600 mb-2">4. Pilih Wajah Karakter</label>
+                    <select id="ethnicity-select" class="w-full bg-gray-100 border-gray-300 text-gray-800 rounded-lg p-3 focus:ring-2 focus:ring-brand-yellow focus:border-brand-yellow transition">
+                        <option value="">Tidak Spesifik</option>
+                        <option value="Indonesian">Indonesia</option>
+                        <option value="Javanese Indonesian">Jawa</option>
+                        <option value="Sundanese Indonesian">Sunda</option>
+                        <option value="Balinese">Bali</option>
+                        <option value="East Asian">Asia Timur (Cina, Jepang, Korea)</option>
+                        <option value="South Asian">Asia Selatan (India)</option>
+                        <option value="European">Eropa</option>
+                        <option value="African">Afrika</option>
+                        <option value="Middle Eastern">Timur Tengah</option>
+                        <option value="Latin American">Amerika Latin</option>
+                    </select>
+                </div>
+
+                <!-- NEW: Facial Expression option -->
+                <div>
+                    <label for="expression-select" class="block text-sm font-medium text-gray-600 mb-2">5. Pilih Ekspresi Wajah</label>
+                    <select id="expression-select" class="w-full bg-gray-100 border-gray-300 text-gray-800 rounded-lg p-3 focus:ring-2 focus:ring-brand-yellow focus:border-brand-yellow transition">
+                        <option value="">Tidak Spesifik</option>
+                        <option value="happy">Senang</option>
+                        <option value="sad">Sedih</option>
+                        <option value="angry">Marah</option>
+                        <option value="surprised">Terkejut</option>
+                        <option value="neutral">Netral</option>
+                        <option value="laughing">Tertawa</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="aspect-ratio-select" class="block text-sm font-medium text-gray-600 mb-2">6. Pilih Rasio Aspek</label>
+                    <select id="aspect-ratio-select" class="w-full bg-gray-100 border-gray-300 text-gray-800 rounded-lg p-3 focus:ring-2 focus:ring-brand-yellow focus:border-brand-yellow transition">
+                        <option value="1:1">1:1 (Persegi)</option>
+                        <option value="16:9">16:9 (Lanskap)</option>
+                        <option value="9:16">9:16 (Potret)</option>
+                        <option value="4:3">4:3 (TV Klasik)</option>
+                        <option value="3:2">3:2 (Fotografi)</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-2">7. Unggah Gambar Referensi <span class="text-gray-400 text-xs">(Opsional)</span></label>
+                    <input type="file" id="image-upload" accept="image/*" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-brand-yellow file:text-gray-800 hover:file:bg-brand-yellow-dark transition cursor-pointer">
+                    <div id="image-preview-container" class="mt-4 hidden">
+                         <p class="text-xs text-gray-500 mb-2">Pratinjau Referensi:</p>
+                         <img id="image-preview" src="" alt="Pratinjau Gambar Referensi" class="rounded-lg max-h-40 w-auto mx-auto border"/>
+                    </div>
+                </div>
+
+                <button id="generate-btn" class="w-full bg-brand-yellow hover:bg-brand-yellow-dark text-gray-900 font-bold py-3 px-4 rounded-lg text-lg transition-transform transform hover:scale-105 shadow-lg flex items-center justify-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-wand-2"><path d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72Z"></path><path d="m14 7 3 3"></path><path d="M5 6v4"></path><path d="M19 14v4"></path><path d="M10 2v2"></path><path d="M7 8H3"></path><path d="M17 16h4"></path><path d="M11 3H9"></path></svg>
+                    Hasilkan Gambar
+                </button>
+            </div>
+
+            <!-- Right column: Image display -->
+            <div class="lg:col-span-2 bg-white p-6 rounded-2xl shadow-lg flex flex-col justify-center items-center min-h-[400px] lg:min-h-[600px]">
+                <div id="image-display-area" class="w-full h-full flex flex-col justify-center items-center bg-gray-100 rounded-lg">
+                    <!-- Placeholder -->
+                    <div id="placeholder" class="text-center text-gray-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-image-down mx-auto mb-4 text-gray-400"><path d="M10.3 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10l-3.1-3.1a2 2 0 0 0-2.814.014L6 21"/><path d="m14 19.5 3-3 3 3"/><path d="M17 16.5v-6"/><circle cx="9" cy="9" r="2"/></svg>
+                        <h3 class="text-xl font-medium text-gray-700">Hasil Gambar Anda</h3>
+                        <p class="text-gray-500">Gambar yang dihasilkan akan muncul di sini.</p>
+                    </div>
+
+                    <!-- Loading Spinner -->
+                    <div id="loader" class="hidden text-center">
+                        <div class="loader ease-linear rounded-full border-8 border-t-8 border-gray-400 h-32 w-32 mx-auto"></div>
+                        <h3 class="text-xl font-medium mt-6 text-gray-700">Sedang menghasilkan...</h3>
+                        <p class="text-gray-500">Harap tunggu sejenak, keajaiban sedang terjadi.</p>
+                    </div>
+
+                    <!-- Result Image -->
+                    <img id="result-image" src="" alt="Gambar yang dihasilkan AI" class="hidden rounded-lg max-w-full max-h-full object-contain">
+                </div>
+                
+                <!-- Download Button -->
+                <button id="download-btn" class="hidden mt-6 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg text-lg transition-transform transform hover:scale-105 shadow-lg flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                    Unduh Gambar
+                </button>
+
+                <!-- Error Message -->
+                <div id="error-message" class="hidden text-center text-red-700 bg-red-100 p-4 rounded-lg">
+                    <h3 class="font-bold">Oops! Terjadi Kesalahan</h3>
+                    <p id="error-text"></p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        // --- Element selectors ---
+        const promptEl = document.getElementById('prompt');
+        const negativePromptEl = document.getElementById('negative-prompt');
+        const styleSelectEl = document.getElementById('style-select');
+        const ethnicitySelectEl = document.getElementById('ethnicity-select');
+        const expressionSelectEl = document.getElementById('expression-select'); // NEW
+        const aspectRatioSelectEl = document.getElementById('aspect-ratio-select');
+        const imageUploadEl = document.getElementById('image-upload');
+        const imagePreviewContainerEl = document.getElementById('image-preview-container');
+        const imagePreviewEl = document.getElementById('image-preview');
+        const generateBtn = document.getElementById('generate-btn');
+        const downloadBtn = document.getElementById('download-btn');
+        const placeholderEl = document.getElementById('placeholder');
+        const loaderEl = document.getElementById('loader');
+        const resultImageEl = document.getElementById('result-image');
+        const errorEl = document.getElementById('error-message');
+        const errorTextEl = document.getElementById('error-text');
+
+        let referenceImageBase64 = null;
+
+        // --- Event Listeners ---
+        imageUploadEl.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (!file) {
+                referenceImageBase64 = null;
+                imagePreviewContainerEl.classList.add('hidden');
+                return;
+            };
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const base64 = e.target.result;
+                imagePreviewEl.src = base64;
+                imagePreviewContainerEl.classList.remove('hidden');
+                referenceImageBase64 = base64.split(',')[1];
+            };
+            reader.onerror = () => {
+                 showError('Gagal membaca file gambar.');
+                 referenceImageBase64 = null;
+                 imagePreviewContainerEl.classList.add('hidden');
+            }
+            reader.readAsDataURL(file);
+        });
+
+        generateBtn.addEventListener('click', handleImageGeneration);
+
+        downloadBtn.addEventListener('click', () => {
+            const link = document.createElement('a');
+            link.href = resultImageEl.src;
+            const filename = (promptEl.value.substring(0, 30) || 'gambar-ai').replace(/[^a-z0-9]/gi, '_').toLowerCase();
+            link.download = `${filename}.png`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+
+
+        // --- Core Functions ---
+        async function handleImageGeneration() {
+            const promptValue = promptEl.value;
+            if (!promptValue.trim()) {
+                showError("Prompt tidak boleh kosong.");
+                return;
+            }
+
+            setLoadingState(true);
+
+            // Get values from inputs
+            const negativePromptValue = negativePromptEl.value;
+            const styleValue = styleSelectEl.value;
+            const ethnicityValue = ethnicitySelectEl.value;
+            const expressionValue = expressionSelectEl.value; // NEW
+
+            // Automatic prompt enhancement
+            const styleEnhancers = {
+                'realistis': 'photorealistic, 8K, intricate detail, high quality, professional photography, sharp focus',
+                'anime': 'anime style, key visual, vibrant, high-resolution, by Studio Ghibli and Makoto Shinkai, pixiv trending',
+                'kartun': '3D cartoon style, Disney Pixar animation, cute, rendered in Blender, smooth lighting',
+                'seni digital': 'digital painting, concept art, smooth, sharp focus, illustration, ArtStation trending',
+                'pixel art': 'pixel art, 16-bit, vibrant color palette, detailed sprite, Aseprite',
+                'fantasi': 'epic fantasy, detailed, concept art, dramatic lighting, sharp focus, intricate',
+                'cat air': 'watercolor painting, paper texture, soft colors, wet-on-wet technique'
+            };
+
+            // UPDATED: Build the final prompt by combining keywords
+            let fullPrompt = promptValue;
+
+            if (ethnicityValue) {
+                fullPrompt += `, a ${ethnicityValue} person`;
+            }
+
+            if (expressionValue) {
+                fullPrompt += `, ${expressionValue} expression`;
+            }
+
+            const enhancer = styleEnhancers[styleValue] || '';
+            if (enhancer) {
+                fullPrompt += `, ${enhancer}`;
+            }
+            
+            const payload = {
+                instances: [{ prompt: fullPrompt }],
+                parameters: {
+                    sampleCount: 1,
+                    aspectRatio: aspectRatioSelectEl.value,
+                    mode: "text-to-image",
+                    ...(negativePromptValue.trim() && { negativePrompt: negativePromptValue })
+                }
+            };
+            
+            if (referenceImageBase64) {
+                payload.parameters.mode = "image-to-image";
+                payload.instances[0].image = {
+                    bytesBase64Encoded: referenceImageBase64
+                };
+            }
+
+            try {
+                const apiKey = "AIzaSyBVGklev8pN5H4Fw2e06KtgokDHaDG5XJ4"; 
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${apiKey}`;
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!response.ok) {
+                    let errorMsg = `Error: ${response.status} ${response.statusText}`;
+                    const errorBodyText = await response.text();
+                    
+                    try {
+                        const errorData = JSON.parse(errorBodyText);
+                        errorMsg = errorData.error?.message || JSON.stringify(errorData);
+                    } catch (e) {
+                        console.error("Tidak dapat mem-parsing respons galat sebagai JSON. Isi:", errorBodyText);
+                        if (errorBodyText) {
+                           errorMsg = `Galat dari server: ${errorBodyText.substring(0, 150)}`;
+                        }
+                    }
+                    throw new Error(errorMsg);
+                }
+                
+                const result = await response.json();
+                
+                if (result.predictions && result.predictions.length > 0 && result.predictions[0].bytesBase64Encoded) {
+                    const imageUrl = `data:image/png;base64,${result.predictions[0].bytesBase64Encoded}`;
+                    displayResult(imageUrl);
+                } else {
+                    throw new Error('Respons API berhasil, tetapi tidak mengandung data gambar yang valid.');
+                }
+
+            } catch (error) {
+                console.error('Error during image generation:', error);
+                showError(error.message || 'Terjadi kesalahan yang tidak diketahui.');
+            } finally {
+                setLoadingState(false);
+            }
+        }
+        
+        // --- UI Helper Functions ---
+        function setLoadingState(isLoading) {
+            if (isLoading) {
+                generateBtn.disabled = true;
+                generateBtn.innerHTML = '<div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-6 w-6"></div><span>Memproses...</span>';
+                loaderEl.classList.remove('hidden');
+                placeholderEl.classList.add('hidden');
+                resultImageEl.classList.add('hidden');
+                downloadBtn.classList.add('hidden');
+                errorEl.classList.add('hidden');
+            } else {
+                generateBtn.disabled = false;
+                generateBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-wand-2"><path d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72Z"></path><path d="m14 7 3 3"></path><path d="M5 6v4"></path><path d="M19 14v4"></path><path d="M10 2v2"></path><path d="M7 8H3"></path><path d="M17 16h4"></path><path d="M11 3H9"></path></svg>Hasilkan Gambar';
+                loaderEl.classList.add('hidden');
+            }
+        }
+
+        function displayResult(imageUrl) {
+            resultImageEl.src = imageUrl;
+            resultImageEl.classList.remove('hidden');
+            downloadBtn.classList.remove('hidden');
+            placeholderEl.classList.add('hidden');
+            errorEl.classList.add('hidden');
+        }
+
+        function showError(message) {
+            errorTextEl.textContent = message;
+            errorEl.classList.remove('hidden');
+            placeholderEl.classList.remove('hidden');
+            resultImageEl.classList.add('hidden');
+            downloadBtn.classList.add('hidden');
+        }
+
+    </script>
+</body>
+</html>
