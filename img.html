@@ -3,386 +3,507 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Image Generator (New Look)</title>
-    
-    <!-- Tailwind CSS for styling -->
+    <title>Aplikasi Prompt & Image Generator V3</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Lucide Icons for UI elements -->
-    <script src="https://unpkg.com/lucide-react@0.292.0/dist/lucide-react.js"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- SweetAlert2 CSS and JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
       tailwind.config = {
         theme: {
           extend: {
-            fontFamily: {
-              sans: ['Inter', 'sans-serif'],
-            },
             colors: {
               'brand-yellow': '#FFD24C',
-              'brand-yellow-dark': '#FDBF2C'
+              'brand-yellow-dark': '#FDBF2C',
+              'brand-blue': '#3b82f6',
+              'brand-blue-dark': '#2563eb',
             }
           }
         }
       }
     </script>
     <style>
-        /* Custom styles for a better look and feel */
         body {
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+            background-color: #f3f4f6;
+            color: #1f2937;
+            transition: background-color 0.3s, color 0.3s;
         }
-        .loader {
-            border-top-color: #FFD24C;
-            -webkit-animation: spin 1s linear infinite;
-            animation: spin 1s linear infinite;
+        .form-section {
+            background-color: #ffffff;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            margin-bottom: 1.5rem;
         }
+        .form-section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        label {
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        .input-field, .select-field, .textarea-field {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.75rem;
+            background-color: #f9fafb;
+            color: #111827;
+        }
+        .input-field:focus, .select-field:focus, .textarea-field:focus {
+            outline: none;
+            border-color: #FFD24C;
+            box-shadow: 0 0 0 3px rgba(255, 210, 76, 0.4);
+        }
+        .btn {
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            border-radius: 0.75rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .btn-primary { background-color: #FFD24C; color: #1f2937; box-shadow: 0 4px 6px -1px rgba(255, 210, 76, 0.3); }
+        .btn-secondary { background-color: #e5e7eb; color: #374151; }
+        .btn-danger { background-color: #fee2e2; color: #b91c1c; font-size: 0.75rem; padding: 0.25rem 0.75rem; }
+        .btn-image-gen { background-color: #3b82f6; color: white; }
+        .btn:hover { transform: translateY(-2px); opacity: 0.95; }
+        .spinner, .image-spinner {
+            display: none;
+            border: 3px solid rgba(0, 0, 0, 0.2);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border-left-color: #1f2937;
+            animation: spin 1s ease infinite;
+        }
+        .image-spinner {
+             border: 8px solid #d1d5db;
+             border-top-color: #3b82f6;
+             width: 60px;
+             height: 60px;
+        }
+
         @keyframes spin {
-            to { -webkit-transform: rotate(360deg); }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
+
+        /* Dark mode styles */
+        body.dark-mode { background-color: #111827; color: #e5e7eb; }
+        body.dark-mode .form-section { background-color: #1f2937; }
+        body.dark-mode .form-section-title { color: #f9fafb; border-color: #374151; }
+        body.dark-mode label { color: #d1d5db; }
+        body.dark-mode .input-field,
+        body.dark-mode .select-field,
+        body.dark-mode .textarea-field { background-color: #374151; border-color: #4b5563; color: #f9fafb; }
+        body.dark-mode .btn-secondary { background-color: #374151; color: #e5e7eb; }
+        
+        .main-header {
+            background-color: #FFD24C;
+            padding: 1.5rem 1rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+
+        .copy-btn { background-color: #d1d5db; color: #1f2937; }
+        .reset-btn { background-color: #fb923c; color: white; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans">
-
+<body class="p-0">
     <!-- Header Section -->
-    <header class="bg-brand-yellow p-4 shadow-md">
-        <div class="container mx-auto flex items-center justify-between">
-            <!-- NEW: Back Button -->
-            <a href="/veo3.html" class="p-2 rounded-full hover:bg-black/10 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left text-gray-800"><path d="m15 18-6-6 6-6"/></svg>
-            </a>
-            
-             <div class="text-center">
-                <h1 class="text-2xl lg:text-3xl font-bold text-gray-900">AI Image Generator</h1>
-                <p class="text-sm text-gray-700 mt-1">Ciptakan karya visual menakjubkan</p>
-            </div>
-
-            <!-- Placeholder for centering -->
-             <div class="w-11 h-11"></div>
+    <header class="main-header">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+             <h1 class="text-2xl md:text-3xl font-bold text-gray-900">Prompt & Image Generator</h1>
+             <div class="flex items-center">
+                 <button id="about-app-btn" class="text-gray-800 p-2 rounded-full hover:bg-black/10 transition-colors" aria-label="Tentang Aplikasi"><i class="fas fa-info-circle fa-lg"></i></button>
+                 <a href="/bahasa.html" target="_blank" class="text-gray-800 p-2 rounded-full hover:bg-black/10 transition-colors" aria-label="Buka Penerjemah"><i class="fas fa-language fa-lg"></i></a>
+                 <button id="theme-toggle" class="text-gray-800 p-2 rounded-full hover:bg-black/10 transition-colors" aria-label="Ganti Tema"><i class="fas fa-sun fa-lg" id="theme-icon"></i></button>
+             </div>
         </div>
     </header>
-    
-    <div class="container mx-auto p-4 lg:p-8">
-        <!-- Main content: Grid for controls and image display -->
-        <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-            <!-- Left column: Controls -->
-            <div class="lg:col-span-1 bg-white p-6 rounded-2xl shadow-lg flex flex-col gap-6">
-                <div>
-                    <label for="prompt" class="block text-sm font-medium text-gray-600 mb-2">1. Masukkan Prompt Anda</label>
-                    <textarea id="prompt" rows="4" class="w-full bg-gray-100 border-gray-300 text-gray-800 rounded-lg p-3 focus:ring-2 focus:ring-brand-yellow focus:border-brand-yellow transition" placeholder="Contoh: astronot kucing mengendarai sepeda di Mars"></textarea>
-                </div>
-                
-                <div>
-                    <label for="negative-prompt" class="block text-sm font-medium text-gray-600 mb-2">
-                        2. Negative Prompt <span class="text-gray-400 text-xs">(Opsional)</span>
-                    </label>
-                    <textarea id="negative-prompt" rows="3" class="w-full bg-gray-100 border-gray-300 text-gray-800 rounded-lg p-3 focus:ring-2 focus:ring-brand-yellow focus:border-brand-yellow transition" placeholder="Elemen yang ingin dihindari. Contoh: buram, kualitas rendah, cacat, teks"></textarea>
-                </div>
+    <main class="max-w-7xl mx-auto p-4 md:p-8">
+        <div class="text-center mb-8">
+            <p class="mt-2 text-lg text-gray-600 dark:text-gray-400">Buat prompt sinematik dan hasilkan gambar AI secara langsung.
+            <br><font color="red">NOTE: Form input bersifat OPSIONAL, Boleh diisi atau Abaikan.</font></p>
+        </div>
 
+        <form id="prompt-form">
+             <!-- Form content remains the same -->
+             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Kolom Kiri -->
                 <div>
-                    <label for="style-select" class="block text-sm font-medium text-gray-600 mb-2">3. Pilih Gaya Gambar</label>
-                    <select id="style-select" class="w-full bg-gray-100 border-gray-300 text-gray-800 rounded-lg p-3 focus:ring-2 focus:ring-brand-yellow focus:border-brand-yellow transition">
-                        <option value="realistis">Realisitis / Fotografi</option>
-                        <option value="anime">Anime</option>
-                        <option value="kartun">Kartun</option>
-                        <option value="seni digital">Seni Digital</option>
-                        <option value="pixel art">Pixel Art</option>
-                        <option value="fantasi">Fantasi</option>
-                        <option value="cat air">Cat Air</option>
-                    </select>
-                </div>
-                
-                <div>
-                    <label for="ethnicity-select" class="block text-sm font-medium text-gray-600 mb-2">4. Pilih Wajah Karakter</label>
-                    <select id="ethnicity-select" class="w-full bg-gray-100 border-gray-300 text-gray-800 rounded-lg p-3 focus:ring-2 focus:ring-brand-yellow focus:border-brand-yellow transition">
-                        <option value="">Tidak Spesifik</option>
-                        <option value="Indonesian">Indonesia</option>
-                        <option value="Javanese Indonesian">Jawa</option>
-                        <option value="Sundanese Indonesian">Sunda</option>
-                        <option value="Balinese">Bali</option>
-                        <option value="East Asian">Asia Timur (Cina, Jepang, Korea)</option>
-                        <option value="South Asian">Asia Selatan (India)</option>
-                        <option value="European">Eropa</option>
-                        <option value="African">Afrika</option>
-                        <option value="Middle Eastern">Timur Tengah</option>
-                        <option value="Latin American">Amerika Latin</option>
-                    </select>
-                </div>
-
-                <!-- NEW: Facial Expression option -->
-                <div>
-                    <label for="expression-select" class="block text-sm font-medium text-gray-600 mb-2">5. Pilih Ekspresi Wajah</label>
-                    <select id="expression-select" class="w-full bg-gray-100 border-gray-300 text-gray-800 rounded-lg p-3 focus:ring-2 focus:ring-brand-yellow focus:border-brand-yellow transition">
-                        <option value="">Tidak Spesifik</option>
-                        <option value="happy">Senang</option>
-                        <option value="sad">Sedih</option>
-                        <option value="angry">Marah</option>
-                        <option value="surprised">Terkejut</option>
-                        <option value="neutral">Netral</option>
-                        <option value="laughing">Tertawa</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label for="aspect-ratio-select" class="block text-sm font-medium text-gray-600 mb-2">6. Pilih Rasio Aspek</label>
-                    <select id="aspect-ratio-select" class="w-full bg-gray-100 border-gray-300 text-gray-800 rounded-lg p-3 focus:ring-2 focus:ring-brand-yellow focus:border-brand-yellow transition">
-                        <option value="1:1">1:1 (Persegi)</option>
-                        <option value="16:9">16:9 (Lanskap)</option>
-                        <option value="9:16">9:16 (Potret)</option>
-                        <option value="4:3">4:3 (TV Klasik)</option>
-                        <option value="3:2">3:2 (Fotografi)</option>
-                    </select>
-                </div>
-                
-                <div>
-                    <label class="block text-sm font-medium text-gray-600 mb-2">7. Unggah Gambar Referensi <span class="text-gray-400 text-xs">(Opsional)</span></label>
-                    <input type="file" id="image-upload" accept="image/*" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-brand-yellow file:text-gray-800 hover:file:bg-brand-yellow-dark transition cursor-pointer">
-                    <div id="image-preview-container" class="mt-4 hidden">
-                         <p class="text-xs text-gray-500 mb-2">Pratinjau Referensi:</p>
-                         <img id="image-preview" src="" alt="Pratinjau Gambar Referensi" class="rounded-lg max-h-40 w-auto mx-auto border"/>
+                    <div class="form-section">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="form-section-title !mb-0 !border-0">👤 Subjek</h2>
+                            <button type="button" id="add-character-btn" class="btn btn-secondary">Tambah Karakter</button>
+                        </div>
+                        <div id="characters-container"></div>
+                    </div>
+                    <div class="form-section">
+                        <h2 class="form-section-title">🏞️ Latar</h2>
+                        <div class="mb-4">
+                            <label for="lokasi">Lokasi</label>
+                            <input type="text" id="lokasi" name="lokasi" class="input-field" placeholder="Sebuah desa nelayan tradisional di pagi hari">
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div><label for="waktu">Waktu</label><select name="waktu" class="select-field"><option selected>Pagi</option><option>Siang</option><option>Sore</option><option>Senja</option><option>Malam</option><option>Golden Hour</option></select></div>
+                            <div><label for="cuaca">Cuaca</label><select name="cuaca" class="select-field"><option selected>Cerah</option><option>Berawan</option><option>Gerimis</option><option>Berkabut</option></select></div>
+                        </div>
                     </div>
                 </div>
-
-                <button id="generate-btn" class="w-full bg-brand-yellow hover:bg-brand-yellow-dark text-gray-900 font-bold py-3 px-4 rounded-lg text-lg transition-transform transform hover:scale-105 shadow-lg flex items-center justify-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-wand-2"><path d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72Z"></path><path d="m14 7 3 3"></path><path d="M5 6v4"></path><path d="M19 14v4"></path><path d="M10 2v2"></path><path d="M7 8H3"></path><path d="M17 16h4"></path><path d="M11 3H9"></path></svg>
-                    Hasilkan Gambar
-                </button>
-            </div>
-
-            <!-- Right column: Image display -->
-            <div class="lg:col-span-2 bg-white p-6 rounded-2xl shadow-lg flex flex-col justify-center items-center min-h-[400px] lg:min-h-[600px]">
-                <div id="image-display-area" class="w-full h-full flex flex-col justify-center items-center bg-gray-100 rounded-lg">
-                    <!-- Placeholder -->
-                    <div id="placeholder" class="text-center text-gray-500">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-image-down mx-auto mb-4 text-gray-400"><path d="M10.3 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10l-3.1-3.1a2 2 0 0 0-2.814.014L6 21"/><path d="m14 19.5 3-3 3 3"/><path d="M17 16.5v-6"/><circle cx="9" cy="9" r="2"/></svg>
-                        <h3 class="text-xl font-medium text-gray-700">Hasil Gambar Anda</h3>
-                        <p class="text-gray-500">Gambar yang dihasilkan akan muncul di sini.</p>
+                <!-- Kolom Kanan -->
+                <div>
+                    <div class="form-section">
+                        <h2 class="form-section-title">🎥 Kamera & Visual</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div><label for="gaya">Gaya Visual</label><select name="gaya" class="select-field"><option selected>Sinematik</option><option>Realistis</option><option>Dokumenter</option></select></div>
+                            <div><label for="sudut_kamera">Sudut Kamera</label><select name="sudut_kamera" class="select-field"><option selected>Eye-level</option><option>High-angle</option><option>Low-angle</option></select></div>
+                            <div><label for="pencahayaan">Pencahayaan</label><select name="pencahayaan" class="select-field"><option selected>Cahaya Alami</option><option>Low-key</option><option>High-key</option></select></div>
+                            <div><label for="gradasi_warna">Gradasi Warna</label><select name="gradasi_warna" class="select-field"><option selected>Warna Hangat</option><option>Warna Dingin</option><option>Vibran</option><option>Pudar</option></select></div>
+                        </div>
                     </div>
-
-                    <!-- Loading Spinner -->
-                    <div id="loader" class="hidden text-center">
-                        <div class="loader ease-linear rounded-full border-8 border-t-8 border-gray-400 h-32 w-32 mx-auto"></div>
-                        <h3 class="text-xl font-medium mt-6 text-gray-700">Sedang menghasilkan...</h3>
-                        <p class="text-gray-500">Harap tunggu sejenak, keajaiban sedang terjadi.</p>
+                    <div class="form-section">
+                        <h2 class="form-section-title">🔊 Audio</h2>
+                        <div class="mb-4"><label for="tipe_dialog">Tipe Dialog</label><select id="tipe_dialog" name="tipe_dialog" class="select-field"><option selected>Natural Dialog</option><option>Monolog</option><option>Informatif</option><option>Interview</option><option>Tanpa Dialog</option></select></div>
+                        <div id="dialogs-container"></div>
+                        <div class="mb-4"><label for="suara_lingkungan">Suara Lingkungan</label><input type="text" id="suara_lingkungan" name="suara_lingkungan" class="input-field" placeholder="Debur ombak pelan, burung camar"></div>
+                        <div><label for="background_music">Background Music</label><input type="text" id="background_music" name="background_music" class="input-field" placeholder="Alunan musik sape yang meditatif"></div>
                     </div>
-
-                    <!-- Result Image -->
-                    <img id="result-image" src="" alt="Gambar yang dihasilkan AI" class="hidden rounded-lg max-w-full max-h-full object-contain">
-                </div>
-                
-                <!-- Download Button -->
-                <button id="download-btn" class="hidden mt-6 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg text-lg transition-transform transform hover:scale-105 shadow-lg flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
-                    Unduh Gambar
-                </button>
-
-                <!-- Error Message -->
-                <div id="error-message" class="hidden text-center text-red-700 bg-red-100 p-4 rounded-lg">
-                    <h3 class="font-bold">Oops! Terjadi Kesalahan</h3>
-                    <p id="error-text"></p>
                 </div>
             </div>
-        </main>
-    </div>
+             <div class="form-section">
+                 <h2 class="form-section-title">⚙️ Kualitas & Detail Tambahan</h2>
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                     <div><label for="kualitas_video">Kualitas Gambar</label><select name="kualitas_video" class="select-field"><option selected>4K</option><option>8K</option><option>HD</option></select></div>
+                     <div><label for="detail_tambahan">Detail Tambahan</label><textarea name="detail_tambahan" class="textarea-field" rows="1" placeholder="Jaring ikan yang basah berkilauan"></textarea></div>
+                 </div>
+             </div>
 
-    <script type="module">
-        // --- Element selectors ---
-        const promptEl = document.getElementById('prompt');
-        const negativePromptEl = document.getElementById('negative-prompt');
-        const styleSelectEl = document.getElementById('style-select');
-        const ethnicitySelectEl = document.getElementById('ethnicity-select');
-        const expressionSelectEl = document.getElementById('expression-select'); // NEW
-        const aspectRatioSelectEl = document.getElementById('aspect-ratio-select');
-        const imageUploadEl = document.getElementById('image-upload');
-        const imagePreviewContainerEl = document.getElementById('image-preview-container');
-        const imagePreviewEl = document.getElementById('image-preview');
-        const generateBtn = document.getElementById('generate-btn');
-        const downloadBtn = document.getElementById('download-btn');
-        const placeholderEl = document.getElementById('placeholder');
-        const loaderEl = document.getElementById('loader');
-        const resultImageEl = document.getElementById('result-image');
-        const errorEl = document.getElementById('error-message');
-        const errorTextEl = document.getElementById('error-text');
+            <div class="mt-8 text-center">
+                <button type="submit" id="generate-btn" class="btn btn-primary w-full md:w-1/2 py-3 text-lg">
+                    <span class="spinner"></span><span>Hasilkan Prompt</span>
+                </button>
+            </div>
+        </form>
 
-        let referenceImageBase64 = null;
-
-        // --- Event Listeners ---
-        imageUploadEl.addEventListener('change', (event) => {
-            const file = event.target.files[0];
-            if (!file) {
-                referenceImageBase64 = null;
-                imagePreviewContainerEl.classList.add('hidden');
-                return;
-            };
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const base64 = e.target.result;
-                imagePreviewEl.src = base64;
-                imagePreviewContainerEl.classList.remove('hidden');
-                referenceImageBase64 = base64.split(',')[1];
-            };
-            reader.onerror = () => {
-                 showError('Gagal membaca file gambar.');
-                 referenceImageBase64 = null;
-                 imagePreviewContainerEl.classList.add('hidden');
-            }
-            reader.readAsDataURL(file);
-        });
-
-        generateBtn.addEventListener('click', handleImageGeneration);
-
-        downloadBtn.addEventListener('click', () => {
-            const link = document.createElement('a');
-            link.href = resultImageEl.src;
-            const filename = (promptEl.value.substring(0, 30) || 'gambar-ai').replace(/[^a-z0-9]/gi, '_').toLowerCase();
-            link.download = `${filename}.png`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        });
-
-
-        // --- Core Functions ---
-        async function handleImageGeneration() {
-            const promptValue = promptEl.value;
-            if (!promptValue.trim()) {
-                showError("Prompt tidak boleh kosong.");
-                return;
-            }
-
-            setLoadingState(true);
-
-            // Get values from inputs
-            const negativePromptValue = negativePromptEl.value;
-            const styleValue = styleSelectEl.value;
-            const ethnicityValue = ethnicitySelectEl.value;
-            const expressionValue = expressionSelectEl.value; // NEW
-
-            // Automatic prompt enhancement
-            const styleEnhancers = {
-                'realistis': 'photorealistic, 8K, intricate detail, high quality, professional photography, sharp focus',
-                'anime': 'anime style, key visual, vibrant, high-resolution, by Studio Ghibli and Makoto Shinkai, pixiv trending',
-                'kartun': '3D cartoon style, Disney Pixar animation, cute, rendered in Blender, smooth lighting',
-                'seni digital': 'digital painting, concept art, smooth, sharp focus, illustration, ArtStation trending',
-                'pixel art': 'pixel art, 16-bit, vibrant color palette, detailed sprite, Aseprite',
-                'fantasi': 'epic fantasy, detailed, concept art, dramatic lighting, sharp focus, intricate',
-                'cat air': 'watercolor painting, paper texture, soft colors, wet-on-wet technique'
-            };
-
-            // UPDATED: Build the final prompt by combining keywords
-            let fullPrompt = promptValue;
-
-            if (ethnicityValue) {
-                fullPrompt += `, a ${ethnicityValue} person`;
-            }
-
-            if (expressionValue) {
-                fullPrompt += `, ${expressionValue} expression`;
-            }
-
-            const enhancer = styleEnhancers[styleValue] || '';
-            if (enhancer) {
-                fullPrompt += `, ${enhancer}`;
-            }
-            
-            const payload = {
-                instances: [{ prompt: fullPrompt }],
-                parameters: {
-                    sampleCount: 1,
-                    aspectRatio: aspectRatioSelectEl.value,
-                    mode: "text-to-image",
-                    ...(negativePromptValue.trim() && { negativePrompt: negativePromptValue })
-                }
-            };
-            
-            if (referenceImageBase64) {
-                payload.parameters.mode = "image-to-image";
-                payload.instances[0].image = {
-                    bytesBase64Encoded: referenceImageBase64
-                };
-            }
-
-            try {
-                const apiKey = "AIzaSyDt_L5F31TXkkk2WwIZEXzDfBe1Sk2I35w"; 
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                
-                if (!response.ok) {
-                    let errorMsg = `Error: ${response.status} ${response.statusText}`;
-                    const errorBodyText = await response.text();
-                    
-                    try {
-                        const errorData = JSON.parse(errorBodyText);
-                        errorMsg = errorData.error?.message || JSON.stringify(errorData);
-                    } catch (e) {
-                        console.error("Tidak dapat mem-parsing respons galat sebagai JSON. Isi:", errorBodyText);
-                        if (errorBodyText) {
-                           errorMsg = `Galat dari server: ${errorBodyText.substring(0, 150)}`;
-                        }
-                    }
-                    throw new Error(errorMsg);
-                }
-                
-                const result = await response.json();
-                
-                if (result.predictions && result.predictions.length > 0 && result.predictions[0].bytesBase64Encoded) {
-                    const imageUrl = `data:image/png;base64,${result.predictions[0].bytesBase64Encoded}`;
-                    displayResult(imageUrl);
-                } else {
-                    throw new Error('Respons API berhasil, tetapi tidak mengandung data gambar yang valid.');
-                }
-
-            } catch (error) {
-                console.error('Error during image generation:', error);
-                showError(error.message || 'Terjadi kesalahan yang tidak diketahui.');
-            } finally {
-                setLoadingState(false);
-            }
-        }
+        <div id="output-section" class="mt-8" style="display: none;">
+            <div class="form-section">
+                <h2 class="form-section-title">✅ Prompt yang Dihasilkan</h2>
+                <div class="mb-6">
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="text-xl font-semibold">🇮🇩 Versi Bahasa Indonesia</h3>
+                        <button type="button" class="btn copy-btn" onclick="copyPrompt('output_id')">Salin</button>
+                    </div>
+                    <textarea id="output_id" class="textarea-field font-mono" rows="8" readonly></textarea>
+                </div>
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="text-xl font-semibold">🇬🇧 Versi Bahasa Inggris</h3>
+                        <div class="flex gap-2">
+                             <button type="button" class="btn copy-btn" onclick="copyPrompt('output_en')">Salin</button>
+                             <!-- NEW: Image Generation Button -->
+                             <button type="button" id="generate-image-btn" class="btn btn-image-gen">🎨 Hasilkan Gambar</button>
+                        </div>
+                    </div>
+                    <textarea id="output_en" class="textarea-field font-mono" rows="8" readonly></textarea>
+                </div>
+                <div class="mt-6 text-center">
+                    <button type="button" id="reset-prompt-btn" class="btn reset-btn"><i class="fas fa-redo"></i><span>RESET</span></button>
+                </div>
+            </div>
+        </div>
         
-        // --- UI Helper Functions ---
-        function setLoadingState(isLoading) {
-            if (isLoading) {
-                generateBtn.disabled = true;
-                generateBtn.innerHTML = '<div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-6 w-6"></div><span>Memproses...</span>';
-                loaderEl.classList.remove('hidden');
-                placeholderEl.classList.add('hidden');
-                resultImageEl.classList.add('hidden');
-                downloadBtn.classList.add('hidden');
-                errorEl.classList.add('hidden');
-            } else {
-                generateBtn.disabled = false;
-                generateBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-wand-2"><path d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72Z"></path><path d="m14 7 3 3"></path><path d="M5 6v4"></path><path d="M19 14v4"></path><path d="M10 2v2"></path><path d="M7 8H3"></path><path d="M17 16h4"></path><path d="M11 3H9"></path></svg>Hasilkan Gambar';
-                loaderEl.classList.add('hidden');
-            }
+        <!-- NEW: Image Display Section -->
+        <div id="image-output-section" class="mt-8" style="display: none;">
+             <div class="form-section">
+                 <h2 class="form-section-title">🖼️ Gambar yang Dihasilkan</h2>
+                 <div id="image-display-area" class="w-full min-h-[400px] flex flex-col justify-center items-center bg-gray-100 dark:bg-gray-800 rounded-lg p-4">
+                     <!-- Image loading spinner -->
+                     <div id="image-loader" class="text-center">
+                         <div class="image-spinner mx-auto"></div>
+                         <h3 class="text-xl font-medium mt-6">Sedang menghasilkan gambar...</h3>
+                         <p class="text-gray-500">Harap tunggu, ini mungkin butuh waktu sejenak.</p>
+                     </div>
+                     <!-- Result Image -->
+                     <img id="result-image" src="" alt="Gambar yang dihasilkan AI" class="hidden rounded-lg max-w-full max-h-[600px] object-contain">
+                 </div>
+                 <!-- Download Button -->
+                <div class="text-center">
+                    <a id="download-btn" href="#" download="gambar-ai.png" class="btn btn-secondary mt-4 hidden">
+                        <i class="fas fa-download"></i> Unduh Gambar
+                    </a>
+                </div>
+             </div>
+        </div>
+
+    </main>
+
+    <footer class="text-center mt-8 pb-4">
+        <p class="text-sm text-gray-500 dark:text-gray-400">&copy; <span id="current-year"></span> Rayyys</p>
+    </footer>
+
+<script>
+let characterCount = 0;
+
+function createCharacterCard(id) {
+    const card = document.createElement('div');
+    card.className = 'border rounded-xl p-4 mb-4 relative dark:border-gray-600';
+    card.id = `character-card-${id}`;
+    card.innerHTML = `
+        <button type="button" class="btn btn-danger absolute top-2 right-2" onclick="removeCharacter(${id})">Hapus</button>
+        <h3 class="font-bold text-lg mb-3">Karakter ${id}</h3>
+        <div class="mb-3"><label for="nama_karakter_${id}">Karakter/Subjek</label><input type="text" name="nama_karakter_${id}" id="nama_karakter_${id}" class="input-field" placeholder="e.g, Burung, Monyet, Nama Orang"></div>
+        <div class="mb-3"><label for="karakteristik_subjek_${id}">Karakteristik Subjek</label><textarea name="karakteristik_subjek_${id}" id="karakteristik_subjek_${id}" class="textarea-field" rows="2" placeholder="Deskripsi fisik dan sifat"></textarea></div>
+        <div class="mb-3"><label for="aksi_utama_${id}">Aksi Utama</label><input type="text" name="aksi_utama_${id}" id="aksi_utama_${id}" class="input-field" placeholder="Aksi yang dilakukan karakter"></div>
+        <div><label for="emosi_${id}">Emosi</label><input type="text" name="emosi_${id}" id="emosi_${id}" class="input-field" placeholder="Emosi karakter (e.g., Tenang, damai)"></div>
+    `;
+    return card;
+}
+
+function addCharacter() {
+    characterCount++;
+    const container = document.getElementById('characters-container');
+    container.appendChild(createCharacterCard(characterCount));
+    updateDialogUI();
+}
+
+function removeCharacter(id) {
+    document.getElementById(`character-card-${id}`).remove();
+    updateDialogUI();
+}
+
+function updateDialogUI() {
+    const dialogsContainer = document.getElementById('dialogs-container');
+    dialogsContainer.innerHTML = '';
+    const characterCards = document.querySelectorAll('[id^="character-card-"]');
+    const dialogType = document.getElementById('tipe_dialog').value;
+
+    if (dialogType === 'Tanpa Dialog' || characterCards.length === 0) {
+        dialogsContainer.style.display = 'none';
+        return;
+    }
+    dialogsContainer.style.display = 'block';
+
+    characterCards.forEach(card => {
+        const id = card.id.split('-')[2];
+        const nameInput = document.getElementById(`nama_karakter_${id}`);
+        const name = nameInput.value || `Karakter ${id}`;
+        
+        const dialogInput = document.createElement('div');
+        dialogInput.className = 'mb-2';
+        dialogInput.innerHTML = `<label for="isi_dialog_${id}" class="text-sm">Dialog untuk ${name}</label><textarea name="isi_dialog_${id}" id="isi_dialog_${id}" class="textarea-field" rows="2" placeholder="Tuliskan dialog untuk ${name}..."></textarea>`;
+        dialogsContainer.appendChild(dialogInput);
+
+        nameInput.addEventListener('input', () => {
+            dialogInput.querySelector('label').textContent = `Dialog untuk ${nameInput.value || `Karakter ${id}`}`;
+        });
+    });
+}
+
+function toggleTheme() {
+    document.body.classList.toggle('dark-mode');
+    const isDarkMode = document.body.classList.contains('dark-mode');
+    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+    document.getElementById('theme-icon').className = `fas fa-lg ${isDarkMode ? 'fa-moon' : 'fa-sun'}`;
+}
+
+function applyThemeOnLoad() {
+    if (localStorage.getItem('theme') === 'dark') {
+        toggleTheme();
+    }
+}
+
+function showAboutApp() {
+    Swal.fire({
+        title: 'Tentang Aplikasi',
+        html: `<p style="text-align: left; margin-bottom: 1rem;">Aplikasi ini membantu Anda membuat prompt video/gambar sinematik yang detail.</p><p style="text-align: left;">Isi parameter, hasilkan prompt, lalu hasilkan gambar dari prompt tersebut secara langsung.</p>`,
+        icon: 'info',
+        confirmButtonText: 'Mengerti!',
+        confirmButtonColor: '#FFD24C',
+    });
+}
+
+function copyPrompt(elementId) {
+    const textarea = document.getElementById(elementId);
+    if (textarea.value) {
+        navigator.clipboard.writeText(textarea.value).then(() => {
+            Swal.fire({ title: 'Disalin!', icon: 'success', toast: true, position: 'top-end', showConfirmButton: false, timer: 1500 });
+        });
+    }
+}
+
+function resetPrompt() {
+    document.getElementById('prompt-form').reset();
+    document.getElementById('characters-container').innerHTML = '';
+    characterCount = 0;
+    addCharacter();
+    document.getElementById('output-section').style.display = 'none';
+    document.getElementById('image-output-section').style.display = 'none';
+    document.getElementById('output_id').value = '';
+    document.getElementById('output_en').value = '';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// --- NEW: Image Generation Function ---
+async function handleImageGeneration() {
+    const imagePrompt = document.getElementById('output_en').value;
+    if (!imagePrompt) {
+        Swal.fire('Prompt Kosong', 'Harap hasilkan prompt terlebih dahulu.', 'warning');
+        return;
+    }
+
+    const imageOutputSection = document.getElementById('image-output-section');
+    const imageLoader = document.getElementById('image-loader');
+    const resultImage = document.getElementById('result-image');
+    const downloadBtn = document.getElementById('download-btn');
+    
+    // Show section and loader
+    imageOutputSection.style.display = 'block';
+    imageLoader.style.display = 'block';
+    resultImage.style.display = 'none';
+    downloadBtn.style.display = 'none';
+    imageOutputSection.scrollIntoView({ behavior: 'smooth' });
+
+    try {
+        const apiKey = ""; // Handled by environment
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${apiKey}`;
+        const payload = { instances: [{ prompt: imagePrompt }], parameters: { sampleCount: 1 } };
+
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(`Image API Error: ${errorData.error?.message || 'Unknown error'}`);
         }
 
-        function displayResult(imageUrl) {
-            resultImageEl.src = imageUrl;
-            resultImageEl.classList.remove('hidden');
-            downloadBtn.classList.remove('hidden');
-            placeholderEl.classList.add('hidden');
-            errorEl.classList.add('hidden');
+        const result = await response.json();
+        if (result.predictions && result.predictions[0].bytesBase64Encoded) {
+            const imageUrl = `data:image/png;base64,${result.predictions[0].bytesBase64Encoded}`;
+            resultImage.src = imageUrl;
+            downloadBtn.href = imageUrl;
+            
+            // Hide loader, show image and download button
+            imageLoader.style.display = 'none';
+            resultImage.style.display = 'block';
+            downloadBtn.style.display = 'inline-flex';
+        } else {
+            throw new Error('Respons API tidak mengandung data gambar.');
         }
 
-        function showError(message) {
-            errorTextEl.textContent = message;
-            errorEl.classList.remove('hidden');
-            placeholderEl.classList.remove('hidden');
-            resultImageEl.classList.add('hidden');
-            downloadBtn.classList.add('hidden');
-        }
+    } catch (error) {
+        console.error("Gagal menghasilkan gambar:", error);
+        Swal.fire('Error Gambar', error.message, 'error');
+        imageLoader.style.display = 'none'; // Hide loader on error
+    }
+}
 
-    </script>
+
+// --- Event Listeners ---
+document.getElementById('add-character-btn').addEventListener('click', addCharacter);
+document.getElementById('tipe_dialog').addEventListener('change', updateDialogUI);
+document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+document.getElementById('about-app-btn').addEventListener('click', showAboutApp);
+document.getElementById('reset-prompt-btn').addEventListener('click', resetPrompt);
+document.getElementById('generate-image-btn').addEventListener('click', handleImageGeneration); // NEW
+
+document.addEventListener('DOMContentLoaded', () => {
+    addCharacter();
+    applyThemeOnLoad();
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+});
+
+const form = document.getElementById('prompt-form');
+form.addEventListener('submit', async function(event) {
+    event.preventDefault();
+    const generateBtn = document.getElementById('generate-btn');
+    const spinner = generateBtn.querySelector('.spinner');
+    
+    spinner.style.display = 'inline-block';
+    generateBtn.disabled = true;
+    generateBtn.querySelector('span').textContent = 'Menghasilkan...';
+
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+    
+    const characters = [];
+    document.querySelectorAll('[id^="character-card-"]').forEach(card => {
+        const id = card.id.split('-')[2];
+        characters.push({
+            nama: data[`nama_karakter_${id}`] || '',
+            karakteristik: data[`karakteristik_subjek_${id}`] || '',
+            aksi: data[`aksi_utama_${id}`] || '',
+            emosi: data[`emosi_${id}`] || '',
+            dialog: data[`isi_dialog_${id}`] || ""
+        });
+    });
+
+    const structuredData = {
+        subjek: characters,
+        latar: { lokasi: data.lokasi, waktu: data.waktu, cuaca: data.cuaca },
+        kamera: { gaya: data.gaya, sudut: data.sudut_kamera, pencahayaan: data.pencahayaan, gradasi_warna: data.gradasi_warna },
+        audio: { tipe_dialog: data.tipe_dialog, suara_lingkungan: data.suara_lingkungan, background_music: data.background_music },
+        spesifikasi: { kualitas: data.kualitas_video },
+        detail_tambahan: data.detail_tambahan
+    };
+
+    const masterPrompt = `Anda adalah seorang penulis naskah dan sutradara ahli. Tugas Anda adalah mengubah data terstruktur berikut menjadi dua buah prompt video yang kaya, deskriptif, dan sinematik. Prompt pertama dalam Bahasa Indonesia. Prompt kedua dalam Bahasa Inggris. Kembangkan detail yang diberikan menjadi narasi yang hidup. Untuk dialog, gunakan format [berbicara: "Teks dialog asli"] untuk prompt Indonesia dan [speaking: "Original dialog text"] untuk prompt Inggris. JANGAN menerjemahkan isi dialog. Gunakan token '|||---|||' sebagai pemisah WAJIB antara versi Bahasa Indonesia dan Bahasa Inggris. Data: ${JSON.stringify(structuredData, null, 2)}`;
+
+    try {
+        const apiKey = "AIzaSyDt_L5F31TXkkk2WwIZEXzDfBe1Sk2I35w"; // Handled by environment
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+        const payload = { contents: [{ role: "user", parts: [{ text: masterPrompt }] }] };
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(`API Error: ${errorData.error?.message || 'Unknown error'}`);
+        }
+        const result = await response.json();
+        const fullText = result.candidates[0].content.parts[0].text;
+        
+        const separator = '|||---|||';
+        const [promptID, promptEN] = fullText.includes(separator) ? fullText.split(separator) : [fullText, "Separator not found."];
+        
+        document.getElementById('output_id').value = promptID.trim();
+        document.getElementById('output_en').value = promptEN.trim();
+        document.getElementById('output-section').style.display = 'block';
+        document.getElementById('output-section').scrollIntoView({ behavior: 'smooth' });
+
+    } catch (error) {
+        console.error("Gagal memanggil Gemini API:", error);
+        Swal.fire('Terjadi Kesalahan!', error.message, 'error');
+    } finally {
+        spinner.style.display = 'none';
+        generateBtn.disabled = false;
+        generateBtn.querySelector('span').textContent = 'Hasilkan Prompt';
+    }
+});
+</script>
 </body>
 </html>
