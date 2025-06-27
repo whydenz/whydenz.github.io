@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pesan Neon Untukmu 💡</title>
+    <title>Untukmu 💡</title>
 
     <!-- Google Fonts: Turret Road for a futuristic feel -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -210,121 +210,90 @@
 <body>
 
     <div class="container">
-        <h1>Pesan Khusus Untukmu</h1>
+        <h1>Hai Manissss...</h1>
         <p>Ada sesuatu yang penting nih, klik tombol di bawah ya!</p>
-        <button id="pesanButton" class="magic-button">Klik Aku Dong ❤️</button>
+        <button id="pesanButton" class="magic-button">Crotttt... 🥺</button>
     </div>
 
-    <!-- Elemen Audio untuk Musik Latar -->
-    <audio id="background-music" loop>
-        <!-- Menggunakan musik synthwave yang bebas royalti -->
-        <source src="https://replit.com/@raydentuba/SocialFlowCoordinator#ray.mp3" type="audio/mpeg">
-        Browser Anda tidak mendukung elemen audio.
-    </audio>
-
     <script>
-        // Mengambil elemen dari HTML
-        const tombolPesan = document.getElementById('pesanButton');
-        const backgroundMusic = document.getElementById('background-music');
+        document.addEventListener('DOMContentLoaded', () => {
+            const tombolPesan = document.getElementById('pesanButton');
 
-        // Variabel untuk musik
-        let isMusicPlaying = false;
-        backgroundMusic.volume = 0.9; // Atur volume agar tidak terlalu keras
+            // Kumpulan kata-kata romantis pedas. 
+            // Pesan dengan beberapa baris diubah menjadi template literal untuk kemudahan.
+            const daftarPesan = [
+                "Peringatan: terlalu lama menatap kamu bisa menyebabkan jatuh cinta permanen. Risiko ditanggung sendiri ya.",
+                "Kamu itu kayak sambel, pedesnya bikin nagih. Makin diliatin makin pengen nambah.",
+                `Aku nggak pakai GPS...<br>Soalnya hatiku udah auto-navigasi ke kamu.<br>Biarpun jauh, sinyal cinta kita full bar.`,
+                "Kalau jadi gubernur, aku pasti gagal. Soalnya aku cuma mau ngurusin kamu seorang, bukan satu provinsi.",
+                "Kamu tau bedanya kamu sama utang? Kalau utang makin dipikirin bikin pusing, kalau kamu makin dipikirin bikin kangen.",
+                "Kalau disuruh lupain kamu, aku harus ke kelurahan dulu. Minta surat keterangan tidak mampu.",
+                "Sayang, otakku pasti korslet ya? Soalnya tiap mikirin kamu, langsung nyetrum ke hati.",
+                "Tolong jangan terlalu manis, nanti aku bisa diabetes karena jatuh cinta sama kamu terus-terusan."
+            ];
 
-        // Kumpulan kata-kata romantis pedas
-        const daftarPesan = [
-            "Peringatan: terlalu lama menatap kamu bisa menyebabkan jatuh cinta permanen. Risiko ditanggung sendiri ya.",
-            "Kamu itu kayak sambel, pedesnya bikin nagih. Makin diliatin makin pengen nambah.",
-            "Aku nggak butuh Google Maps, soalnya tujuanku cuma satu: masa depan yang pedas manis bareng kamu.",
-            "Kalau jadi gubernur, aku pasti gagal. Soalnya aku cuma mau ngurusin kamu seorang, bukan satu provinsi.",
-            "Kamu tau bedanya kamu sama utang? Kalau utang makin dipikirin bikin pusing, kalau kamu makin dipikirin bikin kangen.",
-            "Kalau disuruh lupain kamu, aku harus ke kelurahan dulu. Minta surat keterangan tidak mampu.",
-            "Sayang, otakku pasti korslet ya? Soalnya tiap mikirin kamu, langsung nyetrum ke hati.",
-            "Tolong jangan terlalu manis, nanti aku bisa diabetes karena jatuh cinta sama kamu terus-terusan."
-        ];
-        
-        let hitunganPesan = 0;
-        let pesanYangDiacak;
-
-        // Fungsi untuk mengacak urutan array
-        function acakArray(array) {
-            let salinanArray = [...array];
-            for (let i = salinanArray.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [salinanArray[i], salinanArray[j]] = [salinanArray[j], salinanArray[i]];
-            }
-            return salinanArray;
-        }
-
-        // Fungsi untuk menampilkan pesan satu per satu secara manual
-        function tampilkanPesanManual() {
-            if (hitunganPesan >= 6) {
-                tampilkanPesanPenutup();
-                return;
+            // Fungsi untuk mengacak urutan array (Fisher-Yates shuffle)
+            function acakArray(array) {
+                let salinanArray = [...array];
+                for (let i = salinanArray.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [salinanArray[i], salinanArray[j]] = [salinanArray[j], salinanArray[i]];
+                }
+                return salinanArray;
             }
 
-            const pesan = pesanYangDiacak[hitunganPesan];
-            hitunganPesan++;
+            // Menambahkan event listener untuk click pada tombol. Menggunakan async/await.
+            tombolPesan.addEventListener('click', async function() {
+                // Nonaktifkan tombol agar tidak diklik berulang kali selama rangkaian pesan
+                tombolPesan.disabled = true;
+                tombolPesan.innerText = 'Lihat Pesannya...';
 
-            Swal.fire({
-                title: `<strong>Pesan ke-${hitunganPesan} dari 6</strong>`,
-                icon: 'success',
-                iconColor: '#00ffff',
-                html: `<p style="font-size: 1.1em;">"${pesan}"</p>`,
-                confirmButtonText: 'Lanjut!',
-                customClass: {
-                    popup: 'custom-swal-popup',
-                    title: 'custom-swal-title',
-                    confirmButton: 'custom-swal-confirm-button',
-                    htmlContainer: 'custom-swal-html-container'
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    tampilkanPesanManual();
-                }
-            });
-        }
+                const pesanYangDiacak = acakArray(daftarPesan);
+                const jumlahPesanTampil = 6;
 
-        function tampilkanPesanPenutup() {
-            tombolPesan.disabled = false;
-            tombolPesan.innerText = 'Klik Lagi Dong ❤️';
-            Swal.fire({
-                title: '<strong>Sudah dulu ya! 😉</strong>',
-                icon: 'info',
-                iconColor: '#00ffff',
-                html: '<p style="font-size: 1.1em;">Cukup 6 dulu, nanti kamu makin sayang. Sampai jumpa di kejutan berikutnya!</p>',
-                confirmButtonText: 'Oke, Sayang! 😘',
-                customClass: {
-                    popup: 'custom-swal-popup',
-                    title: 'custom-swal-title',
-                    confirmButton: 'custom-swal-confirm-button',
-                    htmlContainer: 'custom-swal-html-container'
-                }
-            });
-        }
-
-        // Menambahkan event listener untuk click pada tombol
-        tombolPesan.addEventListener('click', function() {
-            // Logika untuk memulai musik saat klik pertama kali
-            if (!isMusicPlaying) {
-                const playPromise = backgroundMusic.play();
-                if (playPromise !== undefined) {
-                    playPromise.then(_ => {
-                        isMusicPlaying = true;
-                    }).catch(error => {
-                        console.error("Pemutaran musik otomatis gagal:", error);
-                        // Musik mungkin tetap tidak bisa diputar, tapi UI akan jalan terus
+                // Loop untuk menampilkan pesan satu per satu
+                for (let i = 0; i < jumlahPesanTampil; i++) {
+                    const pesan = pesanYangDiacak[i];
+                    
+                    const result = await Swal.fire({
+                        title: `<strong>Pesan ke-${i + 1} dari ${jumlahPesanTampil}</strong>`,
+                        icon: 'success',
+                        iconColor: '#00ffff',
+                        html: `<p style="font-size: 1.1em; line-height: 1.6;">"${pesan}"</p>`,
+                        confirmButtonText: 'Lanjut!',
+                        customClass: {
+                            popup: 'custom-swal-popup',
+                            title: 'custom-swal-title',
+                            confirmButton: 'custom-swal-confirm-button',
+                            htmlContainer: 'custom-swal-html-container'
+                        }
                     });
+
+                    // Jika pengguna menutup SweetAlert tanpa menekan tombol "Lanjut", hentikan loop
+                    if (!result.isConfirmed) {
+                        break;
+                    }
                 }
-            }
 
-            tombolPesan.disabled = true;
-            tombolPesan.innerText = 'Lihat Pesannya...';
+                // Tampilkan pesan penutup setelah loop selesai
+                await Swal.fire({
+                    title: '<strong>Sudah dulu ya! 😉</strong>',
+                    icon: 'info',
+                    iconColor: '#00ffff',
+                    html: '<p style="font-size: 1.1em;">Cukup 6 dulu, nanti kamu makin sayang. Dah...aku mau makan dlu!</p>',
+                    confirmButtonText: 'Oke, Sayang! 😘',
+                    customClass: {
+                        popup: 'custom-swal-popup',
+                        title: 'custom-swal-title',
+                        confirmButton: 'custom-swal-confirm-button',
+                        htmlContainer: 'custom-swal-html-container'
+                    }
+                });
 
-            hitunganPesan = 0;
-            pesanYangDiacak = acakArray(daftarPesan);
-            
-            tampilkanPesanManual();
+                // Aktifkan kembali tombol setelah semua pesan ditampilkan
+                tombolPesan.disabled = false;
+                tombolPesan.innerText = 'Klik Lagi Dong ❤️';
+            });
         });
     </script>
 
