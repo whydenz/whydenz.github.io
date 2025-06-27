@@ -3,124 +3,207 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pesan Khusus Untukmu ❤️</title>
+    <title>Pesan Neon Untukmu 💡</title>
 
-    <!-- Google Fonts: Poppins -->
+    <!-- Google Fonts: Turret Road for a futuristic feel -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Turret+Road:wght@400;700&display=swap" rel="stylesheet">
     
     <!-- SweetAlert2 Library -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
-        /* CSS Reset and Basic Setup */
+        /* CSS Variables for Neon Theme */
         :root {
-            --bg-start: #fff0f5; /* Lavender Blush */
-            --bg-end: #ffe4e1;   /* Misty Rose */
-            --card-bg: rgba(255, 255, 255, 0.85);
-            --text-color: #333;
-            --primary-color: #ff69b4; /* Hot Pink */
-            --primary-hover: #ff1493; /* Deep Pink */
-            --shadow-color: rgba(0, 0, 0, 0.1);
+            --bg-color: #0c001f;
+            --primary-neon: #ff00ff; /* Magenta */
+            --secondary-neon: #00ffff; /* Cyan */
+            --text-color: #f0f0f0;
+            --shadow-primary: 0 0 5px var(--primary-neon),
+                              0 0 15px var(--primary-neon),
+                              0 0 30px var(--primary-neon),
+                              0 0 50px var(--primary-neon);
+            --shadow-secondary: 0 0 5px var(--secondary-neon),
+                                0 0 10px var(--secondary-neon),
+                                0 0 15px var(--secondary-neon);
         }
 
         html, body {
             height: 100%;
             margin: 0;
             padding: 0;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Turret Road', sans-serif;
             overflow: hidden; /* Mencegah scroll */
         }
 
-        /* Gradient Background and Centering */
+        /* Dark Background and Centering */
         body {
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+            background-color: var(--bg-color);
         }
 
-        /* Main container with card style */
+        /* Main container with neon border */
         .container {
             text-align: center;
             padding: 40px 50px;
-            background: var(--card-bg);
             border-radius: 20px;
-            box-shadow: 0 10px 30px var(--shadow-color);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            animation: fadeIn 1s ease-in-out;
+            animation: fadeIn 1.5s ease-in-out;
         }
 
         @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: scale(0.9);
+                transform: scale(0.9) translateY(20px);
             }
             to {
                 opacity: 1;
-                transform: scale(1);
+                transform: scale(1) translateY(0);
             }
         }
 
-        /* Title Styling */
+        /* Title with Neon Glow */
         h1 {
-            color: var(--primary-color);
-            font-size: 2.5em;
+            color: var(--primary-neon);
+            font-size: 3.5em; /* Bigger for impact */
             font-weight: 700;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
+            text-shadow: var(--shadow-primary);
+            animation: flicker 2s infinite alternate;
+        }
+
+        /* Animation for a subtle flicker effect */
+        @keyframes flicker {
+            0%, 18%, 22%, 25%, 53%, 57%, 100% {
+                text-shadow: var(--shadow-primary);
+                opacity: 1;
+            }
+            20%, 24%, 55% {
+                text-shadow: none;
+                opacity: 0.8;
+            }
         }
 
         /* Subtitle Styling */
         p {
             color: var(--text-color);
-            font-size: 1.1em;
-            margin-bottom: 30px;
+            font-size: 1.3em;
+            margin-bottom: 40px;
+            text-shadow: 0 0 2px var(--text-color);
         }
 
-        /* The main button styling */
+        /* The neon button styling */
         .magic-button {
-            background: linear-gradient(45deg, var(--primary-color), var(--primary-hover));
-            color: white;
-            border: none;
+            background: transparent;
+            color: var(--secondary-neon);
+            border: 3px solid var(--secondary-neon);
             padding: 15px 30px;
-            font-size: 1.2em;
-            font-weight: 600;
+            font-size: 1.4em;
+            font-weight: 700;
             border-radius: 50px;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(255, 105, 180, 0.4);
+            text-shadow: var(--shadow-secondary);
+            position: relative; /* Diperlukan untuk pseudo-element */
+            z-index: 1;
         }
 
-        /* Button hover effect */
+        /* Lapisan cahaya yang mengelilingi tombol */
+        .magic-button::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border-radius: 50px; /* Menyamai bentuk tombol */
+            z-index: -1; /* Ditempatkan di belakang tombol */
+            box-shadow: 0 0 10px var(--secondary-neon), 0 0 20px var(--secondary-neon);
+            animation: pulse-glow 2s ease-in-out infinite;
+            transition: all 0.3s ease;
+        }
+
+        /* Animasi untuk cahaya yang berdenyut */
+        @keyframes pulse-glow {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 15px var(--secondary-neon), 0 0 30px var(--secondary-neon);
+                opacity: 0.7;
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 0 25px var(--secondary-neon), 0 0 50px var(--secondary-neon);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 15px var(--secondary-neon), 0 0 30px var(--secondary-neon);
+                opacity: 0.7;
+            }
+        }
+
+        /* Efek hover pada tombol */
         .magic-button:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 8px 25px rgba(255, 105, 180, 0.6);
+            color: var(--bg-color);
+            background-color: var(--secondary-neon);
+            text-shadow: none;
+            box-shadow: 0 0 10px var(--secondary-neon);
         }
         
+        /* Intensifkan cahaya di belakang saat hover */
+        .magic-button:hover::before {
+            animation-play-state: paused; /* Hentikan denyut untuk cahaya stabil */
+            transform: scale(1.03);
+            box-shadow: 0 0 25px var(--secondary-neon), 0 0 60px var(--secondary-neon);
+            opacity: 1;
+        }
+        
+        /* Styling untuk tombol yang nonaktif */
         .magic-button:disabled {
-            background: #cccccc;
+            color: #666;
+            border-color: #666;
             cursor: not-allowed;
+            background: transparent;
+            text-shadow: none;
             box-shadow: none;
-            transform: none;
         }
 
-        /* Custom styles for SweetAlert2 */
+        /* Sembunyikan juga cahaya di belakangnya saat nonaktif */
+        .magic-button:disabled::before {
+            display: none;
+        }
+
+
+        /* Custom styles for SweetAlert2 with Neon Theme */
         .custom-swal-popup {
+            background: #1a0537 !important;
+            border: 2px solid var(--primary-neon) !important;
             border-radius: 15px !important;
-            font-family: 'Poppins', sans-serif !important;
+            font-family: 'Turret Road', sans-serif !important;
         }
         
         .custom-swal-title {
-            color: var(--primary-hover) !important;
+            color: var(--primary-neon) !important;
+            text-shadow: 0 0 5px var(--primary-neon);
+        }
+        
+        .custom-swal-html-container {
+            color: var(--text-color) !important;
         }
         
         .custom-swal-confirm-button {
-            background-color: var(--primary-color) !important;
+            background-color: transparent !important;
+            color: var(--secondary-neon) !important;
+            border: 2px solid var(--secondary-neon) !important;
             border-radius: 8px !important;
-            box-shadow: none !important;
+            box-shadow: 0 0 10px var(--secondary-neon) !important;
+            transition: all 0.3s ease !important;
+        }
+        .custom-swal-confirm-button:hover {
+            background-color: var(--secondary-neon) !important;
+            color: var(--bg-color) !important;
         }
     </style>
 </head>
@@ -132,9 +215,21 @@
         <button id="pesanButton" class="magic-button">Klik Aku Dong ❤️</button>
     </div>
 
+    <!-- Elemen Audio untuk Musik Latar -->
+    <audio id="background-music" loop>
+        <!-- Menggunakan musik synthwave yang bebas royalti -->
+        <source src="https://replit.com/@raydentuba/SocialFlowCoordinator#ray.mp3" type="audio/mpeg">
+        Browser Anda tidak mendukung elemen audio.
+    </audio>
+
     <script>
-        // Mengambil elemen tombol dari HTML
+        // Mengambil elemen dari HTML
         const tombolPesan = document.getElementById('pesanButton');
+        const backgroundMusic = document.getElementById('background-music');
+
+        // Variabel untuk musik
+        let isMusicPlaying = false;
+        backgroundMusic.volume = 0.9; // Atur volume agar tidak terlalu keras
 
         // Kumpulan kata-kata romantis pedas
         const daftarPesan = [
@@ -163,31 +258,27 @@
 
         // Fungsi untuk menampilkan pesan satu per satu secara manual
         function tampilkanPesanManual() {
-            // Jika sudah pesan ke-6, tampilkan pesan penutup
             if (hitunganPesan >= 6) {
                 tampilkanPesanPenutup();
-                return; // Hentikan fungsi
+                return;
             }
 
-            // Ambil pesan dari array yang sudah diacak
             const pesan = pesanYangDiacak[hitunganPesan];
-            
-            // Tambah hitungan untuk pesan berikutnya
             hitunganPesan++;
 
-            // Menampilkan SweetAlert
             Swal.fire({
                 title: `<strong>Pesan ke-${hitunganPesan} dari 6</strong>`,
                 icon: 'success',
+                iconColor: '#00ffff',
                 html: `<p style="font-size: 1.1em;">"${pesan}"</p>`,
                 confirmButtonText: 'Lanjut!',
                 customClass: {
                     popup: 'custom-swal-popup',
                     title: 'custom-swal-title',
-                    confirmButton: 'custom-swal-confirm-button'
+                    confirmButton: 'custom-swal-confirm-button',
+                    htmlContainer: 'custom-swal-html-container'
                 }
             }).then((result) => {
-                // Jika tombol "Lanjut!" diklik, panggil fungsi ini lagi
                 if (result.isConfirmed) {
                     tampilkanPesanManual();
                 }
@@ -195,32 +286,44 @@
         }
 
         function tampilkanPesanPenutup() {
-            tombolPesan.disabled = false; // Aktifkan kembali tombol
+            tombolPesan.disabled = false;
             tombolPesan.innerText = 'Klik Lagi Dong ❤️';
             Swal.fire({
                 title: '<strong>Sudah dulu ya! 😉</strong>',
                 icon: 'info',
+                iconColor: '#00ffff',
                 html: '<p style="font-size: 1.1em;">Cukup 6 dulu, nanti kamu makin sayang. Sampai jumpa di kejutan berikutnya!</p>',
                 confirmButtonText: 'Oke, Sayang! 😘',
                 customClass: {
                     popup: 'custom-swal-popup',
                     title: 'custom-swal-title',
-                    confirmButton: 'custom-swal-confirm-button'
+                    confirmButton: 'custom-swal-confirm-button',
+                    htmlContainer: 'custom-swal-html-container'
                 }
             });
         }
 
         // Menambahkan event listener untuk click pada tombol
         tombolPesan.addEventListener('click', function() {
-            // Nonaktifkan tombol agar tidak diklik berulang kali selama rangkaian pesan
+            // Logika untuk memulai musik saat klik pertama kali
+            if (!isMusicPlaying) {
+                const playPromise = backgroundMusic.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(_ => {
+                        isMusicPlaying = true;
+                    }).catch(error => {
+                        console.error("Pemutaran musik otomatis gagal:", error);
+                        // Musik mungkin tetap tidak bisa diputar, tapi UI akan jalan terus
+                    });
+                }
+            }
+
             tombolPesan.disabled = true;
             tombolPesan.innerText = 'Lihat Pesannya...';
 
-            // Reset hitungan dan acak urutan pesannya setiap kali tombol utama diklik
             hitunganPesan = 0;
             pesanYangDiacak = acakArray(daftarPesan);
             
-            // Mulai rangkaian pesan manual
             tampilkanPesanManual();
         });
     </script>
